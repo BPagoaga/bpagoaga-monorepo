@@ -21,7 +21,8 @@ l'historique (commit `49c506c`). Écartés : bandeau « Work In Progress », con
 ### Design system
 
 - [ ] Thème sombre à partir des alias sémantiques
-- [ ] Premiers composants React dans `packages/ui` une fois les maquettes validées
+- [ ] Premiers composants React dans `packages/ui` une fois les maquettes validées (avec leur story)
+- [ ] CI : vérifier `build-storybook` et le lint de `packages/ui` (workflow `checks-ui.yml`) et ajouter `packages/dev-certs/**` aux `paths` des checks d'apps, après la PR #2
 
 ## Completed Tasks
 
@@ -29,3 +30,4 @@ l'historique (commit `49c506c`). Écartés : bandeau « Work In Progress », con
 - [x] 2026-10-26 — Package `@bpagoaga/ui` (tokens Tailwind v4)
 - [x] 2026-10-26 — App `mockups` (Eleventy) : catalogue, 11 composants, 5 pages
 - [x] 2026-10-26 — Migration du contenu de bernardpagoaga.net dans `apps/portfolio` (17 projets, réseaux, SEO)
+- [x] 2026-10-26 — Serveurs de dev en HTTPS (`@bpagoaga/dev-certs`) et Storybook pour `@bpagoaga/ui` (fondations)

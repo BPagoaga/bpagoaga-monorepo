@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.6",
+    "@bpagoaga/dev-certs": "workspace:*",
     "@bpagoaga/ui": "workspace:*",
     "@fortawesome/fontawesome-free": "^7.1.0",
     "@tailwindcss/cli": "catalog:",

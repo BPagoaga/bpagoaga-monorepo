@@ -9,6 +9,7 @@ export default defineConfig({
     ignorePatterns: [
       '**/dist/**',
       '**/.astro/**',
+      '**/storybook-static/**',
       'pnpm-lock.yaml',
       'apps/mockups/assets/tailwind.css',
       // Nunjucks templates: Oxfmt formats them as plain HTML and breaks `{% … %}` / `{{ … }}` tags.

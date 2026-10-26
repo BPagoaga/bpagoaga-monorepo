@@ -15,6 +15,13 @@ catalog:
   '@astrojs/check': ^0.9.12
   '@fortawesome/free-brands-svg-icons': ^7.3.1
   '@fortawesome/free-solid-svg-icons': ^7.3.1
+  '@storybook/react-vite': ^10.6.3
+  '@types/react': ^19.3.0
+  '@types/react-dom': ^19.3.0
+  react: ^19.3.1
+  react-dom: ^19.3.1
+  storybook: ^10.6.3
+  '@vitejs/plugin-react': ^6.1.2
 
 overrides:
   vite@*: 'catalog:'
@@ -27,3 +34,4 @@ peerDependencyRules:
 
 allowBuilds:
   '@parcel/watcher': true
+  esbuild: true

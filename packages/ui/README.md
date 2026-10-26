@@ -22,4 +22,15 @@ Design system partagé : tokens Tailwind CSS v4 et styles de base.
 - **Élévations** : `shadow-elevation-{1,2,3}`. **Rayons** : `rounded-{sm…3xl}`.
 
 Les polices ne sont pas embarquées : chaque app les charge (Google Fonts).
-Aperçu de tous les tokens : `pnpm dev:mockups` → page _Design tokens_.
+
+## Storybook
+
+```bash
+pnpm storybook          # https://localhost:6006
+pnpm build:storybook    # build statique dans storybook-static/
+```
+
+Les stories _Fondations_ (`src/stories/`) lisent les tokens directement dans `theme.css` (`?raw`) : un token ajouté
+apparaît sans toucher aux stories. Les futurs composants auront leur story à côté d'eux.
+
+Aperçu des tokens aussi dans les mockups : `pnpm dev:mockups` → page _Design tokens_.

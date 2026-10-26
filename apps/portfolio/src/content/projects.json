@@ -1,0 +1,177 @@
+[
+  {
+    "id": "webdealauto",
+    "section": "full-stack",
+    "title": "Webdealauto.com",
+    "link": "https://www.webdealauto.com",
+    "description": "Web Developer at WebdealAuto.com. Development of new features, creation of a responsive newsletter, maintenance, set up of unit tests.",
+    "keywords": [
+      "Symfony",
+      "Propel",
+      "ElasticSearch",
+      "HTML",
+      "CSS",
+      "SCSS",
+      "SEO",
+      "jQuery",
+      "ES6",
+      "Gulp",
+      "npm",
+      "Vue.js",
+      "PHPUnit"
+    ]
+  },
+  {
+    "id": "webdealauto-mobile",
+    "section": "full-stack",
+    "title": "Webdealauto.com: mobile site",
+    "link": "https://m.webdealauto.com",
+    "description": "Web Developer at WebdealAuto.com. Development of new features and maintenance for the mobile website, set up of unit tests.",
+    "keywords": [
+      "Symfony",
+      "Doctrine",
+      "ElasticSearch",
+      "HTML",
+      "CSS",
+      "SCSS",
+      "SEO",
+      "jQuery",
+      "ES6",
+      "Gulp",
+      "npm",
+      "PHPUnit"
+    ]
+  },
+  {
+    "id": "youpicity",
+    "section": "full-stack",
+    "title": "Youpicity",
+    "link": "https://www.youpicity.com",
+    "description": "Development of an admin with Angular 5+ and an API with Symfony 4/Api-Platform",
+    "keywords": ["Angular", "Symfony", "Api-Platform", "NgRx", "Webpack"]
+  },
+  {
+    "id": "portfolio",
+    "section": "front-end",
+    "title": "This Portfolio!",
+    "link": "https://github.com/BPagoaga/bpagoaga-monorepo",
+    "description": "Portfolio built with Astro and Tailwind CSS, in a Turborepo monorepo shared with a design system and an in-repo mockup catalogue.",
+    "thumbnail": "../assets/projects/portfolio.jpg",
+    "keywords": ["Astro", "Tailwind CSS", "TypeScript", "Turborepo", "Vite+"]
+  },
+  {
+    "id": "simpleo",
+    "section": "front-end",
+    "title": "Simpleo",
+    "link": "http://www.simpleo.net",
+    "description": "Website created for Arobiz",
+    "thumbnail": "../assets/projects/simpleo.jpg",
+    "keywords": ["HTML", "CSS", "Javascript", "Responsive Web Design"]
+  },
+  {
+    "id": "agr-expertise",
+    "section": "front-end",
+    "title": "AGR Expertise",
+    "link": "http://www.agrexpertise.com",
+    "description": "Website created for Arobiz",
+    "thumbnail": "../assets/projects/agr.jpg",
+    "keywords": ["HTML", "CSS", "Javascript", "Responsive Web Design"]
+  },
+  {
+    "id": "relache",
+    "section": "front-end",
+    "title": "Relache",
+    "link": "https://relache.fr",
+    "description": "Website of music festival Relache in Bordeaux, built with WordPress using a custom theme \"From Scratch\" with Underscores.",
+    "thumbnail": "../assets/projects/relache.jpg",
+    "keywords": ["HTML5", "CSS3", "Javascript", "Google Map API", "WordPress", "Underscores", "PHP/MySQL"]
+  },
+  {
+    "id": "drum-machine",
+    "section": "freecodecamp-advanced",
+    "title": "Drum Machine",
+    "link": "https://codepen.io/BPagoaga/pen/BMmBxo",
+    "description": "Drum Machine built to acquire the 'Front-end Libraries' certification at FreeCodeCamp.",
+    "keywords": ["React", "Babel", "ES6", "JSX"]
+  },
+  {
+    "id": "markdown-previewer",
+    "section": "freecodecamp-advanced",
+    "title": "Markdown Previewer",
+    "link": "https://codepen.io/BPagoaga/pen/yabNOE",
+    "description": "Markdown Previewer built to acquire the 'Front-end Libraries' certification at FreeCodeCamp.",
+    "keywords": ["React", "Babel", "ES6", "JSX"]
+  },
+  {
+    "id": "simon-game",
+    "section": "freecodecamp-advanced",
+    "title": "SimonGame",
+    "link": "https://bpagoaga.github.io/SimonGame/",
+    "description": "Simon game built to acquire the 'Front-end Development (Legacy)' certification at FreeCodeCamp.",
+    "thumbnail": "../assets/projects/simon.jpg",
+    "keywords": ["ES6", "Babel", "Webpack", "Module Pattern"]
+  },
+  {
+    "id": "tic-tac-toe",
+    "section": "freecodecamp-advanced",
+    "title": "Tic Tac Toe",
+    "link": "https://bpagoaga.github.io/tictactoereact/",
+    "description": "Tic Tac Toe built with React, written in ES6. This project was the occasion to discover those 2 technologies. I hope you won't mind the poor design.",
+    "thumbnail": "../assets/projects/tictactoe.png",
+    "keywords": ["React", "Babel", "Webpack"]
+  },
+  {
+    "id": "pomodoro-clock",
+    "section": "freecodecamp-advanced",
+    "title": "Pomodoro Clock",
+    "link": "https://codepen.io/BPagoaga/full/PzpYez/",
+    "description": "Pomodoro Clock built to acquire the 'Front-end Libraries' certification at FreeCodeCamp.",
+    "thumbnail": "../assets/projects/pomodoro.png",
+    "keywords": ["Javascript", "jQuery", "Algorithmy", "Bootstrap"]
+  },
+  {
+    "id": "javascript-calculator",
+    "section": "freecodecamp-advanced",
+    "title": "Javascript Calculator",
+    "link": "https://codepen.io/BPagoaga/full/rLjWrQ/",
+    "description": "Javascript Calculator built to acquire the 'Front-end Libraries' certification at FreeCodeCamp.",
+    "thumbnail": "../assets/projects/calc.png",
+    "keywords": ["Javascript", "jQuery", "Algorithmy", "Bootstrap"]
+  },
+  {
+    "id": "twitch-json-api",
+    "section": "freecodecamp-intermediate",
+    "title": "Twitch.tv JSON API",
+    "link": "https://codepen.io/BPagoaga/full/JXZJLB/",
+    "description": "Getting used to manipulate API and JSON",
+    "thumbnail": "../assets/projects/twitch.png",
+    "keywords": ["Javascript", "jQuery", "API", "JSON", "Bootstrap"]
+  },
+  {
+    "id": "wikipedia-viewer",
+    "section": "freecodecamp-intermediate",
+    "title": "Wikipedia Viewer",
+    "link": "https://codepen.io/BPagoaga/full/bpvqPz/",
+    "description": "Getting used to manipulate API and JSON",
+    "thumbnail": "../assets/projects/wiki.png",
+    "keywords": ["Javascript", "jQuery", "API", "JSON", "Bootstrap"]
+  },
+  {
+    "id": "local-weather-app",
+    "section": "freecodecamp-intermediate",
+    "title": "Local Weather App",
+    "link": "https://codepen.io/BPagoaga/full/bpayJB/",
+    "description": "Getting used to manipulate API and JSON",
+    "thumbnail": "../assets/projects/weather.png",
+    "keywords": ["Javascript", "jQuery", "API", "JSON", "Bootstrap"]
+  },
+  {
+    "id": "random-quote-machine",
+    "section": "freecodecamp-intermediate",
+    "title": "Random Quote Machine",
+    "link": "https://codepen.io/BPagoaga/full/BKmaev/",
+    "description": "Getting used to manipulate API and JSON",
+    "thumbnail": "../assets/projects/quote.jpg",
+    "keywords": ["Javascript", "jQuery", "API", "JSON", "Bootstrap"]
+  }
+]

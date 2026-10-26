@@ -1,0 +1,72 @@
+---
+// Port of the mockups' `project-card` macro (apps/mockups/_includes/macros/proposals/project-card.njk):
+// the whole card is clickable through a stretched link; projects without a screenshot get an icon tile.
+import { faArrowUpRightFromSquare, faCode } from '@fortawesome/free-solid-svg-icons';
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Badge from './Badge.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>['data'];
+}
+
+const { project } = Astro.props;
+---
+
+<article
+  class="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface transition hover:-translate-y-0.5 hover:shadow-elevation-2"
+>
+  {
+    project.thumbnail ? (
+      <Image
+        src={project.thumbnail}
+        alt=""
+        widths={[400, 600]}
+        sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
+        class="aspect-[16/10] w-full border-b border-border object-cover object-top"
+      />
+    ) : (
+      <div class="grid aspect-[16/10] place-items-center border-b border-border bg-primary-10 text-primary-100">
+        <Icon icon={faCode} class="size-10" />
+      </div>
+    )
+  }
+  <div class="flex flex-1 flex-col p-5">
+    <h3 class="text-title-s">
+      {
+        project.link ? (
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="after:absolute after:inset-0 after:rounded-2xl"
+          >
+            {project.title}
+          </a>
+        ) : (
+          project.title
+        )
+      }
+    </h3>
+    <p class="mt-2 flex-1 text-body-s text-muted">{project.description}</p>
+    <ul class="mt-4 flex flex-wrap gap-1.5" aria-label="Technologies">
+      {
+        project.keywords.map((keyword) => (
+          <li>
+            <Badge label={keyword} />
+          </li>
+        ))
+      }
+    </ul>
+    {
+      project.link && (
+        <p class="mt-4 flex items-center gap-1.5 text-body-s font-semibold text-primary-100 group-hover:underline">
+          Visit website
+          <Icon icon={faArrowUpRightFromSquare} class="size-3" />
+          <span class="sr-only">(opens in a new tab)</span>
+        </p>
+      )
+    }
+  </div>
+</article>

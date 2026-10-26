@@ -1,0 +1,17 @@
+---
+// Renders a Font Awesome icon as inline SVG at build time: no icon font, no runtime JS.
+import type { IconDefinition } from '@fortawesome/free-brands-svg-icons';
+
+interface Props {
+  icon: IconDefinition;
+  class?: string;
+}
+
+const { icon, class: className = 'size-4' } = Astro.props;
+const [width, height, , , path] = icon.icon;
+const paths = Array.isArray(path) ? path : [path];
+---
+
+<svg viewBox={`0 0 ${width} ${height}`} class={className} fill="currentColor" aria-hidden="true" focusable="false">
+  {paths.map((d) => <path d={d} />)}
+</svg>

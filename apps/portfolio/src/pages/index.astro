@@ -1,13 +1,42 @@
 ---
+import { getCollection } from 'astro:content';
+import ProjectCard from '../components/ProjectCard.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import rawProjects from '../content/projects.json';
+import { SECTIONS } from '../data/site';
 import Layout from '../layouts/Layout.astro';
+
+// getCollection() returns entries sorted by id: restore the order of src/content/projects.json.
+const position = new Map(rawProjects.map((project, index) => [project.id, index]));
+const projects = (await getCollection('projects')).sort(
+  (a, b) => (position.get(a.id) ?? 0) - (position.get(b.id) ?? 0),
+);
+const sections = SECTIONS.map((section) => ({
+  ...section,
+  projects: projects.filter((project) => project.data.section === section.id),
+})).filter((section) => section.projects.length > 0);
 ---
 
-<Layout title="Bernard Pagoaga">
-  <main class="flex min-h-screen flex-col items-center justify-center gap-3 p-6 text-center">
-    <p class="text-body-s font-semibold uppercase tracking-widest text-primary-100">Bientôt</p>
-    <h1 class="font-display text-title-xl">Bernard Pagoaga</h1>
-    <p class="max-w-md text-muted">
-      CV en ligne en construction. Les maquettes sont dans <code class="font-mono text-body-s">apps/mockups</code>.
-    </p>
+<Layout>
+  <SiteHeader />
+  <main class="mx-auto max-w-6xl space-y-16 px-4 py-16 md:px-6">
+    {
+      sections.map((section) => (
+        <section aria-labelledby={`section-${section.id}`}>
+          <h2 id={`section-${section.id}`} class="font-display text-title-l">
+            {section.title}
+          </h2>
+          <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {section.projects.map((project) => (
+              <li>
+                <ProjectCard project={project.data} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
   </main>
+  <SiteFooter />
 </Layout>

@@ -1,0 +1,12 @@
+---
+// Port of the mockups' `badge` macro (apps/mockups/_includes/macros/proposals/badge.njk), size sm, neutral tone.
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<span class="inline-flex items-center gap-1 rounded-full bg-neutral-20 px-1.5 py-0.5 text-body-xs text-neutral-130">
+  {label}
+</span>

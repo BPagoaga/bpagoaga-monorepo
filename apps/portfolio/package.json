@@ -7,6 +7,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "check-types": "astro check",
+    "lint": "vp lint",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -20,6 +21,7 @@
     "@astrojs/check": "catalog:",
     "@tailwindcss/vite": "catalog:",
     "tailwindcss": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
   }
 }

@@ -50,11 +50,28 @@ All commands run from the repo root with **pnpm** (never npm/yarn — there is o
 
 - **Install:** `pnpm install`
 - **Build:** `pnpm build` (all, via Turborepo), `pnpm turbo run build --filter=@bpagoaga/calisthenics` (one workspace)
-- **Lint:** `pnpm lint` (`vp lint` / Oxlint in React workspaces)
+- **Lint:** `pnpm lint` (`vp lint` / Oxlint in every app; React rules in `apps/calisthenics/vite.config.ts`)
 - **Types:** `pnpm check-types` (`tsc -b` for React, `astro check` for Astro)
-- **Format:** `pnpm fmt` (`vp fmt` / Oxfmt, config in root `vite.config.ts`), `pnpm fmt:check` in CI
+- **Format:** `pnpm fmt` (`vp fmt` / Oxfmt, config in root `vite.config.ts`), `pnpm fmt:check` to verify
 - **Add a dependency:** `pnpm --filter <workspace> add <pkg>`. Shared versions (Vite+, TypeScript, Tailwind) live in the
   `catalog:` of `pnpm-workspace.yaml` — reference them as `"catalog:"`, don't pin them per workspace.
+
+## CI
+
+Every pull request runs one check workflow per app (`.github/workflows/checks-<app>.yml`), only when that app, the
+design system (`packages/ui`) or the shared tooling changed. They all call `.github/workflows/app-checks.yml`:
+`pnpm install --frozen-lockfile`, `pnpm audit --audit-level high`, then `turbo run lint` and `turbo run build` filtered
+on the app (build runs even when lint fails, so one push reports both).
+
+Reproduce a check locally before pushing:
+
+```bash
+pnpm audit --audit-level high
+pnpm turbo run lint build --filter=@bpagoaga/<app>
+```
+
+- A dependency change must keep `pnpm audit --audit-level high` clean — see the `resolve-pnpm-audit` skill.
+- A new app gets its own `checks-<app>.yml`, copied from an existing one (paths, concurrency group, `app` input).
 
 ## Dev Servers
 

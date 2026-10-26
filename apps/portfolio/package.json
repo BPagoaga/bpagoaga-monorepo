@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@bpagoaga/ui": "workspace:*",
+    "@fortawesome/free-brands-svg-icons": "catalog:",
+    "@fortawesome/free-solid-svg-icons": "catalog:",
     "astro": "^7.4.2"
   },
   "devDependencies": {

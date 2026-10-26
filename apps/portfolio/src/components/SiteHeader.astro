@@ -1,0 +1,37 @@
+---
+import { SITE, SOCIAL_LINKS } from '../data/site';
+import Icon from './Icon.astro';
+---
+
+<header class="border-b border-border bg-surface">
+  <div class="mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 py-16 text-center md:px-6 md:py-20">
+    <span
+      class="grid size-16 place-items-center rounded-2xl bg-primary-100 font-display text-title-l text-white"
+      aria-hidden="true">BP</span
+    >
+    <div>
+      <h1 class="font-display text-title-xl md:text-display">{SITE.name}</h1>
+      <p class="mt-2 font-display text-title-m text-primary-100">{SITE.headline}</p>
+    </div>
+    <nav aria-label="Social networks">
+      <ul class="flex flex-wrap justify-center gap-2">
+        {
+          SOCIAL_LINKS.map((social) => (
+            <li>
+              <a
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer me"
+                aria-label={social.label}
+                title={social.label}
+                class="grid size-11 place-items-center rounded-xl border border-border text-neutral-130 transition-colors hover:border-primary-100 hover:bg-primary-10 hover:text-primary-110"
+              >
+                <Icon icon={social.icon} class="size-5" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>

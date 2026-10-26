@@ -8,7 +8,8 @@
     "dev:css": "tailwindcss -i ./src/tailwind.css -o ./assets/tailwind.css --watch",
     "dev:eleventy": "eleventy --serve --watch",
     "build:css": "tailwindcss -i ./src/tailwind.css -o ./assets/tailwind.css --minify",
-    "build": "pnpm build:css && eleventy"
+    "build": "pnpm build:css && eleventy",
+    "lint": "vp lint"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.6",
@@ -17,6 +18,7 @@
     "@tailwindcss/cli": "catalog:",
     "concurrently": "^9.2.1",
     "tailwindcss": "catalog:",
+    "vite-plus": "catalog:",
     "yaml": "^2.9.0"
   }
 }

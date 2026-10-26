@@ -1,0 +1,30 @@
+name: Checks — Mockups
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    # The app itself, what it depends on, and the shared tooling.
+    paths:
+      - apps/mockups/**
+      - packages/ui/**
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - turbo.json
+      - vite.config.ts
+      - tsconfig.json
+      - .nvmrc
+      - .github/workflows/app-checks.yml
+      - .github/workflows/checks-mockups.yml
+
+# A new push on the same PR cancels the run still in progress.
+concurrency:
+  group: checks-mockups-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mockups:
+    uses: ./.github/workflows/app-checks.yml
+    with:
+      app: '@bpagoaga/mockups'

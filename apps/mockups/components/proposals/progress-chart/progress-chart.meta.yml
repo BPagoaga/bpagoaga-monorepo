@@ -1,0 +1,14 @@
+id: MOCK-022
+title: Progress chart
+kind: proposals
+status: draft
+app: calisthenics
+area: Performances
+related_component: null
+implemented_in: null
+states: [données, état vide]
+channels: [web, mobile]
+notes: >
+  Rendu CSS volontairement simple pour la maquette. À l'implémentation, une lib de charts
+  (ex. Recharts) avec les mêmes tokens ; garder une alternative textuelle (tableau) pour
+  les lecteurs d'écran.

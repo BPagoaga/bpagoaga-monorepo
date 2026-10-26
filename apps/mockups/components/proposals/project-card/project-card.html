@@ -1,0 +1,23 @@
+---
+layout: layout.njk
+title: Project card
+---
+{% from "macros/proposals/project-card.njk" import projectCard %}
+<div class="mx-auto max-w-5xl space-y-10 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">Project card</h1>
+    <p class="mt-1 text-body-s text-muted">Carte projet entièrement cliquable (lien étiré), avec un lien secondaire vers le code au-dessus.</p>
+  </header>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Grille</h2>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {% for p in portfolio.projects %}{{ projectCard(p) }}{% endfor %}
+    </div>
+  </section>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Sans lien, description longue</h2>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {{ projectCard({ title: 'Projet confidentiel', description: 'Description volontairement longue pour vérifier que la carte garde sa hauteur dans la grille et que les tags restent alignés en bas, quelle que soit la quantité de texte.', icon: 'lock', tone: 'green', tags: ['React Native', 'Expo', 'NativeWind', 'Zustand'] }) }}
+    </div>
+  </section>
+</div>

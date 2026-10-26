@@ -1,0 +1,22 @@
+{
+  "name": "@bpagoaga/mockups",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm build:css && concurrently -k -n tailwind,eleventy -c blue,green \"pnpm:dev:css\" \"pnpm:dev:eleventy\"",
+    "dev:css": "tailwindcss -i ./src/tailwind.css -o ./assets/tailwind.css --watch",
+    "dev:eleventy": "eleventy --serve --watch",
+    "build:css": "tailwindcss -i ./src/tailwind.css -o ./assets/tailwind.css --minify",
+    "build": "pnpm build:css && eleventy"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.6",
+    "@bpagoaga/ui": "workspace:*",
+    "@fortawesome/fontawesome-free": "^7.1.0",
+    "@tailwindcss/cli": "catalog:",
+    "concurrently": "^9.2.1",
+    "tailwindcss": "catalog:",
+    "yaml": "^2.9.0"
+  }
+}

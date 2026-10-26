@@ -1,0 +1,27 @@
+{#
+  Badge — étiquette courte (compétence, niveau, famille d'exercice, statut).
+
+  Params :
+    label — string
+    tone  — neutral | primary | accent | green | orange | red | blue
+    icon  — nom Font Awesome sans fa- (optionnel)
+    size  — sm | md
+    dot   — bool : pastille de couleur à gauche plutôt qu'une icône
+#}
+{% macro badge(label, tone='neutral', icon='', size='md', dot=false) %}
+{% set tones = {
+  'neutral': 'bg-neutral-20 text-neutral-130',
+  'primary': 'bg-primary-10 text-primary-120',
+  'accent': 'bg-accent-10 text-accent-140',
+  'green': 'bg-green-10 text-green-130',
+  'orange': 'bg-orange-10 text-orange-140',
+  'red': 'bg-red-10 text-red-120',
+  'blue': 'bg-blue-10 text-blue-130'
+} %}
+{% set dots = { 'neutral': 'bg-neutral-90', 'primary': 'bg-primary-100', 'accent': 'bg-accent-100', 'green': 'bg-green-100', 'orange': 'bg-orange-100', 'red': 'bg-red-100', 'blue': 'bg-blue-100' } %}
+{% set sizes = { 'sm': 'gap-1 px-1.5 py-0.5 text-body-xs', 'md': 'gap-1.5 px-2.5 py-1 text-body-xs font-medium' } %}
+<span class="inline-flex items-center rounded-full {{ tones[tone] }} {{ sizes[size] }}">
+  {% if dot %}<span class="size-1.5 rounded-full {{ dots[tone] }}" aria-hidden="true"></span>{% elif icon %}<i class="fas fa-{{ icon }} fa-xs" aria-hidden="true"></i>{% endif %}
+  {{ label }}
+</span>
+{% endmacro %}

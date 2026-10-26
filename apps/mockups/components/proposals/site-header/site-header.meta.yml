@@ -1,0 +1,16 @@
+id: MOCK-010
+title: Site header
+kind: proposals
+status: draft
+app: portfolio
+area: Navigation
+related_component: null
+implemented_in: null
+states:
+  - desktop, lien actif
+  - mobile, menu fermé
+  - mobile, menu ouvert (Échap pour fermer)
+channels: [web, mobile]
+notes: >
+  Une seule action dans l'en-tête (« Télécharger le CV ») en outline, pour laisser l'action
+  primaire au hero. Dans Astro, le menu mobile peut rester un <details> ou un petit script.

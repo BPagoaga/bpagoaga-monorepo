@@ -1,0 +1,21 @@
+---
+layout: layout.njk
+title: Set logger
+---
+{% from "macros/proposals/set-logger.njk" import setLogger %}
+<div class="mx-auto max-w-5xl space-y-10 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">Set logger</h1>
+    <p class="mt-1 max-w-3xl text-body-s text-muted">Saisie d'une série pendant la séance : valeurs pré-remplies, steppers de 48 px, une seule action principale. Les boutons RPE sont cliquables (démo).</p>
+  </header>
+  <div class="grid gap-6 md:grid-cols-2">
+    <section class="space-y-3">
+      <h2 class="text-title-m">Première série</h2>
+      {{ setLogger('Tractions strictes', 1, 12, idPrefix='first') }}
+    </section>
+    <section class="space-y-3">
+      <h2 class="text-title-m">Séries suivantes, repos en cours</h2>
+      {{ setLogger('Tractions lestées', 3, 5, '20', ['+20 kg × 5', '+20 kg × 4'], '1:24', idPrefix='next') }}
+    </section>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+---
+layout: layout.njk
+title: Tutoriels
+---
+{% from "macros/proposals/app-nav.njk" import appNav %}
+{% from "macros/proposals/button.njk" import button %}
+{% from "macros/proposals/exercise-card.njk" import exerciseCard %}
+{% from "macros/proposals/progression-path.njk" import progressionPath %}
+{% set c = calisthenics %}
+{% set families = [['all', 'Tous'], ['push', 'Poussée'], ['pull', 'Tirage'], ['legs', 'Jambes'], ['core', 'Gainage'], ['skill', 'Figures']] %}
+{{ appNav('tutorials') }}
+<div class="pb-28 lg:pb-0 lg:pl-64" data-mockup-scope>
+  <div class="mx-auto max-w-6xl space-y-8 px-4 py-6 md:px-8 md:py-8">
+    <header>
+      <h1 class="font-display text-title-xl">Tutoriels</h1>
+      <p class="mt-1 text-body-m text-muted">Des exercices rangés en progressions : chaque étape débloque la suivante.</p>
+    </header>
+
+    {# Progression mise en avant : celle de l'objectif en cours. #}
+    <section class="rounded-2xl border border-border bg-surface p-5 md:p-6" aria-labelledby="path-title">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-body-xs font-semibold uppercase tracking-wide text-accent-130">Ta progression en cours</p>
+          <h2 id="path-title" class="text-title-m">Vers le muscle-up</h2>
+        </div>
+        {{ button('Reprendre l’étape 4', 'accent', 'md', 'play') }}
+      </div>
+      <div class="mt-5">{{ progressionPath('Vers le muscle-up', c.muscleUpPath, 'horizontal') }}</div>
+    </section>
+
+    <section class="space-y-4" aria-labelledby="library-title">
+      <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <h2 id="library-title" class="text-title-m">Bibliothèque <span class="text-body-m font-normal text-muted">· {{ c.exercises.length }} exercices</span></h2>
+        <div class="relative md:w-72">
+          <i class="fas fa-search pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-subtle" aria-hidden="true"></i>
+          <input type="search" placeholder="Rechercher un exercice" aria-label="Rechercher un exercice" class="h-10 w-full rounded-lg border border-border bg-surface pl-9 pr-3 text-body-s focus:border-primary-100 focus:outline-hidden focus:ring-4 focus:ring-primary-20" />
+        </div>
+      </div>
+      <div class="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 md:mx-0 md:px-0" role="tablist" aria-label="Familles d'exercices">
+        {% for f in families %}
+          <button type="button" role="tab" data-mockup-tab="family:{{ f[0] }}" aria-selected="{{ 'true' if f[0] == 'all' else 'false' }}"
+            class="h-9 shrink-0 rounded-full border border-border bg-surface px-4 text-body-s font-medium text-neutral-130 hover:bg-neutral-20 aria-selected:border-neutral-150 aria-selected:bg-neutral-150 aria-selected:text-white">{{ f[1] }}</button>
+        {% endfor %}
+      </div>
+      {% for f in families %}
+        {# Filtre explicite : le selectattr de Nunjucks ne prend pas de test (« equalto »). #}
+        {% set list = [] %}
+        {% for ex in c.exercises %}{% if f[0] == 'all' or ex.family == f[0] %}{% set noop = list.push(ex) %}{% endif %}{% endfor %}
+        <div data-mockup-tab-panel="family:{{ f[0] }}" class="{{ '' if f[0] == 'all' else 'hidden' }} grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {% for ex in list %}{{ exerciseCard(ex) }}{% else %}
+            <p class="col-span-full rounded-2xl border border-dashed border-border p-10 text-center text-body-s text-muted">Aucun exercice dans cette famille pour l'instant.</p>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </section>
+  </div>
+</div>

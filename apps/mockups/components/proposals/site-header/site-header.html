@@ -1,0 +1,22 @@
+---
+layout: layout.njk
+title: Site header
+---
+{% from "macros/proposals/site-header.njk" import siteHeader %}
+<div class="space-y-10 py-8">
+  <header class="mx-auto max-w-5xl px-6">
+    <h1 class="font-display text-title-xl">Site header</h1>
+    <p class="mt-1 max-w-3xl text-body-s text-muted">En-tête collant du portfolio. Les états mobiles sont montrés dans des iframes de 390 px : les breakpoints <code>md:</code> sont de vraies media queries.</p>
+  </header>
+  <section class="space-y-3">
+    <h2 class="mx-auto max-w-5xl px-6 text-title-m">Desktop — lien actif « Parcours »</h2>
+    <div class="relative border-y border-border">{{ siteHeader(portfolio.name, portfolio.links, '#parcours') }}</div>
+  </section>
+  <section class="mx-auto max-w-5xl space-y-3 px-6">
+    <h2 class="text-title-m">Mobile — menu fermé / ouvert</h2>
+    <div class="flex flex-wrap gap-6">
+      <iframe src="/previews/site-header-mobile/" title="Site header mobile, menu fermé" width="390" height="120" class="rounded-xl border border-border bg-surface" data-mockup-iframe-autoheight></iframe>
+      <iframe src="/previews/site-header-mobile-open/" title="Site header mobile, menu ouvert" width="390" height="420" class="rounded-xl border border-border bg-surface" data-mockup-iframe-autoheight></iframe>
+    </div>
+  </section>
+</div>

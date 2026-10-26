@@ -1,0 +1,16 @@
+id: MOCK-020
+title: App nav
+kind: proposals
+status: draft
+app: calisthenics
+area: Navigation
+related_component: null
+implemented_in: null
+states:
+  - desktop, barre latérale, onglet actif
+  - mobile, barre d'onglets, onglet actif
+  - CTA « Nouvelle séance » (latéral / central flottant)
+channels: [web, mobile]
+notes: >
+  Onglet actif en fond foncé (pas seulement en couleur) + aria-current. Sur mobile, le CTA
+  central suit la loi de Fitts : action la plus fréquente, la plus grande, sous le pouce.

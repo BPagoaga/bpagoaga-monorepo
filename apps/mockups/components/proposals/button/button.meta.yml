@@ -1,0 +1,20 @@
+id: MOCK-001
+title: Button
+kind: proposals
+status: draft
+app: shared
+area: Socle UI
+related_component: null
+implemented_in: null
+states:
+  - 6 variantes × 3 tailles
+  - icône gauche / droite
+  - icône seule (aria-label obligatoire)
+  - chargement (aria-busy)
+  - désactivé
+  - rendu en lien (href)
+channels: [web, mobile]
+notes: >
+  Base des boutons pour les deux apps. Cibles : sm 32 px (desktop seulement), md 40 px,
+  lg 48 px (mobile). Le variant accent porte un texte foncé : accent-100 est trop clair
+  pour du blanc (contraste < 4.5:1).

@@ -1,0 +1,44 @@
+{#
+  Site header — en-tête du portfolio : nom, ancres de sections, action « Télécharger le CV ».
+  Sous `md`, les liens passent dans un menu déroulant (data-mockup-toggle, démo seulement).
+  Les breakpoints sont de vraies media queries : l'état mobile se démontre dans une
+  <iframe> de largeur fixe (previews/site-header-mobile.html), pas dans une boîte étroite.
+
+  Params :
+    name   — string
+    links  — [{ label, href }]
+    active — href du lien courant
+    open   — bool : force le menu mobile ouvert (previews)
+    underChrome — bool : colle sous la barre du catalogue mockup (top-12) ; faux dans les
+                  previews. Dans la vraie app : top-0.
+#}
+{% from "macros/proposals/button.njk" import button %}
+{% macro siteHeader(name, links, active='', open=false, underChrome=true) %}
+<header class="sticky {{ 'top-12' if underChrome else 'top-0' }} z-30 border-b border-border bg-surface/90 backdrop-blur" data-mockup-scope>
+  <div class="mx-auto flex h-16 max-w-5xl items-center justify-between gap-4 px-4 md:px-6">
+    <a href="#" class="flex items-center gap-2.5">
+      <span class="grid size-9 place-items-center rounded-lg bg-primary-100 font-display text-body-s font-bold text-white" aria-hidden="true">BP</span>
+      <span class="font-display text-title-s">{{ name }}</span>
+    </a>
+    <nav class="hidden items-center gap-1 md:flex" aria-label="Sections">
+      {% for link in links %}
+        <a href="{{ link.href }}" {% if link.href == active %}aria-current="page"{% endif %}
+          class="rounded-md px-3 py-2 text-body-s font-medium text-muted hover:bg-neutral-20 hover:text-foreground aria-[current=page]:text-primary-100">{{ link.label }}</a>
+      {% endfor %}
+    </nav>
+    <div class="flex items-center gap-2">
+      {{ button('Télécharger le CV', 'outline', 'sm', 'download', extraClass='hidden sm:inline-flex') }}
+      {{ button('', 'ghost', 'md', 'bars', ariaLabel='Ouvrir le menu', extraClass='md:hidden', attrs='data-mockup-toggle="site-menu" aria-expanded="' + ('true' if open else 'false') + '"') }}
+    </div>
+  </div>
+  <nav class="{{ '' if open else 'hidden' }} border-t border-border px-4 pb-4 pt-2 md:hidden" data-mockup-panel="site-menu" aria-label="Sections">
+    <ul class="space-y-1">
+      {% for link in links %}
+        <li><a href="{{ link.href }}" {% if link.href == active %}aria-current="page"{% endif %}
+          class="block rounded-lg px-3 py-3 text-body-m font-medium text-neutral-130 hover:bg-neutral-20 aria-[current=page]:bg-primary-10 aria-[current=page]:text-primary-110">{{ link.label }}</a></li>
+      {% endfor %}
+    </ul>
+    {{ button('Télécharger le CV', 'outline', 'md', 'download', extraClass='mt-3 w-full sm:hidden') }}
+  </nav>
+</header>
+{% endmacro %}

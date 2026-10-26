@@ -1,0 +1,14 @@
+id: MOCK-200
+title: Tableau de bord
+status: draft
+app: calisthenics
+area: Performances
+implemented_in: null
+states:
+  - nominal (objectif en cours, indicateurs, volume, records, dernière séance)
+  - premier lancement / aucune donnée (variante v2)
+channels: [web, mobile]
+notes: >
+  Ordre de lecture : ce qu'il faut faire maintenant (prochaine étape), puis où j'en suis
+  (indicateurs), puis le détail. Une seule action accent (« Démarrer la séance ») — sur
+  mobile, c'est le bouton central de la barre d'onglets qui la porte.

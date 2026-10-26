@@ -1,0 +1,18 @@
+---
+layout: bare-layout.njk
+title: Séance en cours — mobile
+eleventyExcludeFromCollections: true
+---
+{% from "macros/proposals/app-nav.njk" import appNav %}
+{% from "macros/proposals/button.njk" import button %}
+{% from "macros/proposals/set-logger.njk" import setLogger %}
+<div class="space-y-4 px-4 pb-28 pt-4">
+  <header class="flex items-center justify-between">
+    {{ button('', 'ghost', 'md', 'chevron-left', ariaLabel='Retour au journal') }}
+    <div class="text-center"><p class="text-body-xs text-muted">Séance Tirage</p><p class="font-mono text-body-s font-semibold">24:18</p></div>
+    {{ button('Terminer', 'ghost', 'sm') }}
+  </header>
+  {{ setLogger('Tractions strictes', 1, 12, '0', [], '') }}
+  <p class="text-center text-body-xs text-muted">Suivant : Tractions explosives · 3 × 5</p>
+</div>
+{{ appNav('journal', false) }}

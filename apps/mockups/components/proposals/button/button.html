@@ -1,0 +1,26 @@
+---
+layout: layout.njk
+title: Button
+---
+{% from "macros/proposals/button.njk" import button %}
+<div class="mx-auto max-w-5xl space-y-10 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">Button</h1>
+    <p class="mt-1 max-w-3xl text-body-s text-muted">Bouton du design system. Une seule action <code>primary</code> par écran ; <code>accent</code> réservé à l'action principale de l'app Calisthenics.</p>
+  </header>
+  {% for v in ['primary', 'accent', 'secondary', 'outline', 'ghost', 'danger'] %}
+    <section class="space-y-3">
+      <h2 class="text-title-m">{{ v }}</h2>
+      <div class="flex flex-wrap items-center gap-3">
+        {{ button('Enregistrer', v, 'sm') }}{{ button('Enregistrer', v) }}{{ button('Enregistrer', v, 'lg') }}
+        {{ button('Avec icône', v, 'md', 'plus') }}{{ button('Suivant', v, 'md', iconRight='arrow-right') }}
+        {{ button('', v, 'md', 'pen', ariaLabel='Modifier') }}
+        {{ button('Chargement', v, 'md', loading=true) }}{{ button('Désactivé', v, 'md', disabled=true) }}
+      </div>
+    </section>
+  {% endfor %}
+  <section class="space-y-3">
+    <h2 class="text-title-m">Lien (href)</h2>
+    <div class="flex flex-wrap items-center gap-3">{{ button('Voir le CV', 'primary', 'md', 'file-lines', href='#') }}{{ button('Me contacter', 'outline', 'md', 'envelope', href='#') }}</div>
+  </section>
+</div>

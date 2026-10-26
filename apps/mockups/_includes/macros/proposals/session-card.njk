@@ -1,0 +1,57 @@
+{#
+  Session card — une séance du journal : en-tête (date, type, durée, ressenti), puis les
+  exercices avec leurs séries. Les records battus pendant la séance sont signalés.
+
+  Params (objet `session`) :
+    weekday, day, date, title, duration — strings (« Mar », « 21 », « mardi 21 octobre »)
+    rpe     — 1..10 (effort perçu)
+    feeling — great | ok | hard
+    exercises — [{ name, sets: [string], pr: bool }] : séries déjà formatées (« 8 », « 12 kg × 5 », « 20 s »)
+    notes   — string (optionnel)
+  collapsed — bool : n'affiche que l'en-tête et un résumé (liste longue)
+#}
+{% macro sessionCard(session, collapsed=false) %}
+{% set feelings = { 'great': { icon: 'face-grin-stars', label: 'Excellente', cls: 'text-green-110' }, 'ok': { icon: 'face-smile', label: 'Correcte', cls: 'text-primary-100' }, 'hard': { icon: 'face-tired', label: 'Difficile', cls: 'text-orange-120' } } %}
+{% set f = feelings[session.feeling or 'ok'] %}
+{% set setCount = [] %}{% for ex in session.exercises %}{% for s in ex.sets %}{% set noop = setCount.push(s) %}{% endfor %}{% endfor %}
+<article class="rounded-2xl border border-border bg-surface" data-mockup-scope>
+  <header class="flex items-start gap-3 p-4 sm:p-5">
+    <div class="grid size-12 shrink-0 place-items-center rounded-xl bg-neutral-20 text-center leading-none">
+      <span class="text-body-xs uppercase text-muted">{{ session.weekday }}</span>
+      <span class="font-display text-title-s">{{ session.day }}</span>
+    </div>
+    <div class="min-w-0 flex-1">
+      <h3 class="truncate text-title-s">{{ session.title }}</h3>
+      <p class="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-body-xs text-muted">
+        <span><i class="far fa-clock" aria-hidden="true"></i> {{ session.duration }}</span>
+        <span>{{ session.exercises.length }} exercices · {{ setCount.length }} séries</span>
+        <span>RPE {{ session.rpe }}/10</span>
+        <span class="{{ f.cls }}"><i class="fas fa-{{ f.icon }}" aria-hidden="true"></i> {{ f.label }}</span>
+      </p>
+    </div>
+    {% if collapsed %}
+      <button type="button" class="rounded-md p-2 text-subtle hover:bg-neutral-20" data-mockup-toggle="session-detail" aria-expanded="false" aria-label="Afficher le détail de la séance"><i class="fas fa-chevron-down"></i></button>
+    {% else %}
+      <button type="button" class="rounded-md p-2 text-subtle hover:bg-neutral-20" aria-label="Actions sur la séance"><i class="fas fa-ellipsis"></i></button>
+    {% endif %}
+  </header>
+  <div class="{{ 'hidden' if collapsed }} border-t border-border" data-mockup-panel="session-detail">
+    <ul class="divide-y divide-border">
+      {% for ex in session.exercises %}
+        <li class="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:gap-4 sm:px-5">
+          <p class="w-44 shrink-0 text-body-s font-semibold">
+            {{ ex.name }}
+            {% if ex.pr %}<span class="ml-1 inline-flex items-center gap-1 rounded-full bg-accent-10 px-1.5 py-0.5 text-body-xs font-semibold text-accent-140"><i class="fas fa-trophy" aria-hidden="true"></i>Record</span>{% endif %}
+          </p>
+          <ol class="flex flex-wrap gap-1.5" aria-label="Séries">
+            {% for s in ex.sets %}<li class="rounded-md bg-neutral-20 px-2 py-1 font-mono text-body-xs text-neutral-140">{{ s }}</li>{% endfor %}
+          </ol>
+        </li>
+      {% endfor %}
+    </ul>
+    {% if session.notes %}
+      <p class="border-t border-border px-4 py-3 text-body-s italic text-muted sm:px-5"><i class="far fa-note-sticky not-italic" aria-hidden="true"></i> {{ session.notes }}</p>
+    {% endif %}
+  </div>
+</article>
+{% endmacro %}

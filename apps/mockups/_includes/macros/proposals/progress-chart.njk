@@ -1,0 +1,40 @@
+{#
+  Progress chart — histogramme simple (volume hebdomadaire, max de reps…), rendu en CSS.
+  Les hauteurs de barres sont des données (style="height: x%"), pas des valeurs de design :
+  c'est le seul style inline toléré dans les maquettes.
+
+  Params :
+    title, subtitle — strings
+    points — [{ label, value }]
+    unit   — string (suffixe des valeurs)
+    max    — number (échelle ; défaut : plus grande valeur)
+    empty  — bool : état « pas encore de données »
+#}
+{% macro progressChart(title, points, unit='', subtitle='', max=0, empty=false) %}
+{% set top = max %}
+{% if not top %}{% for p in points %}{% if p.value > top %}{% set top = p.value %}{% endif %}{% endfor %}{% endif %}
+<section class="rounded-2xl border border-border bg-surface p-5" aria-label="{{ title }}">
+  <header class="flex items-baseline justify-between gap-3">
+    <h3 class="text-title-s">{{ title }}</h3>
+    {% if subtitle %}<p class="text-body-xs text-subtle">{{ subtitle }}</p>{% endif %}
+  </header>
+  {% if empty or not points.length %}
+    <div class="mt-4 grid h-44 place-items-center rounded-xl border border-dashed border-border text-center">
+      <div>
+        <i class="fas fa-chart-column text-title-l text-neutral-50" aria-hidden="true"></i>
+        <p class="mt-2 text-body-s text-muted">Pas encore de données.<br />Enregistre une séance pour voir ta progression.</p>
+      </div>
+    </div>
+  {% else %}
+    <ol class="mt-4 flex h-44 items-end gap-2">
+      {% for p in points %}
+        <li class="group flex h-full flex-1 flex-col items-center justify-end gap-1.5">
+          <span class="text-body-xs font-semibold {{ 'text-foreground' if loop.last else 'text-subtle' }}">{{ p.value }}{{ unit }}</span>
+          <span class="w-full max-w-10 rounded-t-md {{ 'bg-accent-100' if loop.last else 'bg-primary-30 group-hover:bg-primary-50' }}" style="height: {{ (p.value / top * 100) | round }}%"></span>
+          <span class="text-body-xs text-subtle">{{ p.label }}</span>
+        </li>
+      {% endfor %}
+    </ol>
+  {% endif %}
+</section>
+{% endmacro %}

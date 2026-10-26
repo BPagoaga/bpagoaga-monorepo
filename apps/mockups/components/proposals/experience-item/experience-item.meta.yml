@@ -1,0 +1,15 @@
+id: MOCK-011
+title: Experience item
+kind: proposals
+status: draft
+app: portfolio
+area: Parcours
+related_component: null
+implemented_in: null
+states:
+  - poste actuel
+  - poste passé
+  - formation (sans réalisations ni tags)
+  - compact
+  - contenu long
+channels: [web, mobile]

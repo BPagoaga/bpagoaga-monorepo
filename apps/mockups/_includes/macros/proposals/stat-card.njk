@@ -1,0 +1,31 @@
+{#
+  Stat card — indicateur clé (record, volume, régularité) avec tendance.
+
+  Params (objet `stat`) :
+    label, value, unit — strings (value déjà formatée)
+    icon  — nom Font Awesome
+    delta — string (« +2 », « -5 % ») ; trend — up | down | flat
+    caption — contexte de comparaison (« vs. mois dernier »)
+  La couleur de tendance n'est jamais seule : flèche + texte (WCAG 1.4.1).
+#}
+{% macro statCard(stat) %}
+{% set trends = {
+  'up': { cls: 'bg-green-10 text-green-130', icon: 'arrow-trend-up' },
+  'down': { cls: 'bg-red-10 text-red-120', icon: 'arrow-trend-down' },
+  'flat': { cls: 'bg-neutral-20 text-neutral-120', icon: 'minus' }
+} %}
+{% set t = trends[stat.trend or 'flat'] %}
+<article class="rounded-2xl border border-border bg-surface p-5">
+  <div class="flex items-center justify-between gap-3">
+    <p class="text-body-s font-medium text-muted">{{ stat.label }}</p>
+    <span class="grid size-8 place-items-center rounded-lg bg-neutral-20 text-neutral-120" aria-hidden="true"><i class="fas fa-{{ stat.icon }} fa-sm"></i></span>
+  </div>
+  <p class="mt-3 font-display text-title-xl">{{ stat.value }}<span class="ml-1 font-sans text-body-m font-medium text-muted">{{ stat.unit }}</span></p>
+  {% if stat.delta %}
+    <p class="mt-2 flex items-center gap-2 text-body-xs text-muted">
+      <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-semibold {{ t.cls }}"><i class="fas fa-{{ t.icon }}" aria-hidden="true"></i>{{ stat.delta }}</span>
+      {{ stat.caption }}
+    </p>
+  {% endif %}
+</article>
+{% endmacro %}

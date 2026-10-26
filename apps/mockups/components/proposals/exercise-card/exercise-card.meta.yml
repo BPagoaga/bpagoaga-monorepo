@@ -1,0 +1,16 @@
+id: MOCK-023
+title: Exercise card
+kind: proposals
+status: draft
+app: calisthenics
+area: Tutoriels
+related_component: null
+implemented_in: null
+states:
+  - maîtrisé
+  - en cours
+  - à découvrir
+  - verrouillé (non cliquable, raison affichée)
+  - 5 familles (poussée, tirage, jambes, gainage, figure)
+  - dans une progression / hors progression
+channels: [web, mobile]

@@ -1,0 +1,95 @@
+---
+layout: layout.njk
+title: Design tokens
+---
+{#
+  Vitrine des tokens réels de @bpagoaga/ui (packages/ui/src/theme.css), rendus avec les
+  classes Tailwind qu'ils génèrent. Les classes construites en boucle sont déclarées dans
+  src/tailwind.css (@source inline) : sans ça, Tailwind ne les verrait pas.
+#}
+{% set scales = ['primary', 'accent', 'neutral', 'green', 'orange', 'red', 'blue'] %}
+{% set steps = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150] %}
+{% set semantic = [
+  ['background', 'bg-background', 'neutral-10 · fond de page'],
+  ['surface', 'bg-surface', 'white · cartes, panneaux'],
+  ['surface-muted', 'bg-surface-muted', 'neutral-20 · zones secondaires'],
+  ['border', 'bg-border', 'neutral-30 · bordures'],
+  ['foreground', 'bg-foreground', 'neutral-150 · texte principal'],
+  ['muted', 'bg-muted', 'neutral-110 · texte secondaire'],
+  ['subtle', 'bg-subtle', 'neutral-90 · texte tertiaire, icônes']
+] %}
+{% set type = [
+  ['display', 'font-display', 'Tirer, pousser, tenir.'],
+  ['title-xl', 'font-display', 'Titre de page'],
+  ['title-l', '', 'Titre de section'],
+  ['title-m', '', 'Titre de bloc'],
+  ['title-s', '', 'Titre de carte'],
+  ['body-l', '', 'Texte d’accroche, chapô.'],
+  ['body-m', '', 'Texte courant, taille par défaut.'],
+  ['body-s', '', 'Texte secondaire, libellés.'],
+  ['body-xs', '', 'Métadonnées, légendes.']
+] %}
+<div class="mx-auto max-w-6xl space-y-14 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">Design tokens</h1>
+    <p class="mt-1 max-w-3xl text-body-s text-muted">Tokens réels de <code class="font-mono">@bpagoaga/ui</code> (<code class="font-mono">packages/ui/src/theme.css</code>). La palette Tailwind par défaut est désactivée : seuls ces tokens existent. Échelles de 10 (clair) à 150 (foncé), 100 = teinte de référence.</p>
+  </header>
+
+  <section class="space-y-4">
+    <h2 class="text-title-l">Couleurs</h2>
+    <div class="space-y-3 overflow-x-auto pb-2">
+      {% for scale in scales %}
+        <div class="grid min-w-[760px] grid-cols-[6rem_repeat(15,minmax(0,1fr))] items-center gap-1">
+          <p class="text-body-s font-semibold">{{ scale }}</p>
+          {% for step in steps %}
+            <div class="space-y-1 text-center">
+              <div class="h-10 rounded-md bg-{{ scale }}-{{ step }} {{ 'ring-2 ring-foreground ring-offset-2' if step == 100 }}"></div>
+              <p class="font-mono text-body-xs text-subtle">{{ step }}</p>
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="space-y-4">
+    <h2 class="text-title-l">Alias sémantiques</h2>
+    <p class="max-w-3xl text-body-s text-muted">À préférer pour les surfaces et le texte : ils portent l'intention et permettront un thème sombre sans toucher aux composants.</p>
+    <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {% for s in semantic %}
+        <li class="flex items-center gap-3 rounded-xl border border-border bg-surface p-3">
+          <span class="size-10 shrink-0 rounded-lg border border-border {{ s[1] }}"></span>
+          <span class="min-w-0"><span class="block font-mono text-body-s font-semibold">{{ s[0] }}</span><span class="block text-body-xs text-muted">{{ s[2] }}</span></span>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section class="space-y-4">
+    <h2 class="text-title-l">Typographie</h2>
+    <p class="text-body-s text-muted"><code class="font-mono">font-display</code> Space Grotesk · <code class="font-mono">font-sans</code> Inter · <code class="font-mono">font-mono</code> JetBrains Mono</p>
+    <ul class="divide-y divide-border rounded-2xl border border-border bg-surface">
+      {% for t in type %}
+        <li class="grid items-baseline gap-2 px-5 py-4 sm:grid-cols-[9rem_minmax(0,1fr)]">
+          <code class="font-mono text-body-xs text-subtle">text-{{ t[0] }}</code>
+          <p class="text-{{ t[0] }} {{ t[1] }} truncate">{{ t[2] }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section class="grid gap-10 lg:grid-cols-2">
+    <div class="space-y-4">
+      <h2 class="text-title-l">Élévations</h2>
+      <div class="grid grid-cols-3 gap-4 rounded-2xl bg-background p-4">
+        {% for e in [1, 2, 3] %}<div class="grid h-24 place-items-center rounded-xl bg-surface font-mono text-body-xs text-muted shadow-elevation-{{ e }}">elevation-{{ e }}</div>{% endfor %}
+      </div>
+    </div>
+    <div class="space-y-4">
+      <h2 class="text-title-l">Rayons</h2>
+      <div class="grid grid-cols-3 gap-4 sm:grid-cols-6">
+        {% for r in ['sm', 'md', 'lg', 'xl', '2xl', '3xl'] %}<div class="space-y-1 text-center"><div class="h-16 border-2 border-primary-100 bg-primary-10 rounded-{{ r }}"></div><p class="font-mono text-body-xs text-subtle">{{ r }}</p></div>{% endfor %}
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,67 @@
+{#
+  App nav — navigation principale de l'app Calisthenics.
+  ≥ lg : barre latérale fixe (logo, sections, CTA « Nouvelle séance », profil).
+  < lg : barre d'onglets fixe en bas d'écran (cibles 44 px min.) + CTA central.
+  Vraies media queries : l'état mobile se démontre en <iframe> (previews/app-nav-mobile.html).
+  La page qui l'utilise réserve la place : `lg:pl-64 pb-24 lg:pb-0` sur son contenu.
+  Écart volontaire : la barre latérale est en `top-12` pour passer sous la barre du
+  catalogue mockup — `top-0` dans la vraie app.
+
+  Params :
+    active — dashboard | tutorials | journal | profile
+    underChrome — bool : décale sous la barre du catalogue (faux dans les previews)
+#}
+{% macro appNav(active='dashboard', underChrome=true) %}
+{% set items = [
+  { key: 'dashboard', label: 'Tableau de bord', short: 'Accueil', icon: 'chart-line', href: '/pages/calisthenics-dashboard/' },
+  { key: 'tutorials', label: 'Tutoriels', short: 'Tutoriels', icon: 'graduation-cap', href: '/pages/calisthenics-tutoriels/' },
+  { key: 'journal', label: 'Journal de séances', short: 'Journal', icon: 'list-check', href: '/pages/calisthenics-journal/' },
+  { key: 'profile', label: 'Profil', short: 'Profil', icon: 'user', href: '#' }
+] %}
+<aside class="fixed inset-y-0 left-0 {{ 'top-12' if underChrome else 'top-0' }} z-20 hidden w-64 flex-col border-r border-border bg-surface px-4 py-6 lg:flex" aria-label="Navigation principale">
+  <a href="/pages/calisthenics-dashboard/" class="mb-8 flex items-center gap-2.5 px-2">
+    <span class="grid size-9 place-items-center rounded-lg bg-accent-100 text-neutral-150" aria-hidden="true"><i class="fas fa-person-running"></i></span>
+    <span class="font-display text-title-s">Street<span class="text-accent-110">Lab</span></span>
+  </a>
+  <nav>
+    <ul class="space-y-1">
+      {% for item in items %}
+        <li>
+          <a href="{{ item.href }}" {% if item.key == active %}aria-current="page"{% endif %}
+            class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-body-s font-medium text-muted hover:bg-neutral-20 hover:text-foreground aria-[current=page]:bg-neutral-150 aria-[current=page]:text-white">
+            <i class="fas fa-{{ item.icon }} w-4 text-center" aria-hidden="true"></i>{{ item.label }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+  <a href="/pages/calisthenics-journal/" class="mt-6 inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-accent-100 text-body-s font-semibold text-neutral-150 hover:bg-accent-90">
+    <i class="fas fa-plus" aria-hidden="true"></i>Nouvelle séance
+  </a>
+  <div class="mt-auto flex items-center gap-3 rounded-xl bg-neutral-20 p-3">
+    <span class="grid size-9 place-items-center rounded-full bg-primary-100 text-body-xs font-bold text-white" aria-hidden="true">BP</span>
+    <div class="min-w-0">
+      <p class="truncate text-body-s font-semibold">Bernard</p>
+      <p class="text-body-xs text-muted">Série en cours : 12 jours</p>
+    </div>
+  </div>
+</aside>
+
+<nav class="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden" aria-label="Navigation principale">
+  <ul class="mx-auto grid max-w-md grid-cols-5 items-end px-2">
+    {% for item in items %}
+      {% if loop.index0 == 2 %}
+        <li class="flex justify-center">
+          <a href="/pages/calisthenics-journal/" class="-mt-5 grid size-14 place-items-center rounded-2xl bg-accent-100 text-title-m text-neutral-150 shadow-elevation-2 ring-4 ring-background" aria-label="Nouvelle séance"><i class="fas fa-plus"></i></a>
+        </li>
+      {% endif %}
+      <li>
+        <a href="{{ item.href }}" {% if item.key == active %}aria-current="page"{% endif %}
+          class="flex min-h-14 flex-col items-center justify-center gap-1 text-body-xs font-medium text-subtle aria-[current=page]:text-foreground">
+          <i class="fas fa-{{ item.icon }} text-body-l" aria-hidden="true"></i>{{ item.short }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</nav>
+{% endmacro %}

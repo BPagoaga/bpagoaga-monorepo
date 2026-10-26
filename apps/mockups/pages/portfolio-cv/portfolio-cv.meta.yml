@@ -1,0 +1,16 @@
+id: MOCK-100
+title: CV en ligne
+status: draft
+app: portfolio
+area: Accueil
+implemented_in: null
+states:
+  - une page (hero, parcours, compétences, projets, contact)
+  - deux colonnes (variante v2, format CV classique)
+  - mobile (menu repliable, hero sans visuel)
+channels: [web, mobile]
+notes: >
+  Contenu fictif (dates en 20XX, entreprises génériques) à remplacer par le vrai parcours.
+  Version une page : une seule action primaire (« Me contacter ») répétée en bas de page en
+  accent. Variante deux colonnes : plus dense, adaptée à une lecture « recruteur » ;
+  à départager.

@@ -1,0 +1,21 @@
+---
+layout: layout.njk
+title: Progression path
+---
+{% from "macros/proposals/progression-path.njk" import progressionPath %}
+<div class="mx-auto max-w-5xl space-y-10 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">Progression path</h1>
+    <p class="mt-1 max-w-3xl text-body-s text-muted">Chemin vers une figure, étape par étape, avec le critère qui débloque la suivante.</p>
+  </header>
+  <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+    <section class="space-y-3">
+      <h2 class="text-title-m">Vertical</h2>
+      {{ progressionPath('Vers le muscle-up', calisthenics.muscleUpPath) }}
+    </section>
+    <section class="min-w-0 space-y-3">
+      <h2 class="text-title-m">Horizontal (défile)</h2>
+      {{ progressionPath('Vers le muscle-up', calisthenics.muscleUpPath, 'horizontal') }}
+    </section>
+  </div>
+</div>

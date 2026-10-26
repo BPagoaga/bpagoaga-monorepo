@@ -1,0 +1,40 @@
+{#
+  Button — proposition de bouton du design system (@bpagoaga/ui n'a pas encore de
+  composant React : ces classes seront reprises telles quelles au portage).
+
+  Params :
+    label     — string (peut être vide pour un bouton icône, fournir alors `ariaLabel`)
+    variant   — primary | accent | secondary | outline | ghost | danger
+    size      — sm | md | lg
+    icon      — nom Font Awesome sans le préfixe fa- (à gauche)
+    iconRight — idem, à droite
+    href      — rend un <a> au lieu d'un <button>
+    disabled, loading — bool
+    ariaLabel, extraClass, attrs — chaînes ajoutées telles quelles (attrs : data-mockup-*)
+#}
+{% macro button(label='', variant='primary', size='md', icon='', iconRight='', href='', disabled=false, loading=false, ariaLabel='', extraClass='', attrs='', type='button') %}
+{% set variants = {
+  'primary': 'bg-primary-100 text-white hover:bg-primary-110 active:bg-primary-120 disabled:bg-primary-40',
+  'accent': 'bg-accent-100 text-neutral-150 hover:bg-accent-90 active:bg-accent-110 disabled:bg-accent-30 disabled:text-neutral-90',
+  'secondary': 'bg-neutral-20 text-neutral-140 hover:bg-neutral-30 active:bg-neutral-40 disabled:bg-neutral-20 disabled:text-neutral-60',
+  'outline': 'border border-primary-100 bg-surface text-primary-100 hover:bg-primary-10 active:bg-primary-20 disabled:border-primary-40 disabled:text-primary-40 disabled:bg-surface',
+  'ghost': 'bg-transparent text-neutral-130 hover:bg-neutral-20 active:bg-neutral-30 disabled:text-neutral-60 disabled:bg-transparent',
+  'danger': 'bg-red-100 text-white hover:bg-red-110 active:bg-red-120 disabled:bg-red-40'
+} %}
+{% set sizes = {
+  'sm': 'h-8 gap-1.5 rounded-md px-3 text-body-xs font-semibold',
+  'md': 'h-10 gap-2 rounded-lg px-4 text-body-s font-semibold',
+  'lg': 'h-12 gap-2 rounded-xl px-5 text-body-m font-semibold'
+} %}
+{% set iconOnly = not label %}
+{% set cls = 'inline-flex shrink-0 items-center justify-center whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-100 disabled:cursor-not-allowed ' + variants[variant] + ' ' + sizes[size] + (' aspect-square px-0!' if iconOnly else '') + ' ' + extraClass %}
+{% if href %}
+<a href="{{ href }}" class="{{ cls }}" {% if ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %} {{ attrs | safe }}>
+{% else %}
+<button type="{{ type }}" class="{{ cls }}" {% if disabled or loading %}disabled{% endif %} {% if loading %}aria-busy="true"{% endif %} {% if ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %} {{ attrs | safe }}>
+{% endif %}
+  {% if loading %}<i class="fas fa-circle-notch fa-spin" aria-hidden="true"></i>{% elif icon %}<i class="fas fa-{{ icon }}" aria-hidden="true"></i>{% endif %}
+  {% if label %}<span>{{ label }}</span>{% endif %}
+  {% if iconRight %}<i class="fas fa-{{ iconRight }}" aria-hidden="true"></i>{% endif %}
+{% if href %}</a>{% else %}</button>{% endif %}
+{% endmacro %}

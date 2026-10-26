@@ -1,0 +1,234 @@
+---
+layout: layout.njk
+title: Catalogue
+---
+{#
+  Index navigable des mockups. Tout est rendu ici au build depuis _data/catalogue.mjs
+  (une ligne + une fiche par maquette) ; assets/catalogue-index.js ne fait que filtrer,
+  regrouper, chercher et ouvrir les fiches — aucune donnée n'y est saisie.
+#}
+{% set typeLabels = { 'page': 'Page', 'reference': 'Référence', 'proposals': 'Proposition' } %}
+{% set typeStyles = {
+  'page': 'bg-primary-10 text-primary-110',
+  'reference': 'bg-neutral-20 text-neutral-120',
+  'proposals': 'bg-accent-10 text-accent-130'
+} %}
+{% set typeIcons = { 'page': 'fa-file-lines', 'reference': 'fa-cube', 'proposals': 'fa-wand-magic-sparkles' } %}
+{% set appLabels = { 'portfolio': 'Portfolio', 'calisthenics': 'Calisthenics', 'shared': 'Partagé' } %}
+{% set channelLabels = { 'web': 'Web', 'mobile': 'Mobile' } %}
+{% set statusStyles = { 'draft': 'bg-orange-100', 'validated': 'bg-green-100', 'implemented': 'bg-primary-100' } %}
+{% set statusLabels = { 'draft': 'Brouillon', 'validated': 'Validé', 'implemented': 'Implémenté', 'sans statut': 'Sans statut' } %}
+
+{% macro typeBadge(type) %}
+<span class="inline-flex shrink-0 items-center gap-1 rounded-md px-1.5 py-0.5 text-body-xs font-medium {{ typeStyles[type] }}"><i class="fas {{ typeIcons[type] }} fa-xs"></i>{{ typeLabels[type] }}</span>
+{% endmacro %}
+
+{% macro facetGroup(name, label, options, labels={}) %}
+<details class="group/facet" data-facet-group="{{ name }}" open>
+  <summary class="flex cursor-pointer list-none items-center gap-2 rounded-md px-1.5 py-1 text-body-xs font-semibold uppercase tracking-wide text-subtle hover:bg-neutral-20 [&::-webkit-details-marker]:hidden">
+    <i class="fas fa-chevron-right fa-xs transition-transform group-open/facet:rotate-90"></i>
+    <span class="flex-1">{{ label }}</span>
+    <span data-facet-active="{{ name }}" class="hidden rounded-full bg-primary-100 px-1.5 text-body-xs font-semibold normal-case tracking-normal text-white"></span>
+  </summary>
+  <div class="mt-1 space-y-1">
+    {% for o in options %}
+      <label class="flex cursor-pointer items-center gap-2 rounded-md px-1.5 py-1 text-body-s text-neutral-130 hover:bg-neutral-20">
+        <input type="checkbox" class="size-4 rounded border-border accent-primary-100" data-facet="{{ name }}" value="{{ o.value }}" />
+        <span class="flex-1 truncate">{{ labels[o.value] or o.value }}</span>
+        <span class="text-body-xs text-subtle" data-facet-count="{{ name }}:{{ o.value }}">{{ o.count }}</span>
+      </label>
+    {% endfor %}
+  </div>
+</details>
+{% endmacro %}
+
+{% macro refChips(refs) %}
+<ul class="flex flex-wrap gap-1.5">
+  {% for r in refs %}
+    <li><button type="button" data-open="{{ r.key }}" class="inline-flex items-center gap-1 rounded-md border border-border bg-surface px-2 py-1 text-body-xs text-neutral-130 hover:border-primary-100 hover:text-primary-100"><i class="fas {{ typeIcons[r.type] }} fa-xs text-subtle"></i>{{ r.title }}</button></li>
+  {% else %}
+    <li class="text-body-xs text-subtle">—</li>
+  {% endfor %}
+</ul>
+{% endmacro %}
+
+{% set items = catalogue.items %}
+{% set healthCount = [] %}{% for i in items %}{% if i.health.length %}{% set noop = healthCount.push(i) %}{% endif %}{% endfor %}
+
+<div class="mx-auto max-w-[1440px] px-4 py-6 lg:px-6" data-catalogue>
+  <div class="flex flex-col gap-4 pb-5 lg:flex-row lg:items-end lg:justify-between">
+    <div>
+      <h1 class="font-display text-title-xl">Mockups</h1>
+      <p class="text-body-s text-muted">
+        {{ catalogue.pages.length }} pages · {{ catalogue.components.reference.length }} composants référence ·
+        {{ catalogue.components.proposals.length }} propositions — généré depuis les <code class="font-mono text-body-xs">.meta.yml</code> et les imports réels.
+      </p>
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="text-body-xs text-subtle">Regrouper par</span>
+      <div class="inline-flex rounded-lg bg-neutral-20 p-0.5" role="radiogroup" aria-label="Regrouper par">
+        {% for g in [['app', 'App'], ['area', 'Zone'], ['type', 'Type'], ['recent', 'Récents']] %}
+          <button type="button" data-group-by="{{ g[0] }}" class="rounded-md px-3 py-1 text-body-s text-muted aria-checked:bg-surface aria-checked:text-foreground aria-checked:shadow-elevation-1" role="radio" aria-checked="{{ 'true' if g[0] == 'app' else 'false' }}">{{ g[1] }}</button>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="relative">
+    <i class="fas fa-search pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-subtle"></i>
+    <input
+      type="search"
+      data-search
+      aria-label="Rechercher une maquette"
+      placeholder="Rechercher un titre, un ID (MOCK-020), un état, une note…"
+      class="w-full rounded-xl border border-border bg-surface py-3 pl-10 pr-16 text-body-m shadow-elevation-1 focus:border-primary-100 focus:outline-hidden focus:ring-4 focus:ring-primary-20"
+      autocomplete="off"
+    />
+    <kbd class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 rounded-md border border-border bg-neutral-20 px-1.5 py-0.5 font-mono text-body-xs text-subtle">/</kbd>
+  </div>
+
+  <div class="flex flex-wrap items-center gap-2 py-3">
+    <button type="button" data-preset="type=page" class="rounded-full border border-border bg-surface px-3 py-1 text-body-xs text-neutral-130 hover:border-primary-100">Toutes les pages</button>
+    <button type="button" data-preset="app=portfolio" class="rounded-full border border-border bg-surface px-3 py-1 text-body-xs text-neutral-130 hover:border-primary-100">Portfolio</button>
+    <button type="button" data-preset="app=calisthenics" class="rounded-full border border-border bg-surface px-3 py-1 text-body-xs text-neutral-130 hover:border-primary-100">Calisthenics</button>
+    <button type="button" data-preset="app=shared" class="rounded-full border border-border bg-surface px-3 py-1 text-body-xs text-neutral-130 hover:border-primary-100">Socle partagé</button>
+    {% if healthCount.length %}
+      <button type="button" data-preset="health=1" class="rounded-full border border-orange-40 bg-orange-10 px-3 py-1 text-body-xs text-orange-140 hover:border-orange-100"><i class="fas fa-triangle-exclamation fa-xs"></i> {{ healthCount.length }} à ranger</button>
+    {% endif %}
+    <button type="button" data-reset class="ml-auto hidden text-body-xs text-primary-100 hover:underline">Réinitialiser les filtres</button>
+  </div>
+
+  <div class="grid gap-6 lg:grid-cols-[220px_minmax(0,1fr)]">
+    <aside class="space-y-3 lg:sticky lg:top-16 lg:self-start">
+      {{ facetGroup('type', 'Type', [{ value: 'page', count: catalogue.pages.length }, { value: 'reference', count: catalogue.components.reference.length }, { value: 'proposals', count: catalogue.components.proposals.length }], typeLabels) }}
+      {{ facetGroup('app', 'App', catalogue.facets.app, appLabels) }}
+      {{ facetGroup('area', 'Zone', catalogue.facets.area) }}
+      {{ facetGroup('channel', 'Canal', catalogue.facets.channels, channelLabels) }}
+      {{ facetGroup('status', 'Statut', catalogue.facets.status, statusLabels) }}
+    </aside>
+
+    <div class="min-w-0">
+      <p class="pb-2 text-body-xs text-subtle" data-result-count></p>
+      <div data-groups class="space-y-6"></div>
+      <div data-empty class="hidden rounded-xl border border-dashed border-border p-10 text-center text-body-s text-muted">
+        Aucune maquette ne correspond. <button type="button" data-reset class="text-primary-100 hover:underline">Réinitialiser</button>
+      </div>
+
+      {# Lignes rendues une fois ; le script les répartit dans les groupes. #}
+      <ul class="hidden" data-row-pool>
+        {% for i in items %}
+          <li
+            data-row
+            data-key="{{ i.key }}"
+            data-type="{{ i.type }}"
+            data-app="{{ i.app }}"
+            data-area="{{ i.area }}"
+            data-channel="{{ i.channels | join('|') }}"
+            data-status="{{ i.status or 'sans statut' }}"
+            data-health="{{ '1' if i.health.length else '' }}"
+            data-updated="{{ i.updated }}"
+            data-title="{{ i.title or i.slug }}"
+            data-search="{{ i.id }} {{ i.title }} {{ i.slug }} {{ i.area }} {{ appLabels[i.app] }} {{ i.related_component }} {{ (i.states or []) | join(' ') }} {{ i.notes }}{% for v in i.variants %} {{ v.label }}{% endfor %}"
+            class="group"
+          >
+            <div class="flex items-center gap-3 rounded-lg border border-transparent bg-surface px-3 py-2.5 hover:border-border hover:shadow-elevation-1 group-[.is-open]:border-primary-100">
+              <button type="button" data-open="{{ i.key }}" class="flex min-w-0 flex-1 items-center gap-3 text-left">
+                {{ typeBadge(i.type) }}
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate text-body-m font-medium">{{ i.title or i.slug }}</span>
+                  <span class="block truncate text-body-xs text-subtle">
+                    <span class="font-mono">{{ i.id or '—' }}</span>
+                    · {{ appLabels[i.app] }} · {{ i.area }}
+                    {% if i.variants.length > 1 %} · {{ i.variants.length }} versions{% endif %}
+                    {% if i.type == 'page' and i.uses.length %} · {{ i.uses.length }} composants{% endif %}
+                    {% if i.type != 'page' %} · utilisé dans {{ i.usedBy.length }}{% endif %}
+                  </span>
+                </span>
+              </button>
+              <span class="hidden items-center gap-1 md:flex">
+                {% for c in i.channels %}<span class="rounded-md bg-neutral-20 px-1.5 py-0.5 text-body-xs text-muted">{{ channelLabels[c] }}</span>{% endfor %}
+              </span>
+              {% if i.health.length %}<i class="fas fa-triangle-exclamation text-orange-100" title="{{ i.health | join(' · ') }}"></i>{% endif %}
+              <span class="flex w-24 shrink-0 items-center justify-end gap-1.5 text-body-xs text-subtle" title="Statut : {{ statusLabels[i.status or 'sans statut'] }}">
+                <span class="size-2 rounded-full {{ statusStyles[i.status] or 'bg-neutral-50' }}"></span>{{ i.updated }}
+              </span>
+              <a href="{{ i.url }}" class="shrink-0 rounded-md p-1.5 text-subtle hover:bg-neutral-20 hover:text-primary-100" title="Ouvrir la maquette" aria-label="Ouvrir {{ i.title or i.slug }}"><i class="fas fa-arrow-up-right-from-square"></i></a>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div data-drawer-backdrop class="fixed inset-0 z-40 hidden bg-neutral-150/30 lg:pointer-events-none lg:bg-transparent"></div>
+  <aside data-drawer class="fixed inset-y-0 right-0 z-50 hidden w-full max-w-[480px] overflow-y-auto border-l border-border bg-surface shadow-elevation-3" aria-label="Fiche de la maquette">
+    {% for i in items %}
+      <article data-detail="{{ i.key }}" class="hidden">
+        <header class="sticky top-0 z-10 flex items-start gap-3 border-b border-border bg-surface px-5 py-4">
+          <div class="min-w-0 flex-1 space-y-1">
+            <div class="flex items-center gap-2">{{ typeBadge(i.type) }}<span class="font-mono text-body-xs text-subtle">{{ i.id }}</span></div>
+            <h2 class="text-title-l">{{ i.title or i.slug }}</h2>
+          </div>
+          <button type="button" data-close class="rounded-md p-2 text-muted hover:bg-neutral-20" aria-label="Fermer"><i class="fas fa-xmark"></i></button>
+        </header>
+        <div class="space-y-6 px-5 py-5">
+          <a href="{{ i.url }}" class="flex items-center justify-center gap-2 rounded-lg bg-primary-100 px-3 py-2 text-body-s font-medium text-white hover:bg-primary-110"><i class="fas fa-arrow-up-right-from-square"></i>Ouvrir la maquette</a>
+
+          {% if i.health.length %}
+            <ul class="space-y-1 rounded-lg border border-orange-30 bg-orange-10 p-3 text-body-s text-orange-140">
+              {% for h in i.health %}<li><i class="fas fa-triangle-exclamation fa-xs"></i> {{ h }}</li>{% endfor %}
+            </ul>
+          {% endif %}
+
+          <dl class="grid grid-cols-[110px_1fr] gap-x-3 gap-y-2 text-body-s">
+            <dt class="text-subtle">App</dt><dd>{{ appLabels[i.app] }}</dd>
+            <dt class="text-subtle">Zone</dt><dd>{{ i.area }}</dd>
+            <dt class="text-subtle">Canaux</dt><dd>{% for c in i.channels %}{{ channelLabels[c] }}{% if not loop.last %}, {% endif %}{% else %}—{% endfor %}</dd>
+            <dt class="text-subtle">Statut</dt><dd class="flex items-center gap-1.5"><span class="size-2 rounded-full {{ statusStyles[i.status] or 'bg-neutral-50' }}"></span>{{ statusLabels[i.status or 'sans statut'] }}</dd>
+            {% if i.related_component %}<dt class="text-subtle">Code source</dt><dd class="break-all font-mono text-body-xs text-neutral-130">{{ i.related_component }}</dd>{% endif %}
+            {% if i.implemented_in %}<dt class="text-subtle">Implémenté</dt><dd class="break-all font-mono text-body-xs text-neutral-130">{{ i.implemented_in }}</dd>{% endif %}
+            <dt class="text-subtle">Mis à jour</dt><dd>{{ i.updated }}</dd>
+            <dt class="text-subtle">Dossier</dt><dd class="break-all font-mono text-body-xs text-neutral-130">apps/mockups/{{ i.dir }}</dd>
+          </dl>
+
+          {% if i.variants.length > 1 %}
+            <section class="space-y-2">
+              <h3 class="text-body-xs font-semibold uppercase tracking-wide text-subtle">{{ i.variants.length }} versions</h3>
+              <ul class="divide-y divide-border rounded-lg border border-border">
+                {% for v in i.variants %}
+                  <li><a href="{{ v.url }}" class="flex items-center justify-between gap-2 px-3 py-2 text-body-s hover:bg-neutral-20"><span class="truncate">{{ v.label }}</span>{% if v.isCanonical %}<span class="shrink-0 text-body-xs text-subtle">défaut</span>{% endif %}</a></li>
+                {% endfor %}
+              </ul>
+            </section>
+          {% endif %}
+
+          <section class="space-y-2">
+            <h3 class="text-body-xs font-semibold uppercase tracking-wide text-subtle">{% if i.type == 'page' %}Composants assemblés{% else %}Dépend de{% endif %} ({{ i.usesRefs.length }})</h3>
+            {{ refChips(i.usesRefs) }}
+          </section>
+          {% if i.type != 'page' %}
+            <section class="space-y-2">
+              <h3 class="text-body-xs font-semibold uppercase tracking-wide text-subtle">Utilisé dans ({{ i.usedByRefs.length }})</h3>
+              {{ refChips(i.usedByRefs) }}
+            </section>
+          {% endif %}
+
+          {% if i.states and i.states.length %}
+            <section class="space-y-2">
+              <h3 class="text-body-xs font-semibold uppercase tracking-wide text-subtle">États maquettés ({{ i.states.length }})</h3>
+              <ul class="list-disc space-y-1 pl-5 text-body-s text-neutral-130">{% for s in i.states %}<li>{{ s }}</li>{% endfor %}</ul>
+            </section>
+          {% endif %}
+
+          {% if i.notes %}
+            <section class="space-y-2">
+              <h3 class="text-body-xs font-semibold uppercase tracking-wide text-subtle">Notes</h3>
+              <p class="whitespace-pre-line text-body-s text-neutral-130">{{ i.notes }}</p>
+            </section>
+          {% endif %}
+        </div>
+      </article>
+    {% endfor %}
+  </aside>
+</div>
+<script src="/assets/catalogue-index.js" defer></script>

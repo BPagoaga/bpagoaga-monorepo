@@ -1,0 +1,11 @@
+{# Gabarit sans chrome de catalogue : pour les previews/ embarquées en <iframe> de largeur fixe. #}
+<!doctype html>
+<html lang="fr">
+  <head>
+    {% include "head.njk" %}
+  </head>
+  <body class="bg-background font-sans text-body-m text-foreground">
+    {{ content | safe }}
+    <script src="/assets/mockup-toggle.js" defer></script>
+  </body>
+</html>

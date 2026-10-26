@@ -1,0 +1,17 @@
+id: MOCK-012
+title: Project card
+kind: proposals
+status: draft
+app: portfolio
+area: Projets
+related_component: null
+implemented_in: null
+states:
+  - avec lien + code source
+  - code source seul
+  - sans lien
+  - survol (élévation)
+  - description longue
+channels: [web, mobile]
+notes: >
+  Vignettes en icône en attendant de vraies captures d'écran (format 16:10 à prévoir).

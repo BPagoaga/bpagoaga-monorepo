@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "mockups",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@bpagoaga/mockups", "dev"],
+      "port": 8080
+    },
+    {
+      "name": "portfolio",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@bpagoaga/portfolio", "dev"],
+      "port": 4321
+    },
+    {
+      "name": "calisthenics",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@bpagoaga/calisthenics", "dev"],
+      "port": 5173
+    }
+  ]
+}

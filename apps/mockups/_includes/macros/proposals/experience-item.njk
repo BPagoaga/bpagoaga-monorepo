@@ -1,0 +1,46 @@
+{#
+  Experience item — une entrée de parcours (poste, formation) sur une frise verticale.
+
+  Params (objet `xp`) :
+    role, company, period, location — strings
+    summary    — string
+    highlights — [string] : réalisations concrètes, 3 max conseillé
+    tags       — [string] : stack / compétences
+    current    — bool : poste actuel (pastille pleine + badge)
+  compact — bool : masque summary/highlights (vue condensée)
+  last    — bool : pas de trait sous la dernière entrée
+#}
+{% from "macros/proposals/badge.njk" import badge %}
+{% macro experienceItem(xp, compact=false, last=false) %}
+<li class="relative grid grid-cols-[1.25rem_minmax(0,1fr)] gap-x-4">
+  <div class="relative flex justify-center" aria-hidden="true">
+    <span class="relative z-10 mt-1.5 size-3 rounded-full ring-4 ring-background {{ 'bg-primary-100' if xp.current else 'border-2 border-primary-60 bg-surface' }}"></span>
+    {% if not last %}<span class="absolute top-4 bottom-0 w-px bg-border"></span>{% endif %}
+  </div>
+  <article class="{{ 'pb-6' if compact else 'pb-10' }}">
+    <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+      <h3 class="text-title-s">{{ xp.role }} <span class="font-normal text-muted">· {{ xp.company }}</span></h3>
+      <p class="font-mono text-body-xs text-subtle">{{ xp.period }}</p>
+    </div>
+    <p class="mt-0.5 flex items-center gap-2 text-body-s text-muted">
+      <i class="fas fa-location-dot fa-xs" aria-hidden="true"></i>{{ xp.location }}
+      {% if xp.current %}{{ badge('Poste actuel', 'green', size='sm', dot=true) }}{% endif %}
+    </p>
+    {% if not compact %}
+      <p class="mt-3 max-w-prose text-body-m text-neutral-130">{{ xp.summary }}</p>
+      {% if xp.highlights and xp.highlights.length %}
+        <ul class="mt-3 space-y-1.5">
+          {% for h in xp.highlights %}
+            <li class="flex gap-2 text-body-s text-neutral-130"><i class="fas fa-check mt-1 fa-xs text-primary-100" aria-hidden="true"></i><span>{{ h }}</span></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endif %}
+    {% if xp.tags and xp.tags.length %}
+      <ul class="mt-3 flex flex-wrap gap-1.5" aria-label="Technologies">
+        {% for t in xp.tags %}<li>{{ badge(t, 'neutral', size='sm') }}</li>{% endfor %}
+      </ul>
+    {% endif %}
+  </article>
+</li>
+{% endmacro %}

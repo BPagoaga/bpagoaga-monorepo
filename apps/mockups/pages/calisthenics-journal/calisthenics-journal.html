@@ -1,0 +1,53 @@
+---
+layout: layout.njk
+title: Journal de séances
+---
+{% from "macros/proposals/app-nav.njk" import appNav %}
+{% from "macros/proposals/button.njk" import button %}
+{% from "macros/proposals/session-card.njk" import sessionCard %}
+{% from "macros/proposals/set-logger.njk" import setLogger %}
+{% set c = calisthenics %}
+{{ appNav('journal') }}
+<div class="pb-28 lg:pb-0 lg:pl-64">
+  <div class="mx-auto max-w-6xl px-4 py-6 md:px-8 md:py-8">
+    <header class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <h1 class="font-display text-title-xl">Journal de séances</h1>
+        <p class="mt-1 text-body-m text-muted">11 séances en octobre · 9 h 40 d'entraînement</p>
+      </div>
+      <div class="flex gap-2">
+        {{ button('Filtrer', 'secondary', 'md', 'sliders') }}
+        {{ button('Exporter', 'ghost', 'md', 'file-export') }}
+      </div>
+    </header>
+
+    <div class="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1fr)_380px]">
+      <section class="space-y-6" aria-labelledby="history-title">
+        <h2 id="history-title" class="sr-only">Historique</h2>
+        <div>
+          <h3 class="mb-3 text-body-s font-semibold uppercase tracking-wide text-subtle">Cette semaine</h3>
+          <div class="space-y-3">{{ sessionCard(c.sessions[0]) }}{{ sessionCard(c.sessions[1], true) }}</div>
+        </div>
+        <div>
+          <h3 class="mb-3 text-body-s font-semibold uppercase tracking-wide text-subtle">Semaine dernière</h3>
+          <div class="space-y-3">{{ sessionCard(c.sessions[2], true) }}</div>
+        </div>
+        <div class="text-center">{{ button('Charger les séances précédentes', 'ghost', 'md', 'clock-rotate-left') }}</div>
+      </section>
+
+      {# Séance en cours : colonne collante sur grand écran ; sur mobile, c'est un écran dédié (variante v2). #}
+      <aside class="space-y-3 xl:sticky xl:top-20 xl:self-start" aria-label="Séance en cours">
+        <div class="flex items-center justify-between">
+          <h2 class="text-title-s">Séance en cours <span class="font-normal text-muted">· Tirage</span></h2>
+          <p class="font-mono text-body-s text-muted">24:18</p>
+        </div>
+        {{ setLogger('Tractions strictes', 3, 8, '0', ['12', '10'], '1:24') }}
+        <ol class="space-y-1.5 text-body-s" aria-label="Exercices restants">
+          <li class="flex items-center gap-2 rounded-lg bg-surface px-3 py-2 text-subtle"><i class="far fa-circle" aria-hidden="true"></i>Tractions explosives · 3 × 5</li>
+          <li class="flex items-center gap-2 rounded-lg bg-surface px-3 py-2 text-subtle"><i class="far fa-circle" aria-hidden="true"></i>L-sit · 3 × 20 s</li>
+        </ol>
+        {{ button('Terminer la séance', 'ghost', 'md', 'flag-checkered', extraClass='w-full') }}
+      </aside>
+    </div>
+  </div>
+</div>

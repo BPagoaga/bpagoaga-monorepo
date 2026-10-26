@@ -1,0 +1,19 @@
+---
+layout: layout.njk
+title: Session card
+---
+{% from "macros/proposals/session-card.njk" import sessionCard %}
+<div class="mx-auto max-w-3xl space-y-10 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">Session card</h1>
+    <p class="mt-1 text-body-s text-muted">Une séance du journal. Les records battus sont signalés au niveau de l'exercice.</p>
+  </header>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Dépliée — avec record et note</h2>
+    {{ sessionCard(calisthenics.sessions[0]) }}
+  </section>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Repliée (cliquer le chevron)</h2>
+    <div class="space-y-3">{{ sessionCard(calisthenics.sessions[1], true) }}{{ sessionCard(calisthenics.sessions[2], true) }}</div>
+  </section>
+</div>

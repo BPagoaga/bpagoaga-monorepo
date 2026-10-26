@@ -1,0 +1,87 @@
+---
+layout: layout.njk
+title: CV en ligne — une page
+---
+{% from "macros/proposals/site-header.njk" import siteHeader %}
+{% from "macros/proposals/button.njk" import button %}
+{% from "macros/proposals/badge.njk" import badge %}
+{% from "macros/proposals/experience-item.njk" import experienceItem %}
+{% from "macros/proposals/project-card.njk" import projectCard %}
+{% set p = portfolio %}
+<div class="bg-surface">
+  {{ siteHeader(p.name, p.links) }}
+
+  {# Hero : qui, quoi, une action principale. #}
+  <section class="border-b border-border">
+    <div class="mx-auto grid max-w-5xl gap-10 px-4 py-16 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:px-6 md:py-24">
+      <div>
+        <p class="flex items-center gap-2 text-body-s font-medium text-green-120"><span class="size-2 rounded-full bg-green-100" aria-hidden="true"></span>{{ p.availability }}</p>
+        <h1 class="mt-4 font-display text-title-xl md:text-display">{{ p.name }}</h1>
+        <p class="mt-2 font-display text-title-m text-primary-100">{{ p.headline }}</p>
+        <p class="mt-5 max-w-xl text-body-l text-muted">{{ p.pitch }}</p>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          {{ button('Me contacter', 'primary', 'lg', 'envelope', href='#contact') }}
+          {{ button('Voir mon parcours', 'ghost', 'lg', iconRight='arrow-down', href='#parcours') }}
+        </div>
+      </div>
+      <div class="hidden size-56 place-items-center rounded-3xl bg-primary-10 md:grid" aria-hidden="true">
+        <span class="font-display text-display text-primary-100">BP</span>
+      </div>
+    </div>
+    <dl class="mx-auto grid max-w-5xl grid-cols-3 divide-x divide-border border-t border-border">
+      {% for h in p.highlights %}
+        <div class="flex flex-col px-4 py-6 text-center md:px-6">
+          <dt class="order-2 text-body-xs text-muted md:text-body-s">{{ h.label }}</dt>
+          <dd class="font-display text-title-l md:text-title-xl">{{ h.value }}</dd>
+        </div>
+      {% endfor %}
+    </dl>
+  </section>
+
+  <div class="bg-background">
+    <section id="parcours" class="scroll-mt-32 mx-auto max-w-5xl px-4 py-16 md:px-6">
+      <h2 class="font-display text-title-l">Parcours</h2>
+      <ol class="mt-8">
+        {% for xp in p.experiences %}{{ experienceItem(xp, last=loop.last) }}{% endfor %}
+      </ol>
+    </section>
+
+    <section id="competences" class="scroll-mt-32 border-y border-border bg-surface">
+      <div class="mx-auto max-w-5xl px-4 py-16 md:px-6">
+        <h2 class="font-display text-title-l">Compétences</h2>
+        <div class="mt-8 grid gap-6 sm:grid-cols-2">
+          {% for group in p.skills %}
+            <div>
+              <h3 class="text-body-s font-semibold uppercase tracking-wide text-subtle">{{ group.group }}</h3>
+              <ul class="mt-3 flex flex-wrap gap-2">
+                {% for s in group.items %}<li>{{ badge(s, 'primary') }}</li>{% endfor %}
+              </ul>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section id="projets" class="scroll-mt-32 mx-auto max-w-5xl px-4 py-16 md:px-6">
+      <h2 class="font-display text-title-l">Projets</h2>
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {% for project in p.projects %}{{ projectCard(project) }}{% endfor %}
+      </div>
+    </section>
+
+    <section id="contact" class="scroll-mt-32 bg-neutral-150 text-white">
+      <div class="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-16 md:flex-row md:items-center md:justify-between md:px-6">
+        <div>
+          <h2 class="font-display text-title-l">Travaillons ensemble</h2>
+          <p class="mt-2 max-w-md text-neutral-40">Une question, un projet, une offre ? Je réponds sous 48 h.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          {{ button('Écrire un e-mail', 'accent', 'lg', 'envelope', href='#') }}
+          {% for s in p.socials %}
+            <a href="{{ s.href }}" class="grid size-12 place-items-center rounded-xl border border-neutral-120 text-title-s text-white hover:bg-neutral-130" aria-label="{{ s.label }}"><i class="fab fa-{{ s.icon }}"></i></a>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

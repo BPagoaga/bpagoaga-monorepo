@@ -1,0 +1,13 @@
+id: MOCK-026
+title: Set logger
+kind: proposals
+status: draft
+app: calisthenics
+area: Journal
+related_component: null
+implemented_in: null
+states: [première série, séries validées, repos en cours, RPE sélectionné]
+channels: [mobile, web]
+notes: >
+  Pensé mobile d'abord (une main, entre deux séries). Le chrono de repos est un role=timer ;
+  à l'implémentation, prévoir une vibration / notification de fin de repos.

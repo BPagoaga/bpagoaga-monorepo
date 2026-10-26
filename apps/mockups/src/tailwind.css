@@ -1,0 +1,31 @@
+/*
+  Mockups consume the real design system directly from @bpagoaga/ui — the same
+  stylesheet the apps import. There is no copy of the @theme block here: if a token
+  changes upstream, it changes here too on the next build, with nothing to re-sync.
+*/
+@layer vendor;
+@import '@fortawesome/fontawesome-free/css/all.css' layer(vendor);
+@import '@bpagoaga/ui/styles.css';
+
+/* Scan every mockup template for utility classes — components, pages and includes alike. */
+@source '../components/**/*.{html,njk}';
+@source '../pages/**/*.{html,njk}';
+@source '../previews/**/*.{html,njk}';
+@source '../_includes/**/*.njk';
+@source '../index.html';
+/* Catalogue index: group headers are built in JS. */
+@source '../assets/catalogue-index.js';
+
+/* Design tokens page: swatches are generated from loops, so their class names never appear literally. */
+@source inline("bg-{primary,accent,neutral,green,orange,red,blue}-{10,20,30,40,50,60,70,80,90,100,110,120,130,140,150}");
+@source inline("shadow-elevation-{1,2,3}");
+@source inline("rounded-{sm,md,lg,xl,2xl,3xl}");
+@source inline("text-{display,title-xl,title-l,title-m,title-s,body-l,body-m,body-s,body-xs}");
+
+/* mockup-only chrome: the "non-functional" badge. Never part of a component's own markup. */
+.mockup-frame-badge {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  z-index: 50;
+}

@@ -1,0 +1,22 @@
+---
+layout: layout.njk
+title: Badge
+---
+{% from "macros/proposals/badge.njk" import badge %}
+<div class="mx-auto max-w-5xl space-y-10 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">Badge</h1>
+    <p class="mt-1 max-w-3xl text-body-s text-muted">Étiquette courte : technologie (portfolio), famille d'exercice ou statut (calisthenics). Jamais cliquable.</p>
+  </header>
+  {% for size in ['md', 'sm'] %}
+    <section class="space-y-3">
+      <h2 class="text-title-m">Taille {{ size }}</h2>
+      <div class="flex flex-wrap items-center gap-2">
+        {% for tone in ['neutral', 'primary', 'accent', 'green', 'orange', 'red', 'blue'] %}{{ badge(tone, tone, size=size) }}{% endfor %}
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        {{ badge('Poussée', 'primary', 'hand', size) }}{{ badge('Maîtrisé', 'green', 'check', size) }}{{ badge('En cours', 'orange', 'spinner', size) }}{{ badge('Poste actuel', 'green', size=size, dot=true) }}
+      </div>
+    </section>
+  {% endfor %}
+</div>

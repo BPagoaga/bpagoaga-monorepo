@@ -1,0 +1,18 @@
+---
+layout: layout.njk
+title: Stat card
+---
+{% from "macros/proposals/stat-card.njk" import statCard %}
+<div class="mx-auto max-w-5xl space-y-10 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">Stat card</h1>
+    <p class="mt-1 text-body-s text-muted">Indicateur clé avec tendance (hausse, baisse, stable). La tendance est toujours flèche + texte, jamais la couleur seule.</p>
+  </header>
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {% for s in calisthenics.stats %}{{ statCard(s) }}{% endfor %}
+  </div>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Sans comparaison (premier mois)</h2>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{{ statCard({ label: 'Tractions max', value: '6', unit: 'reps', icon: 'arrows-down-to-line' }) }}</div>
+  </section>
+</div>

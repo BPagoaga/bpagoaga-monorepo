@@ -1,0 +1,23 @@
+---
+layout: layout.njk
+title: Exercise card
+---
+{% from "macros/proposals/exercise-card.njk" import exerciseCard %}
+<div class="mx-auto max-w-5xl space-y-10 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">Exercise card</h1>
+    <p class="mt-1 max-w-3xl text-body-s text-muted">Tutoriel d'exercice : famille, statut, niveau sur 5, objectif de validation et étape dans sa progression.</p>
+  </header>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Statuts — maîtrisé, en cours, à découvrir, verrouillé</h2>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {{ exerciseCard(calisthenics.exercises[2]) }}{{ exerciseCard(calisthenics.exercises[3]) }}{{ exerciseCard(calisthenics.exercises[11]) }}{{ exerciseCard(calisthenics.exercises[4]) }}
+    </div>
+  </section>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Familles — hors progression (durée au lieu de l'étape)</h2>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {{ exerciseCard(calisthenics.exercises[6]) }}{{ exerciseCard(calisthenics.exercises[8]) }}{{ exerciseCard(calisthenics.exercises[9]) }}{{ exerciseCard(calisthenics.exercises[10]) }}
+    </div>
+  </section>
+</div>

@@ -1,0 +1,28 @@
+# dependencies
+node_modules
+
+# build outputs
+dist
+.astro
+*.tsbuildinfo
+
+# turbo
+.turbo
+
+# env
+.env
+.env*.local
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# misc
+.DS_Store
+.idea
+.vscode/*
+!.vscode/extensions.json
+
+# AI agent worktrees
+.claude/worktrees/

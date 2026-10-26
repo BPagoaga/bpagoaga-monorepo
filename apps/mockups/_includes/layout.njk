@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr" class="[scrollbar-gutter:stable]">
+  <head>
+    {% include "head.njk" %}
+  </head>
+  <body class="bg-background font-sans text-body-m text-foreground">
+    {# Résout le composant/la page courant(e) depuis le catalogue en comparant page.url aux
+       `variants[].url` — via .push() sur un tableau plutôt qu'un {% set %}, dont la
+       ré-affectation ne survit pas à la portée du for (limite de Nunjucks). #}
+    {% set matches = [] %}
+    {% for collection in [catalogue.pages, catalogue.components.reference, catalogue.components.proposals] %}
+      {% for item in collection %}
+        {% for variant in item.variants %}
+          {% if variant.url == page.url %}{% set noop = matches.push(item) %}{% endif %}
+        {% endfor %}
+      {% endfor %}
+    {% endfor %}
+    {% set current = matches[0] %}
+    {% set appLabels = { 'portfolio': 'Portfolio', 'calisthenics': 'Calisthenics', 'shared': 'Partagé' } %}
+    <header class="sticky top-0 z-40 flex h-12 items-center justify-between gap-3 border-b border-border bg-surface px-4 text-body-s">
+      <nav class="flex items-center gap-4" aria-label="Catalogue">
+        <a href="/" class="font-semibold text-primary-100">Catalogue mockups</a>
+        <a href="/#type=page" class="hidden text-muted hover:text-foreground sm:inline">Pages</a>
+        <a href="/#type=proposals,reference" class="hidden text-muted hover:text-foreground sm:inline">Composants</a>
+      </nav>
+      <div class="flex min-w-0 items-center gap-3">
+        {% if current and current.variants.length > 1 %}
+          <label class="flex items-center gap-1.5">
+            <span class="hidden text-muted sm:inline">Version</span>
+            <select
+              onchange="if (this.value) window.location.href = this.value;"
+              class="max-w-32 truncate rounded-md border border-border bg-surface px-2 py-1 text-body-xs sm:max-w-xs"
+              aria-label="Changer de version de la maquette"
+            >
+              {% for variant in current.variants %}
+                <option value="{{ variant.url }}" {% if variant.url == page.url %}selected{% endif %}>
+                  {{ variant.label }}{% if variant.isCanonical %} (défaut){% endif %}
+                </option>
+              {% endfor %}
+            </select>
+          </label>
+        {% endif %}
+        {% if current %}
+          <span class="hidden rounded-full bg-neutral-20 px-2.5 py-1 text-body-xs text-muted md:inline">{{ appLabels[current.app or 'shared'] }}</span>
+          <a
+            href="/#open={{ current.kind or 'page' }}/{{ current.slug }}"
+            class="inline-flex items-center gap-1.5 rounded-full bg-neutral-20 px-3 py-1 font-mono text-body-xs text-muted hover:bg-primary-10 hover:text-primary-110"
+            title="Voir la fiche dans le catalogue"
+          ><i class="fas fa-circle-info"></i>{{ current.id or current.slug }}</a>
+        {% endif %}
+      </div>
+    </header>
+    <main>{{ content | safe }}</main>
+    <span class="mockup-frame-badge rounded-full bg-neutral-150 px-3 py-1 text-body-xs font-semibold text-white shadow-elevation-2">
+      mockup — non fonctionnel
+    </span>
+    <script src="/assets/mockup-toggle.js" defer></script>
+    <script src="/assets/iframe-autoheight.js" defer></script>
+  </body>
+</html>

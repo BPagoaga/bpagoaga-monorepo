@@ -1,0 +1,15 @@
+id: MOCK-202
+title: Journal de séances
+status: draft
+app: calisthenics
+area: Journal
+implemented_in: null
+states:
+  - historique groupé par semaine (dépliée / repliée)
+  - séance en cours en colonne (desktop)
+  - séance en cours plein écran (mobile, variante v2)
+  - repos en cours
+channels: [web, mobile]
+notes: >
+  Sur desktop, la séance en cours vit à côté de l'historique pour comparer avec la séance
+  précédente. Sur mobile, c'est un écran dédié : l'historique y est à un tap.

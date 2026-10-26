@@ -1,0 +1,10 @@
+id: MOCK-021
+title: Stat card
+kind: proposals
+status: draft
+app: calisthenics
+area: Performances
+related_component: null
+implemented_in: null
+states: [hausse, baisse, stable, sans comparaison]
+channels: [web, mobile]

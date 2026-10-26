@@ -1,0 +1,25 @@
+{
+  "name": "bpagoaga",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "check-types": "turbo run check-types",
+    "dev:portfolio": "turbo run dev --filter=@bpagoaga/portfolio",
+    "dev:calisthenics": "turbo run dev --filter=@bpagoaga/calisthenics",
+    "dev:mockups": "pnpm --filter @bpagoaga/mockups dev",
+    "build:mockups": "pnpm --filter @bpagoaga/mockups build",
+    "fmt": "vp fmt",
+    "fmt:check": "vp fmt --check"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.8",
+    "vite-plus": "catalog:"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@12.15.0"
+}

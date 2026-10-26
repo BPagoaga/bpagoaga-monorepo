@@ -1,0 +1,7 @@
+---
+layout: bare-layout.njk
+title: Site header — mobile
+eleventyExcludeFromCollections: true
+---
+{% from "macros/proposals/site-header.njk" import siteHeader %}
+{{ siteHeader(portfolio.name, portfolio.links, '#parcours', false, false) }}

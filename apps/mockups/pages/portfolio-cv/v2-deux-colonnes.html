@@ -1,0 +1,44 @@
+---
+layout: layout.njk
+title: CV en ligne — deux colonnes (format CV classique)
+---
+{% from "macros/proposals/site-header.njk" import siteHeader %}
+{% from "macros/proposals/button.njk" import button %}
+{% from "macros/proposals/badge.njk" import badge %}
+{% from "macros/proposals/experience-item.njk" import experienceItem %}
+{% set p = portfolio %}
+<div class="min-h-screen bg-background">
+  {{ siteHeader(p.name, p.links, '#parcours') }}
+  <div class="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:px-6 lg:grid-cols-[320px_minmax(0,1fr)]">
+    {# Colonne profil : tout ce qu'un recruteur scanne en premier, collant sur desktop. #}
+    <aside class="space-y-6 lg:sticky lg:top-32 lg:self-start">
+      <div class="rounded-2xl border border-border bg-surface p-6">
+        <span class="grid size-20 place-items-center rounded-2xl bg-primary-100 font-display text-title-l text-white" aria-hidden="true">BP</span>
+        <h1 class="mt-4 font-display text-title-l">{{ p.name }}</h1>
+        <p class="mt-1 text-body-s font-medium text-primary-100">{{ p.headline }}</p>
+        <p class="mt-3 text-body-s text-muted">{{ p.pitch }}</p>
+        <ul class="mt-4 space-y-2 text-body-s text-neutral-130">
+          <li><i class="fas fa-location-dot w-5 text-subtle" aria-hidden="true"></i>{{ p.location }}</li>
+          <li><i class="fas fa-circle w-5 text-green-100 fa-xs" aria-hidden="true"></i>{{ p.availability }}</li>
+        </ul>
+        <div class="mt-5 grid gap-2">
+          {{ button('Me contacter', 'primary', 'md', 'envelope', href='#contact') }}
+          {{ button('Télécharger en PDF', 'secondary', 'md', 'download') }}
+        </div>
+      </div>
+      <div class="rounded-2xl border border-border bg-surface p-6">
+        <h2 class="text-title-s">Compétences</h2>
+        {% for group in p.skills %}
+          <h3 class="mt-4 text-body-xs font-semibold uppercase tracking-wide text-subtle">{{ group.group }}</h3>
+          <ul class="mt-2 flex flex-wrap gap-1.5">{% for s in group.items %}<li>{{ badge(s, 'neutral', size='sm') }}</li>{% endfor %}</ul>
+        {% endfor %}
+      </div>
+    </aside>
+    <main id="parcours" class="rounded-2xl border border-border bg-surface p-6 md:p-8">
+      <h2 class="font-display text-title-l">Parcours</h2>
+      <ol class="mt-6">
+        {% for xp in p.experiences %}{{ experienceItem(xp, last=loop.last) }}{% endfor %}
+      </ol>
+    </main>
+  </div>
+</div>

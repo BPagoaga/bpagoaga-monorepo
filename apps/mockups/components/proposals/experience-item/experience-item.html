@@ -1,0 +1,28 @@
+---
+layout: layout.njk
+title: Experience item
+---
+{% from "macros/proposals/experience-item.njk" import experienceItem %}
+{% set longXp = { role: 'Lead développeur front-end et référent accessibilité', company: 'Une entreprise au nom particulièrement long', period: '20XX — 20XX', location: 'Bordeaux · télétravail complet', summary: 'Résumé long pour vérifier le retour à la ligne : pilotage technique d’une équipe de cinq personnes, définition de la stratégie de tests, accompagnement des designers sur le design system et mise en place des audits RGAA trimestriels.', highlights: ['Une réalisation', 'Une autre réalisation', 'Une troisième, nettement plus longue que les autres pour voir comment la ligne se comporte sur deux lignes.'], tags: ['React', 'TypeScript', 'Accessibilité', 'Storybook', 'Playwright', 'CI/CD', 'Mentorat'] } %}
+<div class="mx-auto max-w-3xl space-y-10 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">Experience item</h1>
+    <p class="mt-1 text-body-s text-muted">Entrée de la frise « Parcours ». Les réalisations sont limitées à 3 pour rester lisibles en 10 secondes.</p>
+  </header>
+  <section class="space-y-4">
+    <h2 class="text-title-m">Frise complète</h2>
+    <ol>
+      {% for xp in portfolio.experiences %}{{ experienceItem(xp, last=loop.last) }}{% endfor %}
+    </ol>
+  </section>
+  <section class="space-y-4">
+    <h2 class="text-title-m">Compacte</h2>
+    <ol>
+      {% for xp in portfolio.experiences %}{{ experienceItem(xp, compact=true, last=loop.last) }}{% endfor %}
+    </ol>
+  </section>
+  <section class="space-y-4">
+    <h2 class="text-title-m">Contenu long</h2>
+    <ol>{{ experienceItem(longXp, last=true) }}</ol>
+  </section>
+</div>

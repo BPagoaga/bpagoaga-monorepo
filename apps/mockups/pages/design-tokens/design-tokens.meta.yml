@@ -1,0 +1,12 @@
+id: MOCK-000
+title: Design tokens
+status: validated
+app: shared
+area: Socle UI
+related_component: packages/ui/src/theme.css
+implemented_in: packages/ui/src/theme.css
+states: [couleurs, alias sémantiques, typographie, élévations, rayons]
+channels: [web]
+notes: >
+  Rendu des tokens réels (pas une copie) : toute modification de theme.css apparaît ici
+  au prochain build. Pas encore de thème sombre : les alias sémantiques sont prévus pour.

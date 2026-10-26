@@ -1,0 +1,31 @@
+{#
+  Project card — projet personnel ou professionnel mis en avant sur le portfolio.
+
+  Params (objet `project`) :
+    title, description — strings
+    icon  — nom Font Awesome (vignette, en attendant de vraies captures)
+    tone  — primary | accent | green | blue : couleur de la vignette
+    tags  — [string]
+    href  — lien vers le projet (optionnel) ; repo — lien vers le code (optionnel)
+#}
+{% from "macros/proposals/badge.njk" import badge %}
+{% macro projectCard(project) %}
+{% set tiles = { 'primary': 'bg-primary-10 text-primary-100', 'accent': 'bg-accent-10 text-accent-120', 'green': 'bg-green-10 text-green-110', 'blue': 'bg-blue-10 text-blue-110' } %}
+<article class="group relative flex flex-col rounded-2xl border border-border bg-surface p-5 transition hover:-translate-y-0.5 hover:shadow-elevation-2">
+  <div class="mb-4 grid size-12 place-items-center rounded-xl {{ tiles[project.tone or 'primary'] }}" aria-hidden="true">
+    <i class="fas fa-{{ project.icon }} text-title-m"></i>
+  </div>
+  <h3 class="text-title-s">
+    {% if project.href %}<a href="{{ project.href }}" class="after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none">{{ project.title }}</a>{% else %}{{ project.title }}{% endif %}
+  </h3>
+  <p class="mt-2 flex-1 text-body-s text-muted">{{ project.description }}</p>
+  <div class="mt-4 flex items-end justify-between gap-3">
+    <ul class="flex flex-wrap gap-1.5" aria-label="Technologies">
+      {% for t in project.tags %}<li>{{ badge(t, 'neutral', size='sm') }}</li>{% endfor %}
+    </ul>
+    {% if project.repo %}
+      <a href="{{ project.repo }}" class="relative z-10 shrink-0 rounded-md p-1.5 text-subtle hover:bg-neutral-20 hover:text-foreground" aria-label="Code source de {{ project.title }}"><i class="fab fa-github"></i></a>
+    {% endif %}
+  </div>
+</article>
+{% endmacro %}

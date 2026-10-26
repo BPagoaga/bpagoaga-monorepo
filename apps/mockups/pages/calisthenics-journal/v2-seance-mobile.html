@@ -1,0 +1,15 @@
+---
+layout: layout.njk
+title: Journal — séance en cours sur mobile
+---
+{# Les écrans mobiles sont rendus dans des iframes de 390 px : leurs breakpoints sont de vraies media queries. #}
+<div class="mx-auto max-w-6xl space-y-6 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">Séance en cours — mobile</h1>
+    <p class="mt-1 max-w-3xl text-body-s text-muted">Sur téléphone, la saisie de série occupe tout l'écran : une main, gros boutons, la série précédente pré-remplie. À gauche le début de séance, à droite une série lestée pendant le repos.</p>
+  </header>
+  <div class="flex flex-wrap gap-6">
+    <iframe src="/previews/journal-seance-mobile/" title="Séance en cours, mobile, première série" width="390" height="760" class="rounded-[2rem] border-8 border-neutral-150 bg-background"></iframe>
+    <iframe src="/previews/journal-seance-mobile-repos/" title="Séance en cours, mobile, repos" width="390" height="760" class="rounded-[2rem] border-8 border-neutral-150 bg-background"></iframe>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+id: MOCK-002
+title: Badge
+kind: proposals
+status: draft
+app: shared
+area: Socle UI
+related_component: null
+implemented_in: null
+states:
+  - 7 tons × 2 tailles
+  - avec icône
+  - avec pastille
+channels: [web, mobile]
+notes: >
+  Le sens n'est jamais porté par la couleur seule : toujours un libellé, souvent une icône.

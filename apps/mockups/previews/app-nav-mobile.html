@@ -1,0 +1,11 @@
+---
+layout: bare-layout.njk
+title: App nav — Mobile
+eleventyExcludeFromCollections: true
+---
+{% from "macros/proposals/app-nav.njk" import appNav %}
+{{ appNav('dashboard', false) }}
+<div class="min-h-[300px] p-6 lg:pl-72">
+  <div class="h-8 w-48 rounded-lg bg-neutral-30"></div>
+  <div class="mt-4 grid gap-3 sm:grid-cols-2"><div class="h-24 rounded-2xl bg-neutral-20"></div><div class="h-24 rounded-2xl bg-neutral-20"></div></div>
+</div>

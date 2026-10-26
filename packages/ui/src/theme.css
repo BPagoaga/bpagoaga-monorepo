@@ -1,0 +1,188 @@
+/*
+  @bpagoaga/ui — design tokens (Tailwind CSS v4 `@theme`).
+
+  Single source of truth for colors, typography, radii and shadows, consumed as-is by
+  every app (portfolio, calisthenics) and by the mockups. Never copy these values
+  elsewhere: import this file (or `styles.css`, which includes it).
+
+  Colour scales go from 10 (lightest) to 150 (darkest), 100 being the reference shade.
+  Tailwind's default palette is reset on purpose: only these tokens exist, so a raw
+  `bg-blue-500` silently produces nothing instead of drifting away from the system.
+*/
+@theme {
+  --color-*: initial;
+  --color-white: #fff;
+  --color-black: #000;
+
+  /* primary */
+  --color-primary-10: oklch(97.5% 0.024 268);
+  --color-primary-20: oklch(91.2% 0.044 268);
+  --color-primary-30: oklch(85.7% 0.063 268);
+  --color-primary-40: oklch(80.6% 0.083 268);
+  --color-primary-50: oklch(75.6% 0.102 268);
+  --color-primary-60: oklch(70.7% 0.122 268);
+  --color-primary-70: oklch(65.9% 0.141 268);
+  --color-primary-80: oklch(61.2% 0.161 268);
+  --color-primary-90: oklch(56.6% 0.18 268);
+  --color-primary-100: oklch(52% 0.2 268);
+  --color-primary-110: oklch(45.6% 0.18 268);
+  --color-primary-120: oklch(39.2% 0.16 268);
+  --color-primary-130: oklch(32.8% 0.14 268);
+  --color-primary-140: oklch(26.4% 0.12 268);
+  --color-primary-150: oklch(20% 0.1 268);
+
+  /* accent */
+  --color-accent-10: oklch(97.5% 0.022 42);
+  --color-accent-20: oklch(93.7% 0.039 42);
+  --color-accent-30: oklch(90.4% 0.057 42);
+  --color-accent-40: oklch(87.3% 0.074 42);
+  --color-accent-50: oklch(84.2% 0.092 42);
+  --color-accent-60: oklch(81.3% 0.11 42);
+  --color-accent-70: oklch(78.4% 0.127 42);
+  --color-accent-80: oklch(75.6% 0.145 42);
+  --color-accent-90: oklch(72.8% 0.162 42);
+  --color-accent-100: oklch(70% 0.18 42);
+  --color-accent-110: oklch(60% 0.162 42);
+  --color-accent-120: oklch(50% 0.144 42);
+  --color-accent-130: oklch(40% 0.126 42);
+  --color-accent-140: oklch(30% 0.108 42);
+  --color-accent-150: oklch(20% 0.09 42);
+
+  /* neutral */
+  --color-neutral-10: oklch(97.5% 0.002 260);
+  --color-neutral-20: oklch(91.8% 0.004 260);
+  --color-neutral-30: oklch(86.8% 0.006 260);
+  --color-neutral-40: oklch(82.1% 0.007 260);
+  --color-neutral-50: oklch(77.5% 0.009 260);
+  --color-neutral-60: oklch(73% 0.011 260);
+  --color-neutral-70: oklch(68.7% 0.013 260);
+  --color-neutral-80: oklch(64.4% 0.014 260);
+  --color-neutral-90: oklch(60.2% 0.016 260);
+  --color-neutral-100: oklch(56% 0.018 260);
+  --color-neutral-110: oklch(48.8% 0.016 260);
+  --color-neutral-120: oklch(41.6% 0.014 260);
+  --color-neutral-130: oklch(34.4% 0.013 260);
+  --color-neutral-140: oklch(27.2% 0.02 260);
+  --color-neutral-150: oklch(20% 0.02 260);
+
+  /* green */
+  --color-green-10: oklch(97.5% 0.018 152);
+  --color-green-20: oklch(92.3% 0.033 152);
+  --color-green-30: oklch(87.8% 0.047 152);
+  --color-green-40: oklch(83.5% 0.062 152);
+  --color-green-50: oklch(79.4% 0.077 152);
+  --color-green-60: oklch(75.4% 0.091 152);
+  --color-green-70: oklch(71.5% 0.106 152);
+  --color-green-80: oklch(67.6% 0.121 152);
+  --color-green-90: oklch(63.8% 0.135 152);
+  --color-green-100: oklch(60% 0.15 152);
+  --color-green-110: oklch(52% 0.135 152);
+  --color-green-120: oklch(44% 0.12 152);
+  --color-green-130: oklch(36% 0.105 152);
+  --color-green-140: oklch(28% 0.09 152);
+  --color-green-150: oklch(20% 0.075 152);
+
+  /* orange */
+  --color-orange-10: oklch(97.5% 0.019 65);
+  --color-orange-20: oklch(94% 0.035 65);
+  --color-orange-30: oklch(90.9% 0.05 65);
+  --color-orange-40: oklch(88% 0.066 65);
+  --color-orange-50: oklch(85.2% 0.082 65);
+  --color-orange-60: oklch(82.5% 0.097 65);
+  --color-orange-70: oklch(79.8% 0.113 65);
+  --color-orange-80: oklch(77.2% 0.129 65);
+  --color-orange-90: oklch(74.6% 0.144 65);
+  --color-orange-100: oklch(72% 0.16 65);
+  --color-orange-110: oklch(61.6% 0.144 65);
+  --color-orange-120: oklch(51.2% 0.128 65);
+  --color-orange-130: oklch(40.8% 0.112 65);
+  --color-orange-140: oklch(30.4% 0.096 65);
+  --color-orange-150: oklch(20% 0.08 65);
+
+  /* red */
+  --color-red-10: oklch(97.5% 0.024 25);
+  --color-red-20: oklch(92% 0.044 25);
+  --color-red-30: oklch(87.3% 0.063 25);
+  --color-red-40: oklch(82.8% 0.083 25);
+  --color-red-50: oklch(78.5% 0.102 25);
+  --color-red-60: oklch(74.2% 0.122 25);
+  --color-red-70: oklch(70.1% 0.141 25);
+  --color-red-80: oklch(66% 0.161 25);
+  --color-red-90: oklch(62% 0.18 25);
+  --color-red-100: oklch(58% 0.2 25);
+  --color-red-110: oklch(50.4% 0.18 25);
+  --color-red-120: oklch(42.8% 0.16 25);
+  --color-red-130: oklch(35.2% 0.14 25);
+  --color-red-140: oklch(27.6% 0.12 25);
+  --color-red-150: oklch(20% 0.1 25);
+
+  /* blue */
+  --color-blue-10: oklch(97.5% 0.017 240);
+  --color-blue-20: oklch(92.3% 0.03 240);
+  --color-blue-30: oklch(87.8% 0.044 240);
+  --color-blue-40: oklch(83.5% 0.058 240);
+  --color-blue-50: oklch(79.4% 0.072 240);
+  --color-blue-60: oklch(75.4% 0.085 240);
+  --color-blue-70: oklch(71.5% 0.099 240);
+  --color-blue-80: oklch(67.6% 0.113 240);
+  --color-blue-90: oklch(63.8% 0.126 240);
+  --color-blue-100: oklch(60% 0.14 240);
+  --color-blue-110: oklch(52% 0.126 240);
+  --color-blue-120: oklch(44% 0.112 240);
+  --color-blue-130: oklch(36% 0.098 240);
+  --color-blue-140: oklch(28% 0.084 240);
+  --color-blue-150: oklch(20% 0.07 240);
+
+  /* semantic aliases — prefer these for surfaces and text */
+  --color-background: var(--color-neutral-10);
+  --color-surface: var(--color-white);
+  --color-surface-muted: var(--color-neutral-20);
+  --color-border: var(--color-neutral-30);
+  --color-foreground: var(--color-neutral-150);
+  --color-muted: var(--color-neutral-110);
+  --color-subtle: var(--color-neutral-90);
+
+  /* typography */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Space Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --text-display: 3.5rem;
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.02em;
+  --text-display--font-weight: 700;
+  --text-title-xl: 2rem;
+  --text-title-xl--line-height: 2.5rem;
+  --text-title-xl--letter-spacing: -0.01em;
+  --text-title-xl--font-weight: 700;
+  --text-title-l: 1.5rem;
+  --text-title-l--line-height: 2rem;
+  --text-title-l--font-weight: 600;
+  --text-title-m: 1.25rem;
+  --text-title-m--line-height: 1.75rem;
+  --text-title-m--font-weight: 600;
+  --text-title-s: 1.125rem;
+  --text-title-s--line-height: 1.5rem;
+  --text-title-s--font-weight: 600;
+  --text-body-l: 1.125rem;
+  --text-body-l--line-height: 1.75rem;
+  --text-body-m: 1rem;
+  --text-body-m--line-height: 1.5rem;
+  --text-body-s: 0.875rem;
+  --text-body-s--line-height: 1.25rem;
+  --text-body-xs: 0.75rem;
+  --text-body-xs--line-height: 1rem;
+
+  /* radii */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+
+  /* elevation */
+  --shadow-elevation-1: 0 1px 2px 0 oklch(20% 0.02 260 / 0.06), 0 1px 3px 0 oklch(20% 0.02 260 / 0.08);
+  --shadow-elevation-2: 0 4px 12px -2px oklch(20% 0.02 260 / 0.1), 0 2px 4px -2px oklch(20% 0.02 260 / 0.06);
+  --shadow-elevation-3: 0 16px 40px -8px oklch(20% 0.02 260 / 0.18), 0 6px 12px -6px oklch(20% 0.02 260 / 0.1);
+}

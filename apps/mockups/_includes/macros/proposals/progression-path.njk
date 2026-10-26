@@ -1,0 +1,41 @@
+{#
+  Progression path — chemin de progression d'une figure (ex. de la traction australienne
+  au muscle-up), étape par étape, avec le critère de passage à l'étape suivante.
+
+  Params :
+    title — string
+    steps — [{ name, criterion, status: done | current | locked }]
+    orientation — vertical (défaut) | horizontal (≥ md seulement, défile sinon)
+#}
+{% macro progressionPath(title, steps, orientation='vertical') %}
+<section aria-label="{{ title }}">
+  <ol class="{{ 'flex gap-3 overflow-x-auto pb-2' if orientation == 'horizontal' else 'space-y-0' }}">
+    {% for step in steps %}
+      {% set done = step.status == 'done' %}
+      {% set current = step.status == 'current' %}
+      {% if orientation == 'horizontal' %}
+        <li class="min-w-44 flex-1 rounded-xl border p-3 {{ 'border-accent-100 bg-accent-10' if current else 'border-border bg-surface' }}" {% if current %}aria-current="step"{% endif %}>
+          <p class="flex items-center gap-2 text-body-xs font-semibold {{ 'text-green-120' if done else ('text-accent-140' if current else 'text-subtle') }}">
+            <i class="fas fa-{{ 'circle-check' if done else ('circle-dot' if current else 'lock') }}" aria-hidden="true"></i>Étape {{ loop.index }}
+          </p>
+          <p class="mt-1 text-body-s font-semibold {{ 'text-subtle' if step.status == 'locked' }}">{{ step.name }}</p>
+          <p class="mt-0.5 text-body-xs text-muted">{{ step.criterion }}</p>
+        </li>
+      {% else %}
+        <li class="grid grid-cols-[2rem_minmax(0,1fr)] gap-x-3" {% if current %}aria-current="step"{% endif %}>
+          <div class="flex flex-col items-center">
+            <span class="grid size-8 shrink-0 place-items-center rounded-full text-body-xs font-bold {{ 'bg-green-100 text-white' if done else ('bg-accent-100 text-neutral-150 ring-4 ring-accent-20' if current else 'bg-neutral-20 text-subtle') }}">
+              {% if done %}<i class="fas fa-check" aria-hidden="true"></i><span class="sr-only">Validée</span>{% else %}{{ loop.index }}{% endif %}
+            </span>
+            {% if not loop.last %}<span class="my-1 w-0.5 flex-1 rounded-full {{ 'bg-green-100' if done else 'bg-neutral-30' }}" aria-hidden="true"></span>{% endif %}
+          </div>
+          <div class="pb-5 pt-1">
+            <p class="text-body-m font-semibold {{ 'text-subtle' if step.status == 'locked' }}">{{ step.name }}{% if current %} <span class="ml-1 rounded-full bg-accent-10 px-2 py-0.5 text-body-xs font-semibold text-accent-140">En cours</span>{% endif %}</p>
+            <p class="text-body-s text-muted">{{ step.criterion }}</p>
+          </div>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ol>
+</section>
+{% endmacro %}

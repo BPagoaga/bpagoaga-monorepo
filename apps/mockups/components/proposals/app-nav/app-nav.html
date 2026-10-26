@@ -1,0 +1,21 @@
+---
+layout: layout.njk
+title: App nav
+---
+<div class="mx-auto max-w-5xl space-y-10 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">App nav</h1>
+    <p class="mt-1 max-w-3xl text-body-s text-muted">Navigation principale de Calisthenics : barre latérale ≥ <code>lg</code>, barre d'onglets en bas d'écran en dessous, avec « Nouvelle séance » toujours à portée de pouce. Chaque état dans une iframe de largeur fixe (vraies media queries).</p>
+  </header>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Desktop (1100 px) — onglet « Tableau de bord »</h2>
+    <div class="overflow-x-auto"><iframe src="/previews/app-nav-desktop/" title="App nav desktop" width="1100" height="560" class="rounded-xl border border-border bg-surface"></iframe></div>
+  </section>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Mobile (390 px) — onglets « Tableau de bord » et « Journal »</h2>
+    <div class="flex flex-wrap gap-6">
+      <iframe src="/previews/app-nav-mobile/" title="App nav mobile, tableau de bord" width="390" height="300" class="rounded-xl border border-border bg-surface"></iframe>
+      <iframe src="/previews/app-nav-mobile-journal/" title="App nav mobile, journal" width="390" height="300" class="rounded-xl border border-border bg-surface"></iframe>
+    </div>
+  </section>
+</div>

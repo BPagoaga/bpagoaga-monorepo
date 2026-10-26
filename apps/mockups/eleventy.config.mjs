@@ -1,3 +1,4 @@
+import { ensureDevCerts } from '@bpagoaga/dev-certs';
 import { parse } from 'yaml';
 
 /**
@@ -20,7 +21,11 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy('components/**/*.{css,js,svg,png,jpg,jpeg,webp,avif}');
   eleventyConfig.addPassthroughCopy('pages/**/*.{css,js,svg,png,jpg,jpeg,webp,avif}');
 
-  eleventyConfig.setServerOptions({ showAllHosts: false });
+  eleventyConfig.setServerOptions({
+    showAllHosts: false,
+    // HTTPS like the other dev servers; the certificate is only created when serving.
+    ...(process.env.ELEVENTY_RUN_MODE === 'serve' && { https: ensureDevCerts() }),
+  });
 
   return {
     dir: {

@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "catalog:",
+    "@bpagoaga/dev-certs": "workspace:*",
     "@tailwindcss/vite": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:",

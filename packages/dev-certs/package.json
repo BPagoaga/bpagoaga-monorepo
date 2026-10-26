@@ -1,0 +1,21 @@
+{
+  "name": "@bpagoaga/dev-certs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Local HTTPS certificates for the dev servers (mkcert when installed, self-signed otherwise).",
+  "bin": {
+    "dev-certs": "./cli.mjs"
+  },
+  "files": [
+    "index.mjs",
+    "index.d.ts",
+    "cli.mjs"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.mjs"
+    }
+  }
+}

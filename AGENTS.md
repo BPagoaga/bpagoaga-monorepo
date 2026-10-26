@@ -4,12 +4,13 @@
 
 Personal monorepo (Turborepo + pnpm workspaces), toolchain [Vite+](https://viteplus.dev) (`vp`).
 
-| Workspace           | Stack                                | Purpose                                                                                                                      |
-| ------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
-| `apps/portfolio`    | Astro 7, Tailwind CSS 4              | Online résumé / portfolio (static site)                                                                                      |
-| `apps/calisthenics` | React 19, Vite+, Tailwind CSS 4      | Calisthenics / street workout app: tutorials, performance recaps, session logs                                               |
-| `apps/mockups`      | Eleventy 3, Nunjucks, Tailwind CSS 4 | In-repo mockups for the other apps, built on the real design tokens — see [`apps/mockups/README.md`](apps/mockups/README.md) |
-| `packages/ui`       | Tailwind CSS 4                       | Design system: tokens (`src/theme.css`) and base styles (`src/styles.css`)                                                   |
+| Workspace            | Stack                                | Purpose                                                                                                                      |
+| -------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| `apps/portfolio`     | Astro 7, Tailwind CSS 4              | Online résumé / portfolio (static site)                                                                                      |
+| `apps/calisthenics`  | React 19, Vite+, Tailwind CSS 4      | Calisthenics / street workout app: tutorials, performance recaps, session logs                                               |
+| `apps/mockups`       | Eleventy 3, Nunjucks, Tailwind CSS 4 | In-repo mockups for the other apps, built on the real design tokens — see [`apps/mockups/README.md`](apps/mockups/README.md) |
+| `packages/ui`        | Tailwind CSS 4, Storybook 10         | Design system: tokens (`src/theme.css`) and base styles (`src/styles.css`), documented in Storybook                          |
+| `packages/dev-certs` | Node                                 | Shared localhost HTTPS certificate for every dev server (`devHttps()` Vite plugin, `dev-certs` CLI)                          |
 
 `portfolio` and `calisthenics` are still empty shells. New screens are designed in
 `apps/mockups` first (see the `mockup` skill), then implemented in the apps.
@@ -52,6 +53,7 @@ All commands run from the repo root with **pnpm** (never npm/yarn — there is o
 - **Build:** `pnpm build` (all, via Turborepo), `pnpm turbo run build --filter=@bpagoaga/calisthenics` (one workspace)
 - **Lint:** `pnpm lint` (`vp lint` / Oxlint in every app; React rules in `apps/calisthenics/vite.config.ts`)
 - **Types:** `pnpm check-types` (`tsc -b` for React, `astro check` for Astro)
+- **Storybook:** `pnpm storybook` (dev, port 6006), `pnpm build:storybook` (static build in `packages/ui/storybook-static`)
 - **Format:** `pnpm fmt` (`vp fmt` / Oxfmt, config in root `vite.config.ts`), `pnpm fmt:check` to verify
 - **Add a dependency:** `pnpm --filter <workspace> add <pkg>`. Shared versions (Vite+, TypeScript, Tailwind) live in the
   `catalog:` of `pnpm-workspace.yaml` — reference them as `"catalog:"`, don't pin them per workspace.
@@ -78,17 +80,30 @@ pnpm turbo run lint build --filter=@bpagoaga/<app>
 **Do not start dev servers (`pnpm dev`, `vp dev`, `astro dev`, tunnels, etc.) on the user's behalf.**
 
 - A background dev server is easy to lose track of and can grow to several GB of RAM if left running unnoticed.
-- Ask the user to start it in their own terminal (`pnpm dev:portfolio`, `pnpm dev:calisthenics`), where they can
-  see and stop it, and to share the result.
+- Ask the user to start it in their own terminal (`pnpm dev:portfolio`, `pnpm dev:calisthenics`, `pnpm storybook`),
+  where they can see and stop it, and to share the result.
 - Exception: `apps/mockups` is a static Eleventy server with no persistent state — starting it briefly to verify a
   mockup change is fine, but **always stop it afterwards**.
+- `astro dev` (Astro 7) detaches when not run in a terminal: stop it with `pnpm --filter @bpagoaga/portfolio astro dev stop`.
+
+### HTTPS
+
+Every dev server runs over HTTPS with one shared certificate, `.certs/localhost.pem` (git-ignored), created on first
+start by `@bpagoaga/dev-certs` — signed by mkcert's local CA when mkcert is installed, self-signed otherwise.
+
+- A new Vite-based app adds `devHttps()` from `@bpagoaga/dev-certs` to its plugins (Astro: `vite.plugins`); another
+  server takes the paths from `ensureDevCerts()` or the `dev-certs` CLI. Never commit a certificate.
+- `pnpm certs --force` regenerates it (e.g. after installing mkcert).
+- Locally, call the servers with `curl -k` (or `--cacert "$(mkcert -CAROOT)/rootCA.pem"`).
 
 ## Design System Rules
 
 - Styling uses **Tailwind utility classes built from `@bpagoaga/ui` tokens only** (`bg-primary-100`, `text-body-s`,
   `shadow-elevation-2`, semantic `bg-surface` / `text-muted`…). Tailwind's default palette is disabled on purpose.
 - Never hardcode a colour, font size or shadow. If a token is missing, add it to `packages/ui/src/theme.css`
-  (and check it on the mockups' _Design tokens_ page) instead of using an arbitrary value.
+  (and check it in Storybook's _Fondations_ stories, read from `theme.css`, or on the mockups' _Design tokens_ page)
+  instead of using an arbitrary value.
+- Every `packages/ui` component gets a story next to it (`*.stories.tsx`, CSF, French titles).
 - Colour scales go from 10 (lightest) to 150 (darkest), 100 being the reference shade. `accent-100` is too light for
   white text: use dark text (`text-neutral-150`) on it.
 - A screen implemented from a mockup reuses the mockup macro's classes as-is.

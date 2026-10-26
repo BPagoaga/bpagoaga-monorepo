@@ -5,19 +5,29 @@
       "name": "mockups",
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["--filter", "@bpagoaga/mockups", "dev"],
-      "port": 8080
+      "port": 8080,
+      "url": "https://localhost:8080"
     },
     {
       "name": "portfolio",
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["--filter", "@bpagoaga/portfolio", "dev"],
-      "port": 4321
+      "port": 4321,
+      "url": "https://localhost:4321"
     },
     {
       "name": "calisthenics",
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["--filter", "@bpagoaga/calisthenics", "dev"],
-      "port": 5173
+      "port": 5173,
+      "url": "https://localhost:5173"
+    },
+    {
+      "name": "storybook",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@bpagoaga/ui", "storybook"],
+      "port": 6006,
+      "url": "https://localhost:6006"
     }
   ]
 }

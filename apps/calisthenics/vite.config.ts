@@ -1,3 +1,4 @@
+import { devHttps } from '@bpagoaga/dev-certs';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig, lazyPlugins } from 'vite-plus';
@@ -19,5 +20,5 @@ export default defineConfig({
     },
     jsPlugins: [{ name: 'vite-plus', specifier: 'vite-plus/oxlint-plugin' }],
   },
-  plugins: lazyPlugins(() => [react(), tailwindcss()]),
+  plugins: lazyPlugins(() => [react(), tailwindcss(), devHttps()]),
 });

@@ -13,9 +13,8 @@ yarn-error.log*
 pnpm-debug.log*
 
 
-# environment variables
+# environment variables (.env.development and .env.production hold public URLs and are committed)
 .env
-.env.production
 
 # macOS-specific files
 .DS_Store

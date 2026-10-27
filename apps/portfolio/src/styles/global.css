@@ -1,2 +1,13 @@
 /* Design system: Tailwind + @bpagoaga/ui tokens. Site-specific styles go below. */
 @import '@bpagoaga/ui/styles.css';
+
+/* Keep anchored sections clear of the sticky SiteNav (h-16). */
+html {
+  scroll-padding-top: 5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

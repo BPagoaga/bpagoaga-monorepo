@@ -1,10 +1,12 @@
 ---
 import { getCollection } from 'astro:content';
+import ExternalLink from '../components/ExternalLink.astro';
+import Hero from '../components/Hero.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import SiteHeader from '../components/SiteHeader.astro';
+import SiteNav from '../components/SiteNav.astro';
 import rawProjects from '../content/projects.json';
-import { SECTIONS } from '../data/site';
+import { SECTIONS, SOCIAL_LINKS } from '../data/site';
 import Layout from '../layouts/Layout.astro';
 
 // getCollection() returns entries sorted by id: restore the order of src/content/projects.json.
@@ -16,27 +18,49 @@ const sections = SECTIONS.map((section) => ({
   ...section,
   projects: projects.filter((project) => project.data.section === section.id),
 })).filter((section) => section.projects.length > 0);
+const linkedIn = SOCIAL_LINKS.find((social) => social.label === 'LinkedIn');
 ---
 
 <Layout>
-  <SiteHeader />
-  <main class="mx-auto max-w-6xl space-y-16 px-4 py-16 md:px-6">
-    {
-      sections.map((section) => (
-        <section aria-labelledby={`section-${section.id}`}>
-          <h2 id={`section-${section.id}`} class="font-display text-title-l">
-            {section.title}
-          </h2>
-          <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {section.projects.map((project) => (
-              <li>
-                <ProjectCard project={project.data} />
-              </li>
-            ))}
-          </ul>
-        </section>
-      ))
-    }
+  <SiteNav />
+  <main>
+    <Hero />
+    <div class="mx-auto max-w-6xl space-y-16 px-4 py-16 md:px-6">
+      <section id="portfolio" aria-labelledby="portfolio-title">
+        <h2 id="portfolio-title" class="font-display text-title-xl">Portfolio</h2>
+        <div class="mt-8 space-y-12">
+          {
+            sections.map((section) => (
+              <section aria-labelledby={`section-${section.id}`}>
+                <h3 id={`section-${section.id}`} class="font-display text-title-l">
+                  {section.title}
+                </h3>
+                <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {section.projects.map((project) => (
+                    <li>
+                      <ProjectCard project={project.data} />
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))
+          }
+        </div>
+      </section>
+      <section id="cv" aria-labelledby="cv-title">
+        <h2 id="cv-title" class="font-display text-title-xl">CV</h2>
+        <p class="mt-4 max-w-2xl text-muted">
+          My detailed resume is on its way. In the meantime, my career path is on{' '}
+          {
+            linkedIn && (
+              <ExternalLink href={linkedIn.href} class="font-medium text-primary-100 underline hover:text-primary-110">
+                LinkedIn<span class="sr-only"> (opens in a new tab)</span>
+              </ExternalLink>
+            )
+          }.
+        </p>
+      </section>
+    </div>
   </main>
   <SiteFooter />
 </Layout>

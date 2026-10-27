@@ -4,15 +4,17 @@
 
 Personal monorepo (Turborepo + pnpm workspaces), toolchain [Vite+](https://viteplus.dev) (`vp`).
 
-| Workspace            | Stack                                | Purpose                                                                                                                      |
-| -------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
-| `apps/portfolio`     | Astro 7, Tailwind CSS 4              | Online résumé / portfolio (static site)                                                                                      |
-| `apps/calisthenics`  | React 19, Vite+, Tailwind CSS 4      | Calisthenics / street workout app: tutorials, performance recaps, session logs                                               |
-| `apps/mockups`       | Eleventy 3, Nunjucks, Tailwind CSS 4 | In-repo mockups for the other apps, built on the real design tokens — see [`apps/mockups/README.md`](apps/mockups/README.md) |
-| `packages/ui`        | Tailwind CSS 4, Storybook 10         | Design system: tokens (`src/theme.css`) and base styles (`src/styles.css`), documented in Storybook                          |
-| `packages/dev-certs` | Node                                 | Shared localhost HTTPS certificate for every dev server (`devHttps()` Vite plugin, `dev-certs` CLI)                          |
+| Workspace                  | Stack                                  | Purpose                                                                                                                                                     |
+| -------------------------- | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/portfolio`           | Astro 7, Tailwind CSS 4                | Online résumé / portfolio (static site)                                                                                                                     |
+| `apps/calisthenics`        | React 19, Vite+, Tailwind CSS 4        | Calisthenics / street workout app: tutorials, performance recaps, session logs                                                                              |
+| `apps/calisthenics-mobile` | Expo SDK 58, React Native, Expo Router | Mobile (iOS / Android) version of the calisthenics app, published with EAS — see [`apps/calisthenics-mobile/README.md`](apps/calisthenics-mobile/README.md) |
+| `apps/mockups`             | Eleventy 3, Nunjucks, Tailwind CSS 4   | In-repo mockups for the other apps, built on the real design tokens — see [`apps/mockups/README.md`](apps/mockups/README.md)                                |
+| `packages/ui`              | Tailwind CSS 4, Storybook 10           | Design system: tokens (`src/theme.css`) and base styles (`src/styles.css`), documented in Storybook                                                         |
+| `packages/ui-native`       | React Native                           | React Native components on the `@bpagoaga/ui` tokens (`src/tokens.ts` generated from `theme.css`)                                                           |
+| `packages/dev-certs`       | Node                                   | Shared localhost HTTPS certificate for every dev server (`devHttps()` Vite plugin, `dev-certs` CLI)                                                         |
 
-`portfolio` and `calisthenics` are still empty shells. New screens are designed in
+`portfolio`, `calisthenics` and `calisthenics-mobile` are still shells. New screens are designed in
 `apps/mockups` first (see the `mockup` skill), then implemented in the apps.
 
 ## Task Management
@@ -52,7 +54,8 @@ All commands run from the repo root with **pnpm** (never npm/yarn — there is o
 - **Install:** `pnpm install`
 - **Build:** `pnpm build` (all, via Turborepo), `pnpm turbo run build --filter=@bpagoaga/calisthenics` (one workspace)
 - **Lint:** `pnpm lint` (`vp lint` / Oxlint in every app; React rules in `apps/calisthenics/vite.config.ts`)
-- **Types:** `pnpm check-types` (`tsc -b` for React, `astro check` for Astro)
+- **Types:** `pnpm check-types` (`tsc -b` for React, `astro check` for Astro, `tsc --noEmit` for Expo)
+- **Mobile:** `pnpm dev:mobile` (Metro / Expo), `pnpm --filter @bpagoaga/calisthenics-mobile doctor` (expo-doctor)
 - **Storybook:** `pnpm storybook` (dev, port 6006), `pnpm build:storybook` (static build in `packages/ui/storybook-static`)
 - **Format:** `pnpm fmt` (`vp fmt` / Oxfmt, config in root `vite.config.ts`), `pnpm fmt:check` to verify
 - **Add a dependency:** `pnpm --filter <workspace> add <pkg>`. Shared versions (Vite+, TypeScript, Tailwind) live in the
@@ -74,6 +77,8 @@ pnpm turbo run lint build --filter=@bpagoaga/<app>
 
 - A dependency change must keep `pnpm audit --audit-level high` clean — see the `resolve-pnpm-audit` skill.
 - A new app gets its own `checks-<app>.yml`, copied from an existing one (paths, concurrency group, `app` input).
+- `turbo run lint` also lints the app's workspace dependencies (`^lint`): the mobile check runs `ui-native`'s lint,
+  which fails when `src/tokens.ts` is out of date. Its `build` is `expo export` (iOS + Android bundles), not a store build.
 
 ## Dev Servers
 
@@ -94,6 +99,7 @@ start by `@bpagoaga/dev-certs` — signed by mkcert's local CA when mkcert is in
 - A new Vite-based app adds `devHttps()` from `@bpagoaga/dev-certs` to its plugins (Astro: `vite.plugins`); another
   server takes the paths from `ensureDevCerts()` or the `dev-certs` CLI. Never commit a certificate.
 - `pnpm certs --force` regenerates it (e.g. after installing mkcert).
+- Exception: Expo's Metro server stays on HTTP — phones and simulators load the bundle over the LAN.
 - Locally, call the servers with `curl -k` (or `--cacert "$(mkcert -CAROOT)/rootCA.pem"`).
 
 ## Design System Rules
@@ -104,6 +110,11 @@ start by `@bpagoaga/dev-certs` — signed by mkcert's local CA when mkcert is in
   (and check it in Storybook's _Fondations_ stories, read from `theme.css`, or on the mockups' _Design tokens_ page)
   instead of using an arbitrary value.
 - Every `packages/ui` component gets a story next to it (`*.stories.tsx`, CSF, French titles).
+- **React Native** has no Tailwind: style with `StyleSheet` and the tokens exported by `@bpagoaga/ui-native`
+  (`colors['primary-100']`, `typography['body-s']`, `radii.lg`, `shadows['elevation-2']`, `space(4)` for the 4 dp grid),
+  and prefer its components (`Text`, `Button`, `Card`, `Badge`). Token names match the web class names.
+- `packages/ui-native/src/tokens.ts` is generated from `theme.css` (OKLCH → hex, rem → dp): after changing a token, run
+  `pnpm --filter @bpagoaga/ui-native tokens` and commit both files.
 - Colour scales go from 10 (lightest) to 150 (darkest), 100 being the reference shade. `accent-100` is too light for
   white text: use dark text (`text-neutral-150`) on it.
 - A screen implemented from a mockup reuses the mockup macro's classes as-is.
@@ -161,8 +172,22 @@ start by `@bpagoaga/dev-certs` — signed by mkcert's local CA when mkcert is in
 - **Debounce search inputs at the call site**: keep the raw value in local state, debounce it (300 ms), and pass the
   debounced value into the query options.
 
+## Expo / React Native
+
+- Expo changes a lot between SDKs: before touching an Expo, EAS or React Native API, read the docs of the installed SDK
+  (`https://docs.expo.dev/versions/v<major>.0.0/`, index at https://docs.expo.dev/llms.txt) instead of relying on memory.
+- Add native dependencies with `pnpm expo install <pkg>` from `apps/calisthenics-mobile` (SDK-compatible versions),
+  then `pnpm --filter @bpagoaga/calisthenics-mobile doctor`. `react`, `react-native` and `expo-font` must keep the exact
+  same versions in `packages/ui-native` (devDependencies), or Metro bundles two copies of React.
+- Routes live in `src/app/` (Expo Router); everything else outside it.
+- `ios/` and `android/` are generated (Continuous Native Generation) and git-ignored: configure native behaviour in
+  `app.json` and config plugins, never by hand.
+- EAS commands run from `apps/calisthenics-mobile` (`eas.json` lives there). A new native module needs a new
+  development build (`development` / `development-simulator` profiles) — Expo Go only ships its bundled modules.
+
 ## Accessibility & Responsive
 
 - Target **WCAG 2.2 AA**: text contrast ≥ 4.5:1, visible focus on every interactive element, logical tab order, no
   information carried by colour alone, touch targets ≥ 44×44 px on mobile.
+- React Native: `accessibilityRole` / `accessibilityLabel` on every custom pressable (`Button` already sets them).
 - Mobile first: the calisthenics app is mostly used on a phone during a workout (one hand, between two sets).

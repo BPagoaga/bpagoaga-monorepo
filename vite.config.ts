@@ -12,6 +12,8 @@ export default defineConfig({
       '**/storybook-static/**',
       'pnpm-lock.yaml',
       'apps/mockups/assets/tailwind.css',
+      // Generated from packages/ui/src/theme.css, compared as-is by its `--check` mode.
+      'packages/ui-native/src/tokens.ts',
       // Nunjucks templates: Oxfmt formats them as plain HTML and breaks `{% … %}` / `{{ … }}` tags.
       'apps/mockups/**/*.html',
       'apps/mockups/**/*.njk',

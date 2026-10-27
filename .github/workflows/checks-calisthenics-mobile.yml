@@ -1,0 +1,31 @@
+name: Checks — Calisthenics mobile
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    # The app itself, what it depends on, and the shared tooling.
+    paths:
+      - apps/calisthenics-mobile/**
+      - packages/ui-native/**
+      - packages/ui/**
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - turbo.json
+      - vite.config.ts
+      - tsconfig.json
+      - .nvmrc
+      - .github/workflows/app-checks.yml
+      - .github/workflows/checks-calisthenics-mobile.yml
+
+# A new push on the same PR cancels the run still in progress.
+concurrency:
+  group: checks-calisthenics-mobile-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  calisthenics-mobile:
+    uses: ./.github/workflows/app-checks.yml
+    with:
+      app: '@bpagoaga/calisthenics-mobile'

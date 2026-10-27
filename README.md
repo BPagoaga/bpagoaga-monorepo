@@ -2,13 +2,15 @@
 
 Monorepo personnel — [Turborepo](https://turborepo.com) + pnpm workspaces, outillage [Vite+](https://viteplus.dev).
 
-| Workspace                                  | Stack           | Rôle                                                                       |
-| ------------------------------------------ | --------------- | -------------------------------------------------------------------------- |
-| [`apps/portfolio`](apps/portfolio)         | Astro           | CV en ligne                                                                |
-| [`apps/calisthenics`](apps/calisthenics)   | React + Vite+   | Calisthénie / street workout : tutoriels, performances, journal de séances |
-| [`apps/mockups`](apps/mockups)             | Eleventy        | Maquettes des deux apps, sur les vrais tokens du design system             |
-| [`packages/ui`](packages/ui)               | Tailwind CSS v4 | Design system (tokens + styles de base), documenté dans Storybook          |
-| [`packages/dev-certs`](packages/dev-certs) | Node            | Certificat HTTPS local des serveurs de dev                                 |
+| Workspace                                              | Stack               | Rôle                                                                       |
+| ------------------------------------------------------ | ------------------- | -------------------------------------------------------------------------- |
+| [`apps/portfolio`](apps/portfolio)                     | Astro               | CV en ligne                                                                |
+| [`apps/calisthenics`](apps/calisthenics)               | React + Vite+       | Calisthénie / street workout : tutoriels, performances, journal de séances |
+| [`apps/calisthenics-mobile`](apps/calisthenics-mobile) | Expo + React Native | App mobile de calisthénie (iOS / Android), publiée avec EAS                |
+| [`apps/mockups`](apps/mockups)                         | Eleventy            | Maquettes des deux apps, sur les vrais tokens du design system             |
+| [`packages/ui`](packages/ui)                           | Tailwind CSS v4     | Design system (tokens + styles de base), documenté dans Storybook          |
+| [`packages/ui-native`](packages/ui-native)             | React Native        | Composants React Native sur les tokens de `packages/ui`                    |
+| [`packages/dev-certs`](packages/dev-certs)             | Node                | Certificat HTTPS local des serveurs de dev                                 |
 
 ## Démarrer
 
@@ -20,6 +22,7 @@ pnpm dev:mockups        # https://localhost:8080
 pnpm dev:portfolio      # https://localhost:4321
 pnpm dev:calisthenics   # https://localhost:5173
 pnpm storybook          # https://localhost:6006 (design system)
+pnpm dev:mobile         # Expo : QR code pour Expo Go, ou i / a pour simulateur / émulateur
 ```
 
 Tous les serveurs de dev sont en HTTPS, avec un certificat local partagé (`.certs/`) créé au premier lancement. Pour

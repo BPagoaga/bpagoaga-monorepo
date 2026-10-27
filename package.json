@@ -9,6 +9,7 @@
     "check-types": "turbo run check-types",
     "dev:portfolio": "turbo run dev --filter=@bpagoaga/portfolio",
     "dev:calisthenics": "turbo run dev --filter=@bpagoaga/calisthenics",
+    "dev:mobile": "pnpm --filter @bpagoaga/calisthenics-mobile dev",
     "dev:mockups": "pnpm --filter @bpagoaga/mockups dev",
     "build:mockups": "pnpm --filter @bpagoaga/mockups build",
     "storybook": "pnpm --filter @bpagoaga/ui storybook",

@@ -35,3 +35,12 @@ peerDependencyRules:
 allowBuilds:
   '@parcel/watcher': true
   esbuild: true
+
+auditConfig:
+  # Accepted risks, both pulled in by @expo/cli (Expo's dev/build CLI, never bundled in the app).
+  # Remove each entry once @expo/cli ships a fixed dependency (check `pnpm why <pkg> -r`).
+  ignoreGhsas:
+    # node-forge ≤1.4.0, RSA PKCS#1 v1.5 signature check: no patched version exists yet.
+    - GHSA-86w9-cpqp-85rv
+    # zod <4.6.6, memory exhaustion on oversized collections: @expo/cli requires zod ^3, not fixed on 3.x.
+    - GHSA-mrhx-c7xc-m3w5

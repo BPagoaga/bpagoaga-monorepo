@@ -1,0 +1,39 @@
+{
+  "name": "@bpagoaga/calisthenics-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "dev": "expo start",
+    "ios": "expo start --ios",
+    "android": "expo start --android",
+    "web": "expo start --web",
+    "build": "expo export --platform ios --platform android",
+    "lint": "vp lint",
+    "check-types": "tsc --noEmit",
+    "doctor": "pnpm dlx expo-doctor"
+  },
+  "dependencies": {
+    "@bpagoaga/ui-native": "workspace:*",
+    "expo": "~58.0.19",
+    "expo-constants": "~58.0.13",
+    "expo-dev-client": "~58.0.15",
+    "expo-font": "~58.0.10",
+    "expo-linking": "~58.0.14",
+    "expo-router": "~58.0.26",
+    "expo-splash-screen": "~58.0.11",
+    "expo-status-bar": "~58.0.4",
+    "expo-system-ui": "~58.0.6",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.88.0",
+    "react-native-safe-area-context": "~5.10.1",
+    "react-native-screens": "~4.30.0",
+    "react-native-web": "~0.21.4"
+  },
+  "devDependencies": {
+    "@types/react": "~19.3.0",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

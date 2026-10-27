@@ -80,6 +80,15 @@ pnpm turbo run lint build --filter=@bpagoaga/<app>
 - `turbo run lint` also lints the app's workspace dependencies (`^lint`): the mobile check runs `ui-native`'s lint,
   which fails when `src/tokens.ts` is out of date. Its `build` is `expo export` (iOS + Android bundles), not a store build.
 
+### Deployment
+
+- `apps/portfolio` is deployed to **GitHub Pages** (custom domain `bernardpagoaga.net`) by
+  `.github/workflows/deploy-portfolio.yml`, on every push to `main` that touches the portfolio, `packages/ui` or the
+  shared tooling (or by hand: _Actions → Deploy — Portfolio → Run workflow_).
+- The site is built for the domain root (`site` in `astro.config.mjs`, no `base`): it only renders correctly on
+  `bernardpagoaga.net`, not on the `*.github.io/bpagoaga-monorepo/` URL.
+- The custom domain is set in the repository's Pages settings, not with a `CNAME` file (ignored by Actions deployments).
+
 ## Dev Servers
 
 **Do not start dev servers (`pnpm dev`, `vp dev`, `astro dev`, tunnels, etc.) on the user's behalf.**

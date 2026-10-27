@@ -1,0 +1,62 @@
+name: Deploy — Portfolio
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    # The portfolio, what it depends on, and the shared tooling.
+    paths:
+      - apps/portfolio/**
+      - packages/ui/**
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - turbo.json
+      - .nvmrc
+      - .github/workflows/deploy-portfolio.yml
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time, and a newer push never cancels a deployment already in progress.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TELEMETRY_DISABLED: 1
+      ASTRO_TELEMETRY_DISABLED: 1
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - name: Use Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build
+        run: pnpm turbo run build --filter=@bpagoaga/portfolio
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: apps/portfolio/dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

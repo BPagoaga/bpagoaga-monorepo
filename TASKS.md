@@ -8,7 +8,8 @@
 - [ ] Choisir entre la version une page et la version deux colonnes (MOCK-100)
 - [ ] Compléter le portfolio : parcours, compétences, à propos (texte de la branche `nuxt3` de l'ancien repo), contact
 - [ ] Image Open Graph (l'ancien `og:image` pointait vers un `BPAGOAGA.svg` inexistant)
-- [ ] Déployer `apps/portfolio` sur bernardpagoaga.net (remplace le site Nuxt 2)
+- [~] Déployer `apps/portfolio` sur bernardpagoaga.net (remplace le site Nuxt 2) — workflow GitHub Pages prêt ; reste :
+  domaine vérifié, domaine perso dans les réglages Pages, DNS (Netlify DNS) vers GitHub, HTTPS forcé, arrêt du site Netlify
 
 Notes : contenu migré depuis `BPagoaga/portfolio` (branche `master`, = site en ligne). Vignettes récupérées dans
 l'historique (commit `49c506c`). Écartés : bandeau « Work In Progress », contenu 2015-2018 (CV PDF, certificats).

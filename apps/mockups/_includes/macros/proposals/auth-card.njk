@@ -1,0 +1,48 @@
+{#
+  Auth card — écrans de connexion et d'inscription de CaliBuddy : la marque seule en en-tête
+  (pas de navigation, pas de « Passer »), puis une carte centrée. Implémenté dans
+  apps/calisthenics (components/AuthLayout + pages/SignIn, pages/SignUp).
+
+  Params :
+    mode  — 'signin' | 'signup'
+    error — message d'erreur affiché au-dessus du bouton (vide = aucun)
+#}
+{% from "macros/proposals/button.njk" import button %}
+{% macro authField(id, label, type='text', autocomplete='', value='', hint='') %}
+<div>
+  <label for="{{ id }}" class="block text-body-s font-semibold">{{ label }}</label>
+  <input id="{{ id }}" type="{{ type }}" autocomplete="{{ autocomplete }}" value="{{ value }}" required {% if hint %}aria-describedby="{{ id }}-hint"{% endif %}
+    class="mt-1 h-11 w-full rounded-lg border border-border bg-surface px-3 text-body-m focus:border-primary-100 focus:outline-hidden focus:ring-4 focus:ring-primary-20">
+  {% if hint %}<p id="{{ id }}-hint" class="mt-1 text-body-xs text-muted">{{ hint }}</p>{% endif %}
+</div>
+{% endmacro %}
+{% macro authCard(mode='signin', error='') %}
+{% set signup = mode == 'signup' %}
+<header class="border-b border-border bg-surface">
+  <div class="mx-auto flex h-16 max-w-3xl items-center px-4">
+    <span class="flex items-center gap-2.5">
+      <span class="grid size-9 place-items-center rounded-lg bg-accent-100 text-neutral-150" aria-hidden="true"><i class="fas fa-person-running"></i></span>
+      <span class="font-display text-title-s">Cali<span class="text-accent-110">Buddy</span></span>
+    </span>
+  </div>
+</header>
+<main class="mx-auto max-w-md px-4 py-10">
+  <h1 class="font-display text-title-xl">{{ 'Créer ton compte' if signup else 'Content de te revoir' }}</h1>
+  <p class="mt-2 text-body-m text-muted">{{ 'Ton programme, tes séances et ta progression, sur tous tes appareils.' if signup else 'Connecte-toi pour retrouver ton programme et ton journal.' }}</p>
+  <div class="mt-6 rounded-2xl border border-border bg-surface p-5 shadow-elevation-1 sm:p-6">
+    <form class="space-y-4" onsubmit="return false">
+      {% if signup %}{{ authField(mode + '-name', 'Prénom', 'text', 'given-name', 'Bernard') }}{% endif %}
+      {{ authField(mode + '-email', 'E-mail', 'email', 'email', 'bernard@example.com') }}
+      {{ authField(mode + '-password', 'Mot de passe', 'password', 'new-password' if signup else 'current-password', 'motdepasse', '8 caractères minimum.' if signup else '') }}
+      {% if error %}
+      <p role="alert" class="flex items-start gap-2 rounded-lg bg-red-10 px-3 py-2 text-body-s text-red-120"><i class="fas fa-triangle-exclamation mt-0.5 text-body-xs" aria-hidden="true"></i>{{ error }}</p>
+      {% endif %}
+      {{ button('Créer mon compte' if signup else 'Se connecter', 'accent', 'lg', '', 'arrow-right', type='submit', extraClass='w-full') }}
+    </form>
+  </div>
+  <p class="mt-6 text-center text-body-s text-muted">
+    {% if signup %}Déjà un compte ? <a href="/pages/calisthenics-connexion/" class="font-semibold text-primary-100 hover:underline">Se connecter</a>
+    {% else %}Pas encore de compte ? <a href="/pages/calisthenics-connexion/v2-inscription/" class="font-semibold text-primary-100 hover:underline">Créer un compte</a>{% endif %}
+  </p>
+</main>
+{% endmacro %}

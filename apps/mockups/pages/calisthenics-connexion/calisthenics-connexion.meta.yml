@@ -1,0 +1,16 @@
+id: MOCK-207
+title: Connexion
+status: draft
+app: calisthenics
+area: Compte
+implemented_in: apps/calisthenics/src/pages
+states:
+  - connexion
+  - inscription (variante v2)
+channels: [web, mobile]
+notes: >
+  Arrivée avec le backend (comptes, données sur le serveur) : implémentée avec la maquette,
+  à valider. Toute page de l'app redirige ici sans session, puis y revient après la
+  connexion (`?retour=`). Après l'inscription, le tableau de bord propose le test de niveau
+  (MOCK-200 v2). La déconnexion est dans la barre latérale (lg) et dans le journal (mobile)
+  en attendant un écran Profil.

@@ -1,0 +1,23 @@
+---
+layout: layout.njk
+title: Auth card
+---
+{% from "macros/proposals/auth-card.njk" import authCard %}
+<div class="mx-auto max-w-5xl space-y-10 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">Auth card</h1>
+    <p class="mt-1 max-w-3xl text-body-s text-muted">Connexion et inscription : la marque seule en en-tête, une carte centrée, un seul bouton.</p>
+  </header>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Connexion</h2>
+    <div class="overflow-hidden rounded-2xl border border-border bg-background">{{ authCard('signin') }}</div>
+  </section>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Inscription</h2>
+    <div class="overflow-hidden rounded-2xl border border-border bg-background">{{ authCard('signup') }}</div>
+  </section>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Erreur</h2>
+    <div class="overflow-hidden rounded-2xl border border-border bg-background">{{ authCard('signin', 'E-mail ou mot de passe incorrect.') }}</div>
+  </section>
+</div>

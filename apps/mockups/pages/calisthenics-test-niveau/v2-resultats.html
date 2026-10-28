@@ -1,0 +1,8 @@
+---
+layout: layout.njk
+title: Résultats et choix de la figure
+---
+{% from "macros/proposals/onboarding-header.njk" import onboardingHeader %}
+{% from "macros/proposals/level-test-results.njk" import levelTestResults %}
+{{ onboardingHeader(2, 3, 'Ta figure', '/pages/calisthenics-dashboard/') }}
+<main>{{ levelTestResults(calisthenics.levelResults, calisthenics.figures, '/pages/calisthenics-test-niveau/', '/pages/calisthenics-programme/') }}</main>

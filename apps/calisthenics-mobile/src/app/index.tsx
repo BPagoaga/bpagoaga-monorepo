@@ -9,7 +9,7 @@ const Home = () => (
         <Text variant="body-s" weight={600} color="accent-110" style={styles.eyebrow}>
           Bientôt
         </Text>
-        <Text variant="title-xl">Calisthénie</Text>
+        <Text variant="title-xl">CaliBuddy</Text>
         <Text color="muted">
           Tutoriels, récapitulatifs de performance et journal de séances, dans la poche entre deux séries.
         </Text>

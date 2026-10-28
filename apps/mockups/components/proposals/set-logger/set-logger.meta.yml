@@ -1,7 +1,7 @@
 id: MOCK-026
 title: Set logger
 kind: proposals
-status: draft
+status: validated
 app: calisthenics
 area: Journal
 related_component: null

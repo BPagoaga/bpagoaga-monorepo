@@ -1,0 +1,21 @@
+{#
+  Family badge — badge d'une famille d'exercices (poussée, tirage, jambes, gainage, figure).
+  Une seule table famille → libellé / ton / icône pour toutes les macros qui l'affichent
+  (exercise card, exercise row, session template card).
+
+  Params :
+    family — push | pull | legs | core | skill
+    size   — sm | md
+#}
+{% from "macros/proposals/badge.njk" import badge %}
+{% macro familyBadge(family, size='sm') %}
+{% set families = {
+  'push': { label: 'Poussée', tone: 'primary', icon: 'hand' },
+  'pull': { label: 'Tirage', tone: 'blue', icon: 'arrows-down-to-line' },
+  'legs': { label: 'Jambes', tone: 'green', icon: 'person-walking' },
+  'core': { label: 'Gainage', tone: 'orange', icon: 'circle-dot' },
+  'skill': { label: 'Figure', tone: 'accent', icon: 'star' }
+} %}
+{% set f = families[family] %}
+{{ badge(f.label, f.tone, f.icon, size) }}
+{% endmacro %}

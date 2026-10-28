@@ -1,0 +1,31 @@
+---
+layout: layout.njk
+title: Session template card
+---
+{% from "macros/proposals/session-template-card.njk" import sessionTemplateCard %}
+{% from "macros/proposals/session-template-card-free.njk" import freeSessionCard %}
+{% set c = calisthenics %}
+{% set unscheduled = { name: 'Mobilité épaules', family: 'core', duration: '20 min', days: [], exercises: [{ name: 'Dislocations à l’élastique', target: '3 × 15 reps' }, { name: 'Suspension passive', target: '3 × 30 s' }] } %}
+<div class="mx-auto max-w-6xl space-y-10 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">Session template card</h1>
+    <p class="mt-1 max-w-3xl text-body-s text-muted">Un modèle de séance du programme. Mode gestion sur la page Programme, mode choix (radio) pour démarrer une séance.</p>
+  </header>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Gestion</h2>
+    <div class="grid gap-4 md:grid-cols-3">
+      {{ sessionTemplateCard(c.templates[0]) }}
+      {{ sessionTemplateCard(c.templates[1]) }}
+      {{ sessionTemplateCard(unscheduled) }}
+    </div>
+  </section>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Choix <span class="text-body-s font-normal text-muted">· cliquer une carte pour la cocher</span></h2>
+    <div class="grid gap-4 md:grid-cols-3">
+      {{ sessionTemplateCard(c.templates[1], 'choose', true, 'Prévue aujourd’hui', 'demo') }}
+      {{ sessionTemplateCard(c.templates[0], 'choose', false, '', 'demo') }}
+      {{ sessionTemplateCard(c.templates[2], 'choose', false, '', 'demo') }}
+    </div>
+    <div class="max-w-md">{{ freeSessionCard('demo') }}</div>
+  </section>
+</div>

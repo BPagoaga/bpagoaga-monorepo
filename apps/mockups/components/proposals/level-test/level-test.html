@@ -1,0 +1,25 @@
+---
+layout: layout.njk
+title: Level test
+---
+{% from "macros/proposals/level-test.njk" import levelTest %}
+{% from "macros/proposals/level-test-results.njk" import levelTestResults %}
+{% set c = calisthenics %}
+<div class="mx-auto max-w-6xl space-y-10 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">Level test</h1>
+    <p class="mt-1 max-w-3xl text-body-s text-muted">Le test de niveau du premier lancement, test par test, puis les résultats et le choix de la figure. Mobile : voir la page Test de niveau, variante mobile.</p>
+  </header>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Premier test</h2>
+    <div class="rounded-2xl border border-border bg-background">{{ levelTest(c.levelTest, 0) }}</div>
+  </section>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Dernier test (en secondes)</h2>
+    <div class="rounded-2xl border border-border bg-background">{{ levelTest(c.levelTest, 3) }}</div>
+  </section>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Résultats et choix de la figure</h2>
+    <div class="rounded-2xl border border-border bg-background">{{ levelTestResults(c.levelResults, c.figures) }}</div>
+  </section>
+</div>

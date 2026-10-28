@@ -1,0 +1,13 @@
+id: MOCK-031
+title: Onboarding header
+kind: proposals
+status: validated
+app: calisthenics
+area: Premier lancement
+related_component: null
+implemented_in: null
+states: [défaut, mobile (étape masquée sous sm, portée par la page)]
+channels: [web, mobile]
+notes: >
+  Remplace la navigation principale pendant le premier lancement : un seul chemin, une
+  sortie. « Passer » mène au tableau de bord vide (MOCK-200 v2), d'où le test reste accessible.

@@ -1,0 +1,58 @@
+{#
+  Level test results — fin du test de niveau : placement par progression (premiers
+  records) et choix de la figure objectif (radios, une figure verrouillée tant que son
+  prérequis manque). Actions collées en bas sous sm.
+
+  Params :
+    results — [{ family, result, placement, step }]
+    figures — [{ name, detail, ready, recommended?, locked? }]
+    retryHref, nextHref — « Refaire le test », « Planifier ma semaine »
+#}
+{% from "macros/proposals/button.njk" import button %}
+{% from "macros/proposals/badge.njk" import badge %}
+{% from "macros/proposals/badge-family.njk" import familyBadge %}
+{% macro levelTestResults(results, figures, retryHref='#', nextHref='#') %}
+<div class="mx-auto max-w-3xl space-y-10 px-4 py-8 pb-32 sm:pb-8">
+  <section aria-labelledby="results-title">
+    <p class="text-body-xs font-semibold uppercase tracking-wide text-green-120"><i class="fas fa-circle-check" aria-hidden="true"></i> Test terminé</p>
+    <h1 id="results-title" class="mt-1 font-display text-title-xl">Voilà où tu commences</h1>
+    <p class="mt-2 text-body-m text-muted">Tes résultats deviennent tes premiers records. Chaque progression démarre à l'étape qui te correspond.</p>
+    <ul class="mt-6 grid gap-3 sm:grid-cols-3">
+      {% for r in results %}
+        <li class="rounded-2xl border border-border bg-surface p-4">
+          {{ familyBadge(r.family) }}
+          <p class="mt-3 font-mono text-body-s font-semibold">{{ r.result }}</p>
+          <p class="mt-2 text-body-xs text-subtle">Tu commences à</p>
+          <p class="text-body-s font-semibold">{{ r.placement }}</p>
+          <p class="text-body-xs text-muted">Étape {{ r.step }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+    <p class="mt-3 text-body-s text-muted">Un résultat te semble faux ? <a href="{{ retryHref }}" class="font-medium text-primary-100 underline hover:text-primary-110">Refaire le test</a></p>
+  </section>
+
+  <form aria-labelledby="figure-title">
+    <fieldset>
+      <legend id="figure-title" class="text-title-m">Choisis ta figure objectif</legend>
+      <p class="mt-1 text-body-s text-muted">Elle guide ta progression en cours et la séance proposée sur le tableau de bord. Tu pourras en changer.</p>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        {% for f in figures %}
+          <label class="group relative flex gap-3 rounded-2xl border border-border bg-surface p-4 {{ 'opacity-60' if f.locked else 'cursor-pointer hover:border-neutral-60 has-checked:border-accent-100 has-checked:ring-4 has-checked:ring-accent-20 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary-100' }}">
+            <input type="radio" name="figure" class="sr-only" {% if f.recommended %}checked{% endif %} {% if f.locked %}disabled{% endif %} />
+            <span class="min-w-0 flex-1">
+              <span class="flex flex-wrap items-center gap-2"><span class="text-title-s">{{ f.name }}</span>{% if f.recommended %}{{ badge('Recommandée', 'accent', 'star', 'sm') }}{% endif %}</span>
+              <span class="mt-0.5 block text-body-s text-muted">{{ f.detail }}</span>
+              <span class="mt-2 block text-body-xs {{ 'text-subtle' if f.locked else 'text-green-120' }}"><i class="fas fa-{{ 'lock' if f.locked else 'check' }} fa-xs" aria-hidden="true"></i> {{ f.ready }}</span>
+            </span>
+            {% if not f.locked %}<span class="grid size-6 shrink-0 place-items-center rounded-full border-2 border-neutral-60 group-has-checked:border-accent-110 group-has-checked:bg-accent-100" aria-hidden="true"><i class="fas fa-check fa-xs hidden text-neutral-150 group-has-checked:inline"></i></span>{% endif %}
+          </label>
+        {% endfor %}
+      </div>
+    </fieldset>
+  </form>
+
+  <div class="fixed inset-x-0 bottom-0 flex gap-2 border-t border-border bg-surface p-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:static sm:border-0 sm:bg-transparent sm:p-0">
+    {{ button('Planifier ma semaine', 'accent', 'lg', iconRight='arrow-right', href=nextHref, extraClass='flex-1') }}
+  </div>
+</div>
+{% endmacro %}

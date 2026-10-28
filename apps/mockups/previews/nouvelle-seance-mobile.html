@@ -1,0 +1,35 @@
+---
+layout: bare-layout.njk
+title: Démarrer une séance — mobile
+eleventyExcludeFromCollections: true
+---
+{% from "macros/proposals/app-nav.njk" import appNav %}
+{% from "macros/proposals/button.njk" import button %}
+{% from "macros/proposals/session-template-card.njk" import sessionTemplateCard %}
+{% from "macros/proposals/session-template-card-free.njk" import freeSessionCard %}
+{% set c = calisthenics %}
+<div class="space-y-6 px-4 pb-28 pt-4">
+  <header class="flex items-center gap-2">
+    {{ button('', 'ghost', 'md', 'chevron-left', ariaLabel='Retour', extraClass='size-11') }}
+    <div><p class="text-body-xs text-muted">{{ c.today.label }}</p><h1 class="text-title-m">Nouvelle séance</h1></div>
+  </header>
+  <form class="space-y-6" aria-label="Choix de la séance">
+    <fieldset class="space-y-3">
+      <legend class="text-title-s">Prévue aujourd'hui</legend>
+      {{ sessionTemplateCard(c.templates[1], 'choose', true, 'Programme', 'start') }}
+    </fieldset>
+    <fieldset class="space-y-3">
+      <legend class="text-title-s">Un autre modèle</legend>
+      {{ sessionTemplateCard(c.templates[0], 'choose', group='start') }}
+      {{ sessionTemplateCard(c.templates[2], 'choose', group='start') }}
+    </fieldset>
+    <fieldset id="libre" class="space-y-3">
+      <legend class="text-title-s">Séance libre</legend>
+          {{ freeSessionCard() }}
+    </fieldset>
+    <div class="sticky bottom-24">
+      {{ button('Démarrer la séance', 'accent', 'lg', 'play', extraClass='w-full shadow-elevation-2') }}
+    </div>
+  </form>
+</div>
+{{ appNav('journal', false) }}

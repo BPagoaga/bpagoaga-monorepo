@@ -1,0 +1,13 @@
+id: MOCK-027
+title: Stepper
+kind: proposals
+status: validated
+app: calisthenics
+area: Journal
+related_component: null
+implemented_in: null
+states: [défaut, avec unité, focus, grande taille (saisie unique)]
+channels: [mobile, web]
+notes: >
+  Extrait du set logger dès sa deuxième utilisation (test de niveau). Boutons de 48 px
+  (64 px en taille lg) : cibles confortables au pouce, entre deux séries.

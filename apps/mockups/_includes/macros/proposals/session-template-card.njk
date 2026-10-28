@@ -1,0 +1,51 @@
+{#
+  Session template card — un modèle de séance (nom, famille dominante, exercices et
+  objectifs, durée estimée, jours où il est programmé).
+
+  Params (objet `t`) : name, family, duration, days[], exercises[{ name, target }], lastDone?
+    mode — manage (défaut) : actions Modifier / Dupliquer (page Programme) ;
+           choose : carte radio pour démarrer une séance (MOCK-204) — un vrai
+             <input type="radio"> dans le <label>, le style suit :has(:checked).
+    checked — bool (mode choose)
+    badge — libellé mis en avant (« Prévue aujourd'hui »)
+    group — name du groupe radio (mode choose)
+    editHref — lien « Modifier » (mode manage)
+#}
+{% from "macros/proposals/badge-family.njk" import familyBadge %}
+{% from "macros/proposals/button.njk" import button %}
+{% macro sessionTemplateCard(t, mode='manage', checked=false, badge='', group='template', editHref='#') %}
+{% set body %}
+  <div class="flex items-start justify-between gap-3">
+    <div class="min-w-0">
+      {% if badge %}<p class="text-body-xs font-semibold uppercase tracking-wide text-accent-130">{{ badge }}</p>{% endif %}
+      <h3 class="text-title-s">{{ t.name }}</h3>
+      <p class="mt-0.5 text-body-xs text-muted">{{ t.exercises.length }} exercices · {{ t.duration }}{% if t.days.length %} · {{ t.days | join(', ') }}{% endif %}</p>
+    </div>
+    {% if mode == 'choose' %}
+      <span class="grid size-6 shrink-0 place-items-center rounded-full border-2 border-neutral-60 group-has-checked:border-accent-110 group-has-checked:bg-accent-100" aria-hidden="true"><i class="fas fa-check fa-xs hidden text-neutral-150 group-has-checked:inline"></i></span>
+    {% else %}
+      {{ familyBadge(t.family) }}
+    {% endif %}
+  </div>
+  <ol class="mt-3 space-y-1.5">
+    {% for ex in t.exercises %}
+      <li class="flex items-baseline justify-between gap-3 text-body-s"><span class="min-w-0 truncate">{{ ex.name }}</span><span class="shrink-0 font-mono text-body-xs text-muted">{{ ex.target }}</span></li>
+    {% endfor %}
+  </ol>
+  {% if t.lastDone %}<p class="mt-3 border-t border-border pt-2 text-body-xs text-muted"><i class="fas fa-clock-rotate-left fa-xs" aria-hidden="true"></i> Dernière fois : {{ t.lastDone }}</p>{% endif %}
+{% endset %}
+{% if mode == 'choose' %}
+<label class="group block cursor-pointer rounded-2xl border border-border bg-surface p-4 transition hover:border-neutral-60 has-checked:border-accent-100 has-checked:ring-4 has-checked:ring-accent-20 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-primary-100">
+  <input type="radio" name="{{ group }}" class="sr-only" {% if checked %}checked{% endif %} />
+  {{ body | safe }}
+</label>
+{% else %}
+<article class="flex flex-col rounded-2xl border border-border bg-surface p-4">
+  <div class="flex-1">{{ body | safe }}</div>
+  <div class="mt-4 flex gap-2">
+    {{ button('Modifier', 'secondary', 'sm', 'pen', href=editHref) }}
+    {{ button('Dupliquer', 'ghost', 'sm', 'copy') }}
+  </div>
+</article>
+{% endif %}
+{% endmacro %}

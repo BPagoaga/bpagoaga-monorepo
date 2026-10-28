@@ -1,0 +1,11 @@
+---
+layout: bare-layout.njk
+title: Week planner — mobile
+eleventyExcludeFromCollections: true
+---
+{% from "macros/proposals/week-planner.njk" import weekPlanner %}
+{% set c = calisthenics %}
+<div class="space-y-6 p-4">
+  {{ weekPlanner(c.week) }}
+  {{ weekPlanner(c.week, 'plan', c.templates) }}
+</div>

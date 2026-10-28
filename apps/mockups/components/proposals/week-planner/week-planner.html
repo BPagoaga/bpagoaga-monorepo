@@ -1,0 +1,34 @@
+---
+layout: layout.njk
+title: Week planner
+---
+{% from "macros/proposals/week-planner.njk" import weekPlanner %}
+{% set c = calisthenics %}
+{% set withMissed = [
+  { day: 'Lun', date: '13', status: 'rest' }, { day: 'Mar', date: '14', template: 'Tirage + gainage', status: 'done' },
+  { day: 'Mer', date: '15', status: 'rest' }, { day: 'Jeu', date: '16', template: 'Poussée + jambes', status: 'missed' },
+  { day: 'Ven', date: '17', template: 'Figures + tirage lesté', status: 'done' }, { day: 'Sam', date: '18', status: 'rest' },
+  { day: 'Dim', date: '19', template: 'Poussée + jambes', status: 'done' }
+] %}
+<div class="mx-auto max-w-6xl space-y-10 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">Week planner</h1>
+    <p class="mt-1 max-w-3xl text-body-s text-muted">La semaine du programme. En bandeau sur le tableau de bord, en édition sur la page Programme (un sélecteur par jour).</p>
+  </header>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Bandeau · semaine en cours</h2>
+    {{ weekPlanner(c.week) }}
+  </section>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Bandeau · semaine passée, une séance manquée</h2>
+    {{ weekPlanner(withMissed) }}
+  </section>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Plan · édition</h2>
+    {{ weekPlanner(c.week, 'plan', c.templates) }}
+  </section>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Mobile (390 px)</h2>
+    <iframe src="/previews/week-planner-mobile/" title="Week planner sur mobile" width="390" height="700" class="max-w-full rounded-2xl border border-border bg-background" data-mockup-iframe-autoheight></iframe>
+  </section>
+</div>

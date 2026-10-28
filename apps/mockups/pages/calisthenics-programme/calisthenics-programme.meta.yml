@@ -1,0 +1,17 @@
+id: MOCK-203
+title: Programme
+status: implemented
+app: calisthenics
+area: Programme
+implemented_in: apps/calisthenics/src/pages
+states:
+  - semaine programmée (un modèle ou repos par jour, jour courant mis en avant)
+  - modèles de séance (programmés / non programmés)
+  - aucun modèle (état vide)
+  - édition d'un modèle (variante v2)
+channels: [web, mobile]
+notes: >
+  Programme v1 volontairement simple : un modèle par jour de la semaine, la même semaine
+  se répète. Pas de cycles, de périodisation ni de progression automatique des charges.
+  Les changements s'enregistrent à la volée (stockage local) : pas de bouton « Enregistrer »
+  sur la semaine. Mobile : même page, en une colonne (les jours passent en liste sous lg).

@@ -1,0 +1,114 @@
+---
+layout: layout.njk
+title: Fiche exercice
+---
+{% from "macros/proposals/app-nav.njk" import appNav %}
+{% from "macros/proposals/button.njk" import button %}
+{% from "macros/proposals/badge.njk" import badge %}
+{% from "macros/proposals/badge-family.njk" import familyBadge %}
+{% from "macros/proposals/progression-path.njk" import progressionPath %}
+{% set c = calisthenics %}
+{% set ex = c.exerciseDetail %}
+{{ appNav('tutorials') }}
+<div class="pb-28 lg:pb-0 lg:pl-64">
+  <div class="mx-auto max-w-6xl px-4 py-6 md:px-8 md:py-8">
+    <nav aria-label="Fil d'Ariane">
+      <ol class="flex flex-wrap items-center gap-1.5 text-body-s text-muted">
+        <li><a href="/pages/calisthenics-tutoriels/" class="hover:text-foreground hover:underline">Tutoriels</a></li>
+        <li aria-hidden="true"><i class="fas fa-chevron-right fa-xs"></i></li>
+        <li><a href="/pages/calisthenics-tutoriels/" class="hover:text-foreground hover:underline">{{ ex.path }}</a></li>
+        <li aria-hidden="true"><i class="fas fa-chevron-right fa-xs"></i></li>
+        <li aria-current="page" class="font-medium text-foreground">Étape {{ ex.step }}</li>
+      </ol>
+    </nav>
+
+    <header class="mt-4 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+      <div class="max-w-2xl">
+        <div class="flex flex-wrap gap-2">{{ familyBadge(ex.family, 'md') }}{{ badge('En cours', 'orange', 'spinner') }}{{ badge('Étape ' + ex.step + '/' + ex.steps, 'neutral') }}</div>
+        <h1 class="mt-3 font-display text-title-xl md:text-display">{{ ex.name }}</h1>
+        <p class="mt-2 text-body-l text-muted">{{ ex.summary }}</p>
+        <dl class="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-body-s">
+          <div class="flex items-center gap-2"><dt class="text-subtle">Niveau</dt>
+            <dd class="flex gap-0.5" aria-label="{{ ex.level }} sur 5">{% for i in range(1, 6) %}<span class="h-1.5 w-3 rounded-full {{ 'bg-accent-100' if i <= ex.level else 'bg-neutral-30' }}" aria-hidden="true"></span>{% endfor %}</dd></div>
+          <div class="flex gap-2"><dt class="text-subtle">Matériel</dt><dd class="font-medium">{{ ex.equipment }}</dd></div>
+          <div class="flex gap-2"><dt class="text-subtle">Muscles</dt><dd class="font-medium">{{ ex.muscles | join(', ') }}</dd></div>
+        </dl>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        {{ button('Ajouter à un modèle', 'secondary', 'lg', 'calendar-plus') }}
+        {{ button('S’entraîner maintenant', 'accent', 'lg', 'play', href='/pages/calisthenics-nouvelle-seance/') }}
+      </div>
+    </header>
+
+    <div class="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1fr)_360px]">
+      <div class="space-y-8">
+        <a href="#" class="group relative grid aspect-video place-items-center overflow-hidden rounded-2xl bg-neutral-150 text-white">
+          <span class="grid size-16 place-items-center rounded-full bg-accent-100 text-title-l text-neutral-150 transition group-hover:scale-105" aria-hidden="true"><i class="fas fa-play"></i></span>
+          <span class="absolute bottom-4 left-4 text-body-s font-medium">{{ ex.video.label }} <span class="text-neutral-40">· {{ ex.video.duration }}</span></span>
+        </a>
+
+        <section aria-labelledby="cues-title">
+          <h2 id="cues-title" class="text-title-m">Exécution</h2>
+          <ol class="mt-4 space-y-3">
+            {% for cue in ex.cues %}
+              <li class="flex gap-3">
+                <span class="grid size-7 shrink-0 place-items-center rounded-full bg-primary-10 text-body-xs font-bold text-primary-120">{{ loop.index }}</span>
+                <p class="pt-0.5 text-body-m">{{ cue }}</p>
+              </li>
+            {% endfor %}
+          </ol>
+        </section>
+
+        <section aria-labelledby="mistakes-title">
+          <h2 id="mistakes-title" class="text-title-m">Erreurs fréquentes</h2>
+          <ul class="mt-4 grid gap-3 md:grid-cols-3">
+            {% for m in ex.mistakes %}
+              <li class="rounded-2xl border border-border bg-surface p-4">
+                <p class="flex items-center gap-2 text-body-s font-semibold"><i class="fas fa-triangle-exclamation text-orange-110" aria-hidden="true"></i>{{ m.title }}</p>
+                <p class="mt-1 text-body-s text-muted">{{ m.text }}</p>
+              </li>
+            {% endfor %}
+          </ul>
+        </section>
+      </div>
+
+      <aside class="space-y-6 xl:sticky xl:top-20 xl:self-start">
+        <section class="rounded-2xl border border-border bg-surface p-5" aria-labelledby="criterion-title">
+          <p class="text-body-xs font-semibold uppercase tracking-wide text-accent-130">Pour passer à l'étape suivante</p>
+          <h2 id="criterion-title" class="mt-1 text-title-s">{{ ex.criterion }}</h2>
+          <p class="mt-1 text-body-s text-muted">Presque : il manque une répétition sur la 3ᵉ série.</p>
+          <h3 class="mt-4 text-body-xs font-semibold uppercase tracking-wide text-subtle">Dernières tentatives</h3>
+          <ul class="mt-2 divide-y divide-border">
+            {% for a in ex.attempts %}
+              <li class="flex items-center justify-between gap-3 py-2">
+                <span class="text-body-s {{ 'font-semibold' if a.best else 'text-muted' }}">{{ a.date }}</span>
+                <span class="flex gap-1">
+                  {% for s in a.sets %}
+                    {% set ok = s | int >= 5 %}
+                    <span class="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 font-mono text-body-xs {{ 'bg-green-10 text-green-130' if ok else 'bg-neutral-20 text-neutral-130' }}">{% if ok %}<i class="fas fa-check fa-xs" aria-hidden="true"></i>{% endif %}{{ s }}</span>
+                  {% endfor %}
+                  <span class="sr-only">{{ a.sets | join(', ') }} répétitions</span>
+                </span>
+              </li>
+            {% endfor %}
+          </ul>
+        </section>
+
+        <section class="rounded-2xl border border-border bg-surface p-5" aria-labelledby="path-title">
+          <h2 id="path-title" class="text-title-s">{{ ex.path }}</h2>
+          <div class="mt-4">{{ progressionPath(ex.path, c.muscleUpPath) }}</div>
+          <div class="grid gap-2 border-t border-border pt-4 sm:grid-cols-2 xl:grid-cols-1">
+            <a href="#" class="rounded-xl border border-border p-3 hover:border-primary-60">
+              <span class="text-body-xs text-subtle"><i class="fas fa-arrow-left fa-xs" aria-hidden="true"></i> Étape précédente</span>
+              <span class="block text-body-s font-semibold">{{ ex.previous.name }}</span>
+            </a>
+            <a href="#" class="rounded-xl border border-border p-3 hover:border-primary-60">
+              <span class="text-body-xs text-subtle">Étape suivante <i class="fas fa-lock fa-xs" aria-hidden="true"></i><span class="sr-only">(verrouillée)</span></span>
+              <span class="block text-body-s font-semibold">{{ ex.next.name }}</span>
+            </a>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </div>
+</div>

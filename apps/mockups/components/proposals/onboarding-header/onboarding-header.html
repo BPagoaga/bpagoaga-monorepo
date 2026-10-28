@@ -1,0 +1,19 @@
+---
+layout: layout.njk
+title: Onboarding header
+---
+{% from "macros/proposals/onboarding-header.njk" import onboardingHeader %}
+<div class="mx-auto max-w-5xl space-y-10 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">Onboarding header</h1>
+    <p class="mt-1 max-w-3xl text-body-s text-muted">En-tête des écrans de premier lancement : marque, étape du parcours, « Passer ». Pas de navigation principale.</p>
+  </header>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Étape 1 · test de niveau</h2>
+    <div class="overflow-hidden rounded-2xl border border-border">{{ onboardingHeader(1, 3, 'Test de niveau', '/pages/calisthenics-dashboard/v2-premier-lancement/') }}</div>
+  </section>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Étape 2 · figure</h2>
+    <div class="overflow-hidden rounded-2xl border border-border">{{ onboardingHeader(2, 3, 'Ta figure') }}</div>
+  </section>
+</div>

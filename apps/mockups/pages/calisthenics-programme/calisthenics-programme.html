@@ -1,0 +1,46 @@
+---
+layout: layout.njk
+title: Programme
+---
+{% from "macros/proposals/app-nav.njk" import appNav %}
+{% from "macros/proposals/button.njk" import button %}
+{% from "macros/proposals/week-planner.njk" import weekPlanner %}
+{% from "macros/proposals/session-template-card.njk" import sessionTemplateCard %}
+{% set c = calisthenics %}
+{{ appNav('programme') }}
+<div class="pb-28 lg:pb-0 lg:pl-64">
+  <div class="mx-auto max-w-6xl space-y-10 px-4 py-6 md:px-8 md:py-8">
+    <header class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <h1 class="font-display text-title-xl">Programme</h1>
+        <p class="mt-1 text-body-m text-muted">3 séances par semaine · la même semaine se répète jusqu'à ce que tu la changes.</p>
+      </div>
+      {{ button('Créer un modèle', 'primary', 'md', 'plus', href='/pages/calisthenics-programme/v2-modele/') }}
+    </header>
+
+    <section class="space-y-3" aria-labelledby="week-title">
+      <div>
+        <h2 id="week-title" class="text-title-m">Ta semaine</h2>
+        <p class="text-body-s text-muted">Choisis un modèle pour chaque jour d'entraînement. Les modifications sont enregistrées tout de suite.</p>
+      </div>
+      {{ weekPlanner(c.week, 'plan', c.templates) }}
+    </section>
+
+    <section class="space-y-3" aria-labelledby="templates-title">
+      <h2 id="templates-title" class="text-title-m">Modèles de séance <span class="text-body-m font-normal text-muted">· {{ c.templates.length }}</span></h2>
+      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {% for t in c.templates %}{{ sessionTemplateCard(t, editHref='/pages/calisthenics-programme/v2-modele/') }}{% endfor %}
+      </div>
+    </section>
+
+    <section class="space-y-3" aria-labelledby="empty-title">
+      <h2 id="empty-title" class="text-body-s font-semibold uppercase tracking-wide text-subtle">État vide · aucun modèle</h2>
+      <div class="rounded-2xl border border-dashed border-border p-8 text-center">
+        <div class="mx-auto grid size-12 place-items-center rounded-xl bg-neutral-20 text-subtle" aria-hidden="true"><i class="fas fa-calendar-week"></i></div>
+        <p class="mt-3 text-title-s">Pas encore de modèle de séance</p>
+        <p class="mx-auto mt-1 max-w-sm text-body-s text-muted">Un modèle, c'est une liste d'exercices avec leurs objectifs. Crée-en un, puis assigne-le aux jours où tu t'entraînes.</p>
+        <div class="mt-4">{{ button('Créer un modèle', 'primary', 'md', 'plus') }}</div>
+      </div>
+    </section>
+  </div>
+</div>

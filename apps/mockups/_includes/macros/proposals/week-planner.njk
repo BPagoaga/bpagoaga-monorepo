@@ -1,0 +1,51 @@
+{#
+  Week planner — la semaine du programme : un modèle de séance ou repos par jour.
+
+  Params :
+    days — [{ day, date, template?, status: done | today | planned | rest | missed }]
+    mode — strip (défaut) : bandeau compact en lecture (tableau de bord), chaque jour
+             lisible sans la couleur (icône + texte masqué) ;
+           plan : un sélecteur par jour pour assigner un modèle (page Programme).
+    templates — [{ name }] : options des sélecteurs (mode plan)
+#}
+{% macro weekPlanner(days, mode='strip', templates=[]) %}
+{% set statuses = {
+  'done': { label: 'faite', icon: 'circle-check', cls: 'text-green-120' },
+  'today': { label: 'aujourd’hui', icon: 'circle-dot', cls: 'text-accent-130' },
+  'planned': { label: 'prévue', icon: 'calendar', cls: 'text-subtle' },
+  'missed': { label: 'manquée', icon: 'circle-xmark', cls: 'text-red-110' },
+  'rest': { label: 'repos', icon: 'mug-hot', cls: 'text-subtle' }
+} %}
+{% if mode == 'plan' %}
+<ol class="grid gap-2 sm:grid-cols-2 2xl:grid-cols-7">
+  {% for d in days %}
+    {% set today = d.status == 'today' %}
+    <li class="flex items-center gap-3 rounded-xl border p-3 2xl:flex-col 2xl:items-stretch {{ 'border-accent-100 bg-accent-10' if today else 'border-border bg-surface' }}" {% if today %}aria-current="date"{% endif %}>
+      <div class="w-20 shrink-0 2xl:w-auto">
+        <p class="text-body-s font-semibold">{{ d.day }} {{ d.date }}</p>
+        {% if today %}<p class="text-body-xs font-semibold text-accent-140">Aujourd’hui</p>{% elif d.status == 'done' %}<p class="text-body-xs text-green-120"><i class="fas fa-check fa-xs" aria-hidden="true"></i> Faite</p>{% endif %}
+      </div>
+      <label class="sr-only" for="plan-{{ d.day }}">Séance du {{ d.day }} {{ d.date }}</label>
+      <select id="plan-{{ d.day }}" class="h-11 w-full min-w-0 rounded-lg border border-border bg-surface px-2 text-body-s {{ 'text-subtle' if not d.template else 'font-medium' }} focus:border-primary-100 focus:outline-hidden focus:ring-4 focus:ring-primary-20">
+        <option {% if not d.template %}selected{% endif %}>Repos</option>
+        {% for t in templates %}<option {% if t.name == d.template %}selected{% endif %}>{{ t.name }}</option>{% endfor %}
+      </select>
+    </li>
+  {% endfor %}
+</ol>
+{% else %}
+<ol class="grid grid-cols-7 gap-1.5 sm:gap-2" aria-label="Séances de la semaine">
+  {% for d in days %}
+    {% set s = statuses[d.status] %}
+    {% set today = d.status == 'today' %}
+    <li class="flex min-w-0 flex-col items-center gap-1 rounded-xl border px-1 py-2 text-center sm:py-3 {{ 'border-accent-100 bg-accent-10' if today else 'border-border bg-surface' }}" {% if today %}aria-current="date"{% endif %}>
+      <span class="text-body-xs font-medium text-muted">{{ d.day }}</span>
+      <span class="font-display text-title-s {{ 'text-subtle' if d.status == 'rest' }}">{{ d.date }}</span>
+      <i class="fas fa-{{ s.icon }} {{ s.cls }}" aria-hidden="true"></i>
+      <span class="hidden w-full truncate text-body-xs {{ 'font-semibold' if today else 'text-muted' }} md:block">{{ d.template or 'Repos' }}</span>
+      <span class="sr-only">{{ d.template or 'Repos' }}, {{ s.label }}</span>
+    </li>
+  {% endfor %}
+</ol>
+{% endif %}
+{% endmacro %}

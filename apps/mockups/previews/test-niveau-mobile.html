@@ -1,0 +1,9 @@
+---
+layout: bare-layout.njk
+title: test-niveau-mobile
+eleventyExcludeFromCollections: true
+---
+{% from "macros/proposals/onboarding-header.njk" import onboardingHeader %}
+{% from "macros/proposals/level-test.njk" import levelTest %}
+{{ onboardingHeader(1, 3, 'Test de niveau') }}
+<main>{{ levelTest(calisthenics.levelTest, 1) }}</main>

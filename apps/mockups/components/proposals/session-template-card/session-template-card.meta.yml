@@ -1,0 +1,21 @@
+id: MOCK-029
+title: Session template card
+kind: proposals
+status: validated
+app: calisthenics
+area: Programme
+related_component: null
+implemented_in: null
+states:
+  [
+    gestion (Modifier / Dupliquer),
+    choix (radio non cochée / cochée / focus),
+    mise en avant « Prévue aujourd'hui »,
+    dernière réalisation,
+    modèle non programmé,
+  ]
+channels: [web, mobile]
+notes: >
+  En mode choix, la carte entière est le <label> d'un vrai bouton radio : clavier (flèches)
+  et lecteurs d'écran fonctionnent sans JS. La pastille cochée double la bordure accent
+  pour ne pas porter l'état par la couleur seule.

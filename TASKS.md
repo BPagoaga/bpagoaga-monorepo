@@ -16,10 +16,18 @@
 Notes : contenu migré depuis `BPagoaga/portfolio` (branche `master`, = site en ligne). Vignettes récupérées dans
 l'historique (commit `49c506c`). Écartés : bandeau « Work In Progress », contenu 2015-2018 (CV PDF, certificats).
 
-### Calisthenics
+### Calisthenics (CaliBuddy)
 
-- [ ] Valider les maquettes tableau de bord / tutoriels / journal (MOCK-200 à 202)
-- [ ] Définir le modèle de données (exercices, progressions, séances, séries)
+Décisions (2026-10-28) : l'app web (`apps/calisthenics`) d'abord, données locales (IndexedDB derrière des hooks React
+Query, sans compte), v1 = journal + tableau de bord + tutoriels + programme simple (un modèle de séance par jour de la
+semaine) + test de niveau au premier lancement. Nom : CaliBuddy (le lien du portfolio reste « Training »).
+
+- [ ] Promouvoir les composants calisthenics de `apps/mockups` en `reference/` (macros + vitrines), maintenant que les
+      écrans sont implémentés
+- [ ] Mettre à jour la maquette du set logger (MOCK-026) : mode durée, déjà implémenté dans l'app
+- [ ] Vidéos de démonstration des exercices (liens externes ou hébergées) : le champ `video` est prêt
+- [ ] Déployer l'app web sur training.bernardpagoaga.net (build statique avec repli SPA sur `index.html`)
+- [ ] App mobile : reprendre le modèle de données (`src/domain`, `src/content`) dans un package partagé
 - [ ] App mobile : `eas init` (compte Expo), icône et splash screen propres, premiers écrans à partir des maquettes
 - [ ] App mobile : EAS Update (`expo-updates`, canaux) si on veut des mises à jour OTA
 
@@ -37,5 +45,7 @@ l'historique (commit `49c506c`). Écartés : bandeau « Work In Progress », con
 - [x] 2026-10-26 — App `mockups` (Eleventy) : catalogue, 11 composants, 5 pages
 - [x] 2026-10-26 — Migration du contenu de bernardpagoaga.net dans `apps/portfolio` (17 projets, réseaux, SEO)
 - [x] 2026-10-26 — App `calisthenics-mobile` (Expo SDK 58, EAS), package `ui-native` (tokens générés depuis `ui`)
+- [x] 2026-10-28 — Maquettes calisthenics révisées et validées (MOCK-200 à 206), modèle de données (`apps/calisthenics/docs/data-model.md`)
+- [x] 2026-10-28 — App web CaliBuddy : test de niveau, programme, séances, journal, tableau de bord, tutoriels (IndexedDB, 26 tests)
 - [x] 2026-10-27 — Portfolio : menu (À propos, Portfolio, CV, Training externe via `TRAINING_URL`), retrait Facebook / X / CodePen
 - [x] 2026-10-26 — Serveurs de dev en HTTPS (`@bpagoaga/dev-certs`) et Storybook pour `@bpagoaga/ui` (fondations)

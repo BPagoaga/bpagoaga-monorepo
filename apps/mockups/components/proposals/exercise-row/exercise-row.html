@@ -1,0 +1,26 @@
+---
+layout: layout.njk
+title: Exercise row
+---
+{% from "macros/proposals/exercise-row.njk" import exerciseRow %}
+{% set c = calisthenics %}
+{% set t = c.templates[1] %}
+{% set long = { name: 'Tractions australiennes pieds surélevés, prise supination', family: 'pull', target: '4 × 10 reps' } %}
+<div class="mx-auto max-w-3xl space-y-10 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">Exercise row</h1>
+    <p class="mt-1 max-w-3xl text-body-s text-muted">Un exercice dans une liste : récapitulatif avant de démarrer, pioche dans la bibliothèque, édition d'un modèle.</p>
+  </header>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Récapitulatif</h2>
+    <ul class="space-y-2">{% for ex in t.exercises %}{{ exerciseRow(ex) }}{% endfor %}{{ exerciseRow(long) }}</ul>
+  </section>
+  <section class="space-y-3" data-mockup-scope>
+    <h2 class="text-title-m">Pioche <span class="text-body-s font-normal text-muted">· boutons cliquables</span></h2>
+    <ul class="space-y-2">{% for ex in t.exercises %}{{ exerciseRow(ex, 'pick', loop.first) }}{% endfor %}</ul>
+  </section>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Édition</h2>
+    <ul class="space-y-2">{% for ex in t.exercises %}{{ exerciseRow(ex, 'edit', index=loop.index) }}{% endfor %}</ul>
+  </section>
+</div>

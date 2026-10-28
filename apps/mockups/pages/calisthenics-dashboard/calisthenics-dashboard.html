@@ -7,17 +7,18 @@ title: Tableau de bord
 {% from "macros/proposals/stat-card.njk" import statCard %}
 {% from "macros/proposals/progress-chart.njk" import progressChart %}
 {% from "macros/proposals/session-card.njk" import sessionCard %}
+{% from "macros/proposals/week-planner.njk" import weekPlanner %}
 {% set c = calisthenics %}
 {{ appNav('dashboard') }}
 <div class="pb-28 lg:pb-0 lg:pl-64">
   <div class="mx-auto max-w-6xl space-y-8 px-4 py-6 md:px-8 md:py-8">
     <header class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <p class="text-body-s text-muted">Mardi 21 octobre</p>
+        <p class="text-body-s text-muted">{{ c.today.label }}</p>
         <h1 class="font-display text-title-xl">Salut Bernard 👋</h1>
-        <p class="mt-1 text-body-m text-muted">Séance <strong class="font-semibold text-foreground">Tirage</strong> prévue aujourd'hui · 12 jours de régularité.</p>
+        <p class="mt-1 text-body-m text-muted">Séance <strong class="font-semibold text-foreground">Poussée + jambes</strong> prévue aujourd'hui · 12 jours de régularité.</p>
       </div>
-      {{ button('Démarrer la séance', 'accent', 'lg', 'play', href='/pages/calisthenics-journal/', extraClass='hidden lg:inline-flex') }}
+      {{ button('Démarrer la séance', 'accent', 'lg', 'play', href='/pages/calisthenics-nouvelle-seance/', extraClass='hidden lg:inline-flex') }}
     </header>
 
     {# Prochaine étape d'abord : ce que l'utilisateur doit faire maintenant. #}
@@ -28,15 +29,23 @@ title: Tableau de bord
         <p class="mt-1 text-title-s">Traction explosive : 3 × 5 reps, barre au sternum</p>
         <p class="mt-1 text-body-s text-neutral-40">Dernière tentative : 5, 5, 4 — encore une répétition sur la 3ᵉ série.</p>
       </div>
-      {{ button('Voir le tutoriel', 'secondary', 'md', iconRight='arrow-right', href='/pages/calisthenics-tutoriels/') }}
+      {{ button('Voir le tutoriel', 'secondary', 'md', iconRight='arrow-right', href='/pages/calisthenics-fiche-exercice/') }}
+    </section>
+
+    <section class="space-y-3" aria-labelledby="week-title">
+      <div class="flex items-baseline justify-between">
+        <h2 id="week-title" class="text-title-m">Cette semaine <span class="text-body-m font-normal text-muted">· 1 séance sur 3</span></h2>
+        <a href="/pages/calisthenics-programme/" class="text-body-s font-medium text-primary-100 hover:underline">Modifier le programme</a>
+      </div>
+      {{ weekPlanner(c.week) }}
     </section>
 
     <section aria-label="Indicateurs du mois" class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {% for s in c.stats %}{{ statCard(s) }}{% endfor %}
     </section>
 
-    <div class="grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-      <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-1">
+    <div class="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-1">
         {{ progressChart('Volume hebdomadaire', c.weeklyVolume, '', 'répétitions totales · 8 semaines') }}
         {{ progressChart('Tractions max', c.pullUpMax, '', 'meilleure série · 6 mois') }}
       </div>

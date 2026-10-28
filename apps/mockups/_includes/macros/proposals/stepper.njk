@@ -1,0 +1,22 @@
+{#
+  Stepper — saisie numérique au pouce : gros boutons −/+ de 48 px autour d'une valeur
+  éditable au clavier (inputmode numeric). Utilisé par le set logger et le test de niveau.
+
+  Params :
+    label — string (sert aussi aux aria-label des boutons)
+    value — valeur affichée
+    unit  — suffixe (« kg », « s », « reps ») — optionnel
+    id    — id de l'input, unique dans la page
+    size  — md (défaut) | lg : valeur en text-display pour un écran centré sur une seule saisie
+#}
+{% macro stepper(label, value, unit='', id='', size='md') %}
+<div class="flex-1">
+  <label for="{{ id }}" class="text-body-xs font-medium text-muted">{{ label }}</label>
+  <div class="mt-1 flex items-center rounded-xl border border-border bg-surface focus-within:border-primary-100 focus-within:ring-4 focus-within:ring-primary-20">
+    <button type="button" class="grid {{ 'size-16' if size == 'lg' else 'size-12' }} shrink-0 place-items-center rounded-l-xl text-neutral-130 hover:bg-neutral-20" aria-label="Diminuer {{ label | lower }}"><i class="fas fa-minus"></i></button>
+    <input id="{{ id }}" type="text" inputmode="numeric" value="{{ value }}" class="w-full min-w-0 bg-transparent text-center font-display {{ 'text-display' if size == 'lg' else 'text-title-m' }} outline-none" />
+    {% if unit %}<span class="pr-1 text-body-xs text-subtle">{{ unit }}</span>{% endif %}
+    <button type="button" class="grid {{ 'size-16' if size == 'lg' else 'size-12' }} shrink-0 place-items-center rounded-r-xl text-neutral-130 hover:bg-neutral-20" aria-label="Augmenter {{ label | lower }}"><i class="fas fa-plus"></i></button>
+  </div>
+</div>
+{% endmacro %}

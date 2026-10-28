@@ -1,12 +1,32 @@
+import { Navigate, Route, Routes } from 'react-router';
+import CurrentSession from './pages/CurrentSession';
+import Dashboard from './pages/Dashboard';
+import ExerciseDetail from './pages/ExerciseDetail';
+import FinishSession from './pages/FinishSession';
+import Journal from './pages/Journal';
+import LevelResults from './pages/LevelResults';
+import LevelTest from './pages/LevelTest';
+import Programme from './pages/Programme';
+import StartSession from './pages/StartSession';
+import TemplateEditor from './pages/TemplateEditor';
+import Tutorials from './pages/Tutorials';
+
 const App = () => (
-  <main className="flex min-h-screen flex-col items-center justify-center gap-3 bg-background p-6 text-center">
-    <p className="text-body-s font-semibold uppercase tracking-widest text-accent-110">Bientôt</p>
-    <h1 className="font-display text-title-xl text-foreground">Calisthenics</h1>
-    <p className="max-w-md text-body-m text-muted">
-      Tutoriels, récapitulatifs de performance et journal de séances. Les maquettes sont dans{' '}
-      <code className="font-mono text-body-s">apps/mockups</code>.
-    </p>
-  </main>
+  <Routes>
+    <Route path="/" element={<Dashboard />} />
+    <Route path="/bienvenue/test" element={<LevelTest />} />
+    <Route path="/bienvenue/resultats" element={<LevelResults />} />
+    <Route path="/journal" element={<Journal />} />
+    <Route path="/seance" element={<CurrentSession />} />
+    <Route path="/seance/nouvelle" element={<StartSession />} />
+    <Route path="/seance/fin" element={<FinishSession />} />
+    <Route path="/programme" element={<Programme />} />
+    <Route path="/programme/modeles/nouveau" element={<TemplateEditor />} />
+    <Route path="/programme/modeles/:templateId" element={<TemplateEditor />} />
+    <Route path="/tutoriels" element={<Tutorials />} />
+    <Route path="/tutoriels/:exerciseId" element={<ExerciseDetail />} />
+    <Route path="*" element={<Navigate to="/" replace />} />
+  </Routes>
 );
 
 export default App;

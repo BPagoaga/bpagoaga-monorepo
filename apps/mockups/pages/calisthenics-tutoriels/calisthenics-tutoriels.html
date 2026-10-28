@@ -23,7 +23,7 @@ title: Tutoriels
           <p class="text-body-xs font-semibold uppercase tracking-wide text-accent-130">Ta progression en cours</p>
           <h2 id="path-title" class="text-title-m">Vers le muscle-up</h2>
         </div>
-        {{ button('Reprendre l’étape 4', 'accent', 'md', 'play') }}
+        {{ button('Reprendre l’étape 4', 'accent', 'md', 'play', href='/pages/calisthenics-fiche-exercice/') }}
       </div>
       <div class="mt-5">{{ progressionPath('Vers le muscle-up', c.muscleUpPath, 'horizontal') }}</div>
     </section>
@@ -47,7 +47,7 @@ title: Tutoriels
         {% set list = [] %}
         {% for ex in c.exercises %}{% if f[0] == 'all' or ex.family == f[0] %}{% set noop = list.push(ex) %}{% endif %}{% endfor %}
         <div data-mockup-tab-panel="family:{{ f[0] }}" class="{{ '' if f[0] == 'all' else 'hidden' }} grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {% for ex in list %}{{ exerciseCard(ex) }}{% else %}
+          {% for ex in list %}{{ exerciseCard(ex, '/pages/calisthenics-fiche-exercice/') }}{% else %}
             <p class="col-span-full rounded-2xl border border-dashed border-border p-10 text-center text-body-s text-muted">Aucun exercice dans cette famille pour l'instant.</p>
           {% endfor %}
         </div>

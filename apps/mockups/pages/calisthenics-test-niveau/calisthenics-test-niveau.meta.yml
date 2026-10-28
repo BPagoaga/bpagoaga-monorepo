@@ -1,0 +1,18 @@
+id: MOCK-206
+title: Test de niveau
+status: implemented
+app: calisthenics
+area: Premier lancement
+implemented_in: apps/calisthenics/src/pages
+states:
+  - test en cours (2/4), tests précédents validés
+  - « je n'arrive pas à en faire une » (résultat 0, progression à l'étape 1)
+  - résultats et choix de la figure (variante v2)
+  - mobile (variante v3)
+channels: [web, mobile]
+notes: >
+  Lancé depuis le premier lancement (MOCK-200 v2) ; refaisable plus tard. Quatre tests
+  max : tractions, pompes, dips, hollow body hold. Chaque résultat devient un premier record
+  et place la progression correspondante à la bonne étape (seuils à définir avec le modèle
+  de données). Le chrono du hollow body hold est saisi à la main en v1 (pas de minuteur
+  intégré). Sur mobile, l'écran est le même en une colonne, les actions collées en bas.

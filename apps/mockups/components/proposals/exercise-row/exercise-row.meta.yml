@@ -1,0 +1,14 @@
+id: MOCK-030
+title: Exercise row
+kind: proposals
+status: validated
+app: calisthenics
+area: Programme
+related_component: null
+implemented_in: null
+states: [récapitulatif (retirer), pioche (ajouter / ajouté), édition (réordonner, objectif, retirer), nom long]
+channels: [web, mobile]
+notes: >
+  Le réordonnancement est maquetté par une poignée ; à l'implémentation il faut aussi une
+  alternative clavier (boutons monter / descendre ou menu), le glisser-déposer seul
+  n'étant pas accessible (WCAG 2.5.7).

@@ -30,6 +30,13 @@ When working on any feature or bug fix:
 5. **Add context notes** for important decisions, blockers, or next steps
 6. **Keep tasks specific and actionable** - prefer multiple small tasks over one large task
 
+## Branches
+
+- **`develop`** is the default branch: create every branch from `develop` and open pull requests against `develop`.
+- **`main`** is the release branch. It is only updated from `develop`, and a push to it deploys the portfolio
+  (see _Deployment_).
+- Branch names: `<type>/<short-description>`, with the commit types below (`feat/portfolio-menu`, `docs/...`).
+
 ## Commit Convention
 
 [Conventional Commits](https://www.conventionalcommits.org/):
@@ -84,7 +91,7 @@ pnpm turbo run lint build --filter=@bpagoaga/<app>
 ### Deployment
 
 - `apps/portfolio` is deployed to **GitHub Pages** (custom domain `bernardpagoaga.net`) by
-  `.github/workflows/deploy-portfolio.yml`, on every push to `main` that touches the portfolio, `packages/ui` or the
+  `.github/workflows/deploy-portfolio.yml`, on every push to `main` (the release branch, not `develop`) that touches the portfolio, `packages/ui` or the
   shared tooling (or by hand: _Actions → Deploy — Portfolio → Run workflow_).
 - The site is built for the domain root (`site` in `astro.config.mjs`, no `base`): it only renders correctly on
   `bernardpagoaga.net`, not on the `*.github.io/bpagoaga-monorepo/` URL.

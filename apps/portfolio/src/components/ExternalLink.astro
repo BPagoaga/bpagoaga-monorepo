@@ -1,0 +1,14 @@
+---
+// Every link leaving bernardpagoaga.net goes through this component: new tab, no opener, no referrer.
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = Omit<HTMLAttributes<'a'>, 'target'> & {
+  href: string;
+  // Extra rel tokens (e.g. `me` on social profiles), added to `noopener noreferrer`.
+  rel?: string;
+};
+
+const { rel, ...attrs } = Astro.props;
+---
+
+<a {...attrs} target="_blank" rel={['noopener noreferrer', rel].filter(Boolean).join(' ')}><slot /></a>

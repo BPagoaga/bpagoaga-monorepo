@@ -1,0 +1,108 @@
+---
+// Port of the mockups' `site-header` macro (apps/mockups/_includes/macros/proposals/site-header.njk):
+// inline links from `md`, a toggled menu below it.
+import { faArrowUpRightFromSquare, faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { TRAINING_URL } from 'astro:env/client';
+import { type INavLink, NAV_LINKS, SITE } from '../data/site';
+import ExternalLink from './ExternalLink.astro';
+import Icon from './Icon.astro';
+
+const links: INavLink[] = [...NAV_LINKS, { label: 'Training', href: TRAINING_URL, external: true }];
+const inlineClass =
+  'flex items-center gap-1.5 rounded-md px-3 py-2 text-body-s font-medium text-muted hover:bg-neutral-20 hover:text-foreground';
+const menuClass =
+  'flex min-h-11 items-center gap-2 rounded-lg px-3 py-3 text-body-m font-medium text-neutral-130 hover:bg-neutral-20';
+---
+
+<header class="sticky top-0 z-30 border-b border-border bg-surface/90 backdrop-blur" data-site-nav>
+  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 md:px-6">
+    <a href="#top" class="flex min-w-0 items-center gap-2.5" aria-label={`${SITE.name}, back to top`}>
+      <span
+        class="grid size-9 shrink-0 place-items-center rounded-lg bg-primary-100 font-display text-body-s font-bold text-white"
+        aria-hidden="true">BP</span
+      >
+      <span class="truncate font-display text-title-s" aria-hidden="true">{SITE.name}</span>
+    </a>
+    <nav aria-label="Main" class="hidden md:block">
+      <ul class="flex items-center gap-1">
+        {
+          links.map((link) => (
+            <li>
+              {link.external ? (
+                <ExternalLink href={link.href} class={inlineClass}>
+                  {link.label}
+                  <Icon icon={faArrowUpRightFromSquare} class="size-3" />
+                  <span class="sr-only">(opens in a new tab)</span>
+                </ExternalLink>
+              ) : (
+                <a href={link.href} class={inlineClass}>
+                  {link.label}
+                </a>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <button
+      type="button"
+      class="grid size-11 shrink-0 place-items-center rounded-lg text-neutral-130 hover:bg-neutral-20 md:hidden"
+      aria-expanded="false"
+      aria-controls="site-menu"
+      data-site-nav-toggle
+    >
+      <span class="sr-only">Menu</span>
+      <Icon icon={faBars} class="size-5 in-aria-expanded:hidden" />
+      <Icon icon={faXmark} class="hidden size-5 in-aria-expanded:block" />
+    </button>
+  </div>
+  <nav id="site-menu" aria-label="Main" class="hidden border-t border-border px-4 pt-2 pb-4 md:hidden" data-site-nav-menu>
+    <ul class="space-y-1">
+      {
+        links.map((link) => (
+          <li>
+            {link.external ? (
+              <ExternalLink href={link.href} class={menuClass}>
+                {link.label}
+                <Icon icon={faArrowUpRightFromSquare} class="size-3.5" />
+                <span class="sr-only">(opens in a new tab)</span>
+              </ExternalLink>
+            ) : (
+              <a href={link.href} class={menuClass}>
+                {link.label}
+              </a>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-site-nav]');
+  const toggle = header?.querySelector<HTMLButtonElement>('[data-site-nav-toggle]');
+  const menu = header?.querySelector<HTMLElement>('[data-site-nav-menu]');
+
+  if (header && toggle && menu) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      menu.classList.toggle('hidden', !open);
+    };
+
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    // Close after picking a section, on Escape, and when the inline links take over (md and up).
+    menu.addEventListener('click', (event) => {
+      if ((event.target as Element).closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+    matchMedia('(min-width: 48rem)').addEventListener('change', (event) => {
+      if (event.matches) setOpen(false);
+    });
+  }
+</script>

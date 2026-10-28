@@ -6,7 +6,9 @@
 
 - [ ] Remplacer le contenu de démo des mockups (`apps/mockups/_data/portfolio.mjs`) par le vrai parcours
 - [ ] Choisir entre la version une page et la version deux colonnes (MOCK-100)
-- [ ] Compléter le portfolio : parcours, compétences, à propos (texte de la branche `nuxt3` de l'ancien repo), contact
+- [ ] Compléter le portfolio : parcours, compétences, contact
+- [ ] Section CV (`#cv`) : vrai parcours (pour l'instant un renvoi vers LinkedIn)
+- [ ] Projets FreeCodeCamp : les vignettes pointent toujours vers des pens CodePen (seul le lien de profil a été retiré)
 - [ ] Image Open Graph (l'ancien `og:image` pointait vers un `BPAGOAGA.svg` inexistant)
 - [~] Déployer `apps/portfolio` sur bernardpagoaga.net (remplace le site Nuxt 2) — workflow GitHub Pages prêt ; reste :
   domaine vérifié, domaine perso dans les réglages Pages, DNS (Netlify DNS) vers GitHub, HTTPS forcé, arrêt du site Netlify
@@ -35,4 +37,5 @@ l'historique (commit `49c506c`). Écartés : bandeau « Work In Progress », con
 - [x] 2026-10-26 — App `mockups` (Eleventy) : catalogue, 11 composants, 5 pages
 - [x] 2026-10-26 — Migration du contenu de bernardpagoaga.net dans `apps/portfolio` (17 projets, réseaux, SEO)
 - [x] 2026-10-26 — App `calisthenics-mobile` (Expo SDK 58, EAS), package `ui-native` (tokens générés depuis `ui`)
+- [x] 2026-10-27 — Portfolio : menu (À propos, Portfolio, CV, Training externe via `TRAINING_URL`), retrait Facebook / X / CodePen
 - [x] 2026-10-26 — Serveurs de dev en HTTPS (`@bpagoaga/dev-certs`) et Storybook pour `@bpagoaga/ui` (fondations)

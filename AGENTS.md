@@ -200,3 +200,7 @@ start by `@bpagoaga/dev-certs` — signed by mkcert's local CA when mkcert is in
   information carried by colour alone, touch targets ≥ 44×44 px on mobile.
 - React Native: `accessibilityRole` / `accessibilityLabel` on every custom pressable (`Button` already sets them).
 - Mobile first: the calisthenics app is mostly used on a phone during a workout (one hand, between two sets).
+- Every page and every component is responsive, from 320 px up: no horizontal scroll, navigation included (a
+  navbar that no longer fits switches to a toggled menu). Check each change at 320 px, 768 px and desktop width.
+- External links (leaving the site) open in a new tab with `target="_blank" rel="noopener noreferrer"` and say so to
+  screen readers (`(opens in a new tab)`). In `apps/portfolio`, use the `ExternalLink` component.

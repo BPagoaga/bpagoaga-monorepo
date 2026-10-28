@@ -5,6 +5,7 @@ import { faArrowUpRightFromSquare, faCode } from '@fortawesome/free-solid-svg-ic
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import Badge from './Badge.astro';
+import ExternalLink from './ExternalLink.astro';
 import Icon from './Icon.astro';
 
 interface Props {
@@ -33,22 +34,17 @@ const { project } = Astro.props;
     )
   }
   <div class="flex flex-1 flex-col p-5">
-    <h3 class="text-title-s">
+    <h4 class="text-title-s">
       {
         project.link ? (
-          <a
-            href={project.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="after:absolute after:inset-0 after:rounded-2xl"
-          >
+          <ExternalLink href={project.link} class="after:absolute after:inset-0 after:rounded-2xl">
             {project.title}
-          </a>
+          </ExternalLink>
         ) : (
           project.title
         )
       }
-    </h3>
+    </h4>
     <p class="mt-2 flex-1 text-body-s text-muted">{project.description}</p>
     <ul class="mt-4 flex flex-wrap gap-1.5" aria-label="Technologies">
       {

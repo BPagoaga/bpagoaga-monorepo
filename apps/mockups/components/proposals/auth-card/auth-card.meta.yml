@@ -1,0 +1,15 @@
+id: MOCK-033
+title: Auth card
+kind: proposals
+status: draft
+app: calisthenics
+area: Compte
+related_component: null
+implemented_in: apps/calisthenics/src/components/AuthLayout
+states: [connexion, inscription, erreur]
+channels: [web, mobile]
+notes: >
+  Ajoutée avec l'API (comptes Better Auth) : implémentée en même temps que la maquette, à
+  valider. Pas de mot de passe oublié ni de vérification d'e-mail tant qu'aucun service
+  d'envoi d'e-mails n'est branché (voir TASKS.md). Le prénom de l'inscription remplace la
+  question du test de niveau.

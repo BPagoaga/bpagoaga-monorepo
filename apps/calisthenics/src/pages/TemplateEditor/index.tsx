@@ -1,15 +1,14 @@
 import { useParams } from 'react-router';
 import Loading from '../../components/Loading';
 import PageLayout from '../../components/PageLayout';
-import { scheduledDays } from '../../domain/templates';
-import { useFetchProgramme } from '../../queries/programme';
-import { useFetchTemplate } from '../../queries/templates';
+import { scheduledDays } from '@bpagoaga/calisthenics-core/domain/templates';
+import { useFetchProgramme, useFetchTemplate } from '@bpagoaga/calisthenics-api-client';
 import TemplateForm from './TemplateForm';
 
 /** Create (`/programme/modeles/nouveau`) or edit a session template. */
 const TemplateEditor = () => {
   const { templateId } = useParams();
-  const template = useFetchTemplate(templateId);
+  const template = useFetchTemplate(templateId ?? '');
   const programme = useFetchProgramme();
 
   if ((templateId && template.isPending) || programme.isPending) {

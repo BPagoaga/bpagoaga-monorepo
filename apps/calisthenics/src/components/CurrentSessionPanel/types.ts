@@ -1,4 +1,4 @@
-import type { ISession } from '../../domain/types';
+import type { ISession } from '@bpagoaga/calisthenics-core/domain/types';
 
 export interface ICurrentSessionPanel {
   session: ISession;

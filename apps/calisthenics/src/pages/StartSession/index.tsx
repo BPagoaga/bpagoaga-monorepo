@@ -9,16 +9,26 @@ import FreeSessionCard from '../../components/FreeSessionCard';
 import Loading from '../../components/Loading';
 import PageLayout from '../../components/PageLayout';
 import SessionTemplateCard from '../../components/SessionTemplateCard';
-import { getExercise } from '../../content/exercises';
-import { findStep } from '../../content/progressions';
-import { formatLongDay, formatSet, formatShortDay, formatTarget } from '../../domain/format';
-import { estimatedDuration, itemLines, scheduledDays, templateSubtitle } from '../../domain/templates';
-import type { ISession, ISessionTemplate, ITarget, ITemplateItem } from '../../domain/types';
-import { todayTemplateId } from '../../domain/week';
+import { getExercise } from '@bpagoaga/calisthenics-core/content/exercises';
+import { findStep } from '@bpagoaga/calisthenics-core/content/progressions';
+import { formatLongDay, formatSet, formatShortDay, formatTarget } from '@bpagoaga/calisthenics-core/domain/format';
+import {
+  estimatedDuration,
+  itemLines,
+  scheduledDays,
+  templateSubtitle,
+} from '@bpagoaga/calisthenics-core/domain/templates';
+import type { ISession, ISessionTemplate, ITarget, ITemplateItem } from '@bpagoaga/calisthenics-core/domain/types';
+import { todayTemplateId } from '@bpagoaga/calisthenics-core/domain/week';
 import { useNow } from '../../hooks/useNow';
-import { useFetchProgramme } from '../../queries/programme';
-import { useFetchSessions, useStartSession } from '../../queries/sessions';
-import { useFetchTemplates } from '../../queries/templates';
+import {
+  getFetchCurrentSessionQueryKey,
+  useFetchProgramme,
+  useFetchSessions,
+  useFetchTemplates,
+  useStartSession,
+} from '@bpagoaga/calisthenics-api-client';
+import { useQueryClient } from '@tanstack/react-query';
 import type { Choice, IChoiceOption, InitialChoice, IStartSessionForm } from './types';
 
 const RECENT_COUNT = 4;
@@ -56,6 +66,7 @@ const optionOf = (choice: Choice, templates: ISessionTemplate[], recent: ISessio
 /** Choosing the session to start (MOCK-204); exercises edited here only change this session, never the template. */
 const StartSessionForm = ({ templates, recent, initial, todayId }: IStartSessionForm) => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const programme = useFetchProgramme();
   const startSession = useStartSession();
   const now = useNow(60_000);
@@ -208,11 +219,19 @@ const StartSessionForm = ({ templates, recent, initial, todayId }: IStartSession
               option &&
               startSession.mutate(
                 {
-                  title: option.title,
-                  templateId: option.templateId,
-                  exercises: items.map((item) => ({ exerciseId: item.exerciseId, target: item.target, sets: [] })),
+                  data: {
+                    title: option.title,
+                    templateId: option.templateId,
+                    exercises: items.map((item) => ({ exerciseId: item.exerciseId, target: item.target })),
+                  },
                 },
-                { onSuccess: () => navigate('/seance') },
+                {
+                  // The session page reads the current session: show it at once rather than the cached "none".
+                  onSuccess: (session) => {
+                    queryClient.setQueryData(getFetchCurrentSessionQueryKey(), session);
+                    void navigate('/seance');
+                  },
+                },
               )
             }
           >

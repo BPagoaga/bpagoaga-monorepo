@@ -23,10 +23,19 @@ catalog:
   storybook: ^10.6.3
   '@vitejs/plugin-react': ^6.1.2
   '@tanstack/react-query': ^5.105.0
-  idb: ^8.0.4
   react-router: ^8.5.0
   zod: ^4.6.7
-  fake-indexeddb: ^6.2.6
+  '@hono/node-server': ^2.1.5
+  '@hono/zod-openapi': ^1.6.3
+  '@scalar/hono-api-reference': ^0.12.14
+  better-auth: ^1.7.14
+  drizzle-orm: ^0.45.4
+  hono: ^4.13.14
+  postgres: ^3.4.9
+  '@electric-sql/pglite': ^0.5.12
+  drizzle-kit: ^0.31.11
+  tsx: ^4.23.15
+  orval: ^8.45.0
 
 overrides:
   vite@*: 'catalog:'

@@ -17,20 +17,29 @@ import ProgressChart from '../../components/ProgressChart';
 import SessionCard from '../../components/SessionCard';
 import StatCard, { type IStatCard } from '../../components/StatCard';
 import WeekPlanner from '../../components/WeekPlanner';
-import { getExercise } from '../../content/exercises';
-import { getProgression, PROGRESSIONS } from '../../content/progressions';
-import { formatLongDay, formatMonth, formatRecord, formatSet, formatShortDay, formatTarget } from '../../domain/format';
-import { currentStepOf, progressionPercent } from '../../domain/progress';
-import { bestBetween, monthlyBest, personalRecords, weeklyVolume } from '../../domain/records';
-import type { ILevelTestResult, ISession } from '../../domain/types';
-import { streakDays, todayTemplateId, weekDays } from '../../domain/week';
+import { getExercise } from '@bpagoaga/calisthenics-core/content/exercises';
+import { getProgression, PROGRESSIONS } from '@bpagoaga/calisthenics-core/content/progressions';
+import {
+  formatLongDay,
+  formatMonth,
+  formatRecord,
+  formatSet,
+  formatShortDay,
+  formatTarget,
+} from '@bpagoaga/calisthenics-core/domain/format';
+import { currentStepOf, progressionPercent } from '@bpagoaga/calisthenics-core/domain/progress';
+import { bestBetween, monthlyBest, personalRecords, weeklyVolume } from '@bpagoaga/calisthenics-core/domain/records';
+import type { ILevelTestResult, ISession } from '@bpagoaga/calisthenics-core/domain/types';
+import { streakDays, todayTemplateId, weekDays } from '@bpagoaga/calisthenics-core/domain/week';
 import { useNow } from '../../hooks/useNow';
-import { useFetchLevelTests } from '../../queries/levelTests';
-import { useFetchProfile } from '../../queries/profile';
-import { useFetchProgramme } from '../../queries/programme';
-import { useFetchProgress } from '../../queries/progress';
-import { useFetchSessions } from '../../queries/sessions';
-import { useFetchTemplates } from '../../queries/templates';
+import {
+  useFetchLevelTests,
+  useFetchProfile,
+  useFetchProgramme,
+  useFetchProgress,
+  useFetchSessions,
+  useFetchTemplates,
+} from '@bpagoaga/calisthenics-api-client';
 import Welcome from './Welcome';
 
 const monthStat = (

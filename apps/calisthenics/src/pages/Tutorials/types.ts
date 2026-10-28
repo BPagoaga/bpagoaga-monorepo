@@ -1,4 +1,4 @@
-import type { ExerciseFamilyEnum } from '../../domain/types';
+import type { ExerciseFamilyEnum } from '@bpagoaga/calisthenics-core/domain/types';
 
 export interface IFamilyTab {
   id: ExerciseFamilyEnum | 'all';

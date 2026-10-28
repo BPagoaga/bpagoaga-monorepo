@@ -1,0 +1,39 @@
+{
+  "name": "@bpagoaga/calisthenics-api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "dev:memory": "tsx scripts/dev-memory.ts",
+    "build": "vp pack",
+    "start": "node dist/index.mjs",
+    "lint": "vp lint",
+    "check-types": "tsc",
+    "test": "vp test",
+    "openapi": "tsx scripts/openapi.ts",
+    "db:up": "docker compose up -d --wait",
+    "db:down": "docker compose down",
+    "db:generate": "drizzle-kit generate",
+    "db:studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "@bpagoaga/calisthenics-core": "workspace:*",
+    "@hono/node-server": "catalog:",
+    "@hono/zod-openapi": "catalog:",
+    "@scalar/hono-api-reference": "catalog:",
+    "better-auth": "catalog:",
+    "drizzle-orm": "catalog:",
+    "hono": "catalog:",
+    "postgres": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "catalog:",
+    "@types/node": "catalog:",
+    "drizzle-kit": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

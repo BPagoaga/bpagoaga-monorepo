@@ -1,4 +1,4 @@
-import type { ISession, ISessionTemplate, ITemplateItem } from '../../domain/types';
+import type { ISession, ISessionTemplate, ITemplateItem } from '@bpagoaga/calisthenics-core/domain/types';
 
 export type Choice =
   | { kind: 'template'; id: string }

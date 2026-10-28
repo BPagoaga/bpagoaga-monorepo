@@ -1,12 +1,12 @@
 import { faCalendarWeek, faChartLine, faGraduationCap, faListCheck, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Link, NavLink } from 'react-router';
-import { streakDays } from '../../domain/week';
+import { streakDays } from '@bpagoaga/calisthenics-core/domain/week';
 import { useNow } from '../../hooks/useNow';
-import { useFetchProfile } from '../../queries/profile';
-import { useFetchProgramme } from '../../queries/programme';
-import { useFetchSessions } from '../../queries/sessions';
+
+import { useFetchProfile, useFetchProgramme, useFetchSessions } from '@bpagoaga/calisthenics-api-client';
 import Brand from '../Brand';
 import Icon from '../Icon';
+import SignOutButton from '../SignOutButton';
 import type { INavItem } from './types';
 
 export type * from './types';
@@ -74,6 +74,7 @@ const AppNav = () => {
               {streak ? `Régularité : ${streak} jour${streak > 1 ? 's' : ''}` : 'Première séance à venir'}
             </p>
           </div>
+          <SignOutButton size="sm" className="ml-auto text-muted" />
         </div>
       </aside>
 

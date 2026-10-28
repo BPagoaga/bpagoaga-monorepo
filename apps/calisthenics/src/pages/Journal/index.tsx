@@ -7,14 +7,14 @@ import ErrorMessage from '../../components/ErrorMessage';
 import Loading from '../../components/Loading';
 import PageLayout from '../../components/PageLayout';
 import SessionCard from '../../components/SessionCard';
-import { addDays, startOfWeek } from '../../domain/dates';
-import { formatDuration, formatMonth, formatShortDay } from '../../domain/format';
-import { personalRecords } from '../../domain/records';
-import type { ISession } from '../../domain/types';
+import SignOutButton from '../../components/SignOutButton';
+import { addDays, startOfWeek } from '@bpagoaga/calisthenics-core/domain/dates';
+import { formatDuration, formatMonth, formatShortDay } from '@bpagoaga/calisthenics-core/domain/format';
+import { personalRecords } from '@bpagoaga/calisthenics-core/domain/records';
+import type { ISession } from '@bpagoaga/calisthenics-core/domain/types';
 import { useNow } from '../../hooks/useNow';
-import { useExportData, useImportData } from '../../queries/backup';
-import { useFetchLevelTests } from '../../queries/levelTests';
-import { useDeleteSession, useFetchSessions } from '../../queries/sessions';
+import { useDeleteSession, useFetchLevelTests, useFetchSessions } from '@bpagoaga/calisthenics-api-client';
+import { useExportBackup, useImportBackup } from '../../queries/backup';
 
 const weekLabel = (monday: Date, now: Date) => {
   const thisWeek = startOfWeek(now).getTime();
@@ -38,8 +38,8 @@ const Journal = () => {
   const sessions = useFetchSessions();
   const levelTests = useFetchLevelTests();
   const deleteSession = useDeleteSession();
-  const exportData = useExportData();
-  const importData = useImportData();
+  const exportData = useExportBackup();
+  const importData = useImportBackup();
   const fileInput = useRef<HTMLInputElement>(null);
   const now = useNow(60_000);
 
@@ -98,6 +98,8 @@ const Journal = () => {
           >
             Exporter
           </Button>
+          {/* The sidebar has it from lg; below, the tab bar has no room for it. */}
+          <SignOutButton className="lg:hidden">Se déconnecter</SignOutButton>
           <input
             ref={fileInput}
             type="file"
@@ -150,7 +152,7 @@ const Journal = () => {
                             `Supprimer la séance « ${session.title} » ? Elle disparaîtra du journal et des statistiques.`,
                           )
                         ) {
-                          deleteSession.mutate(session.id);
+                          deleteSession.mutate({ sessionId: session.id });
                         }
                       }}
                     />

@@ -3,16 +3,19 @@ import { useState } from 'react';
 import Button from '../../components/Button';
 import ErrorMessage from '../../components/ErrorMessage';
 import Icon from '../../components/Icon';
-import { getExercise } from '../../content/exercises';
-import { findStep } from '../../content/progressions';
-import { formatDuration, formatRecord, formatTarget } from '../../domain/format';
-import { currentStepOf } from '../../domain/progress';
-import { personalRecords } from '../../domain/records';
-import { meetsCriterion } from '../../domain/sets';
+import { getExercise } from '@bpagoaga/calisthenics-core/content/exercises';
+import { findStep } from '@bpagoaga/calisthenics-core/content/progressions';
+import { formatDuration, formatRecord, formatTarget } from '@bpagoaga/calisthenics-core/domain/format';
+import { currentStepOf } from '@bpagoaga/calisthenics-core/domain/progress';
+import { personalRecords } from '@bpagoaga/calisthenics-core/domain/records';
+import { meetsCriterion } from '@bpagoaga/calisthenics-core/domain/sets';
 import { useNow } from '../../hooks/useNow';
-import { useFetchLevelTests } from '../../queries/levelTests';
-import { useFetchProgress, useSetProgressStep } from '../../queries/progress';
-import { useFetchSessions } from '../../queries/sessions';
+import {
+  useFetchLevelTests,
+  useFetchProgress,
+  useFetchSessions,
+  useSetProgressStep,
+} from '@bpagoaga/calisthenics-api-client';
 import type { ISummary } from './types';
 
 /** After the session: what passed a step's criterion, which records fell. Validating a step is the user's call. */
@@ -82,7 +85,10 @@ const Summary = ({ session }: ISummary) => {
                   loading={setStep.isPending}
                   onClick={() =>
                     setStep.mutate(
-                      { progressionId: progression.id, step: index + 1, source: 'criterion', sessionId: session.id },
+                      {
+                        progressionId: progression.id,
+                        data: { step: index + 1, source: 'criterion', sessionId: session.id },
+                      },
                       { onSuccess: () => setValidated([...validated, progression.id]) },
                     )
                   }

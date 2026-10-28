@@ -10,6 +10,7 @@
     "test": "turbo run test",
     "dev:portfolio": "turbo run dev --filter=@bpagoaga/portfolio",
     "dev:calisthenics": "turbo run dev --filter=@bpagoaga/calisthenics",
+    "dev:api": "pnpm --filter @bpagoaga/calisthenics-api dev",
     "dev:mobile": "pnpm --filter @bpagoaga/calisthenics-mobile dev",
     "dev:mockups": "pnpm --filter @bpagoaga/mockups dev",
     "build:mockups": "pnpm --filter @bpagoaga/mockups build",
@@ -17,7 +18,10 @@
     "build:storybook": "turbo run build-storybook --filter=@bpagoaga/ui",
     "certs": "node packages/dev-certs/cli.mjs",
     "fmt": "vp fmt",
-    "fmt:check": "vp fmt --check"
+    "fmt:check": "vp fmt --check",
+    "db:up": "pnpm --filter @bpagoaga/calisthenics-api db:up",
+    "db:down": "pnpm --filter @bpagoaga/calisthenics-api db:down",
+    "generate:api": "pnpm --filter @bpagoaga/calisthenics-api openapi && pnpm --filter @bpagoaga/calisthenics-api-client generate"
   },
   "devDependencies": {
     "turbo": "^2.5.8",

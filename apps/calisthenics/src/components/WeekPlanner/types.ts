@@ -1,5 +1,5 @@
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import type { ISessionTemplate, IWeekDay } from '../../domain/types';
+import type { ISessionTemplate, IWeekDay } from '@bpagoaga/calisthenics-core/domain/types';
 
 export interface IWeekPlanner {
   days: IWeekDay[];

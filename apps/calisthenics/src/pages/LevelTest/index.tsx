@@ -6,40 +6,61 @@ import ErrorMessage from '../../components/ErrorMessage';
 import Icon from '../../components/Icon';
 import OnboardingHeader from '../../components/OnboardingHeader';
 import Stepper from '../../components/Stepper';
-import { getExercise } from '../../content/exercises';
-import { LEVEL_TEST } from '../../content/levelTest';
-import type { LevelTestResults } from '../../domain/types';
-import { useSaveLevelTest } from '../../queries/levelTests';
-import { useFetchProfile, useUpdateProfile } from '../../queries/profile';
+import { getExercise } from '@bpagoaga/calisthenics-core/content/exercises';
+import { LEVEL_TEST } from '@bpagoaga/calisthenics-core/content/levelTest';
+import type { LevelTestResults } from '@bpagoaga/calisthenics-core/domain/types';
+import {
+  type LevelTest as ILevelTestResponse,
+  getFetchLevelTestsQueryKey,
+  getFetchProfileQueryKey,
+  useCreateLevelTest,
+  useUpdateProfile,
+} from '@bpagoaga/calisthenics-api-client';
+import { useQueryClient } from '@tanstack/react-query';
 
 const DEFAULTS: LevelTestResults = { pull: 5, push: 15, dips: 8, core: 30 };
 
-/** Level test (MOCK-206): a first name (optional), then four max tests. Step 0 is the name. */
+/** Level test (MOCK-206): an introduction, then four max tests. Step 0 is the introduction. */
 const LevelTest = () => {
   const navigate = useNavigate();
-  const profile = useFetchProfile();
+  const queryClient = useQueryClient();
   const updateProfile = useUpdateProfile();
-  const saveLevelTest = useSaveLevelTest();
+  const saveLevelTest = useCreateLevelTest();
   const [index, setIndex] = useState(0);
-  const [firstName, setFirstName] = useState<string>();
   const [results, setResults] = useState<LevelTestResults>(DEFAULTS);
 
-  const name = firstName ?? profile.data?.firstName ?? '';
   const test = index > 0 ? LEVEL_TEST[index - 1] : undefined;
   const hold = test && getExercise(test.exerciseId)?.measure === 'hold';
 
   const skip = () =>
-    updateProfile.mutate({ onboardedAt: new Date().toISOString() }, { onSuccess: () => navigate('/') });
+    updateProfile.mutate(
+      { data: { onboardedAt: new Date().toISOString() } },
+      {
+        onSuccess: (profile) => {
+          queryClient.setQueryData(getFetchProfileQueryKey(), profile);
+          void navigate('/');
+        },
+      },
+    );
 
   const next = (values: LevelTestResults) => {
     if (index < LEVEL_TEST.length) {
       setIndex(index + 1);
       return;
     }
-    // Ask the browser to keep the database when storage runs low: it holds the only copy of the user's data.
-    void navigator.storage?.persist?.();
-    updateProfile.mutate({ firstName: name.trim() || undefined });
-    saveLevelTest.mutate(values, { onSuccess: () => navigate('/bienvenue/resultats') });
+    saveLevelTest.mutate(
+      { data: { results: values } },
+      {
+        // The results page reads the latest test: add it to the cache before going there.
+        onSuccess: (saved) => {
+          queryClient.setQueryData(getFetchLevelTestsQueryKey(), (tests: ILevelTestResponse[] = []) => [
+            saved,
+            ...tests,
+          ]);
+          void navigate('/bienvenue/resultats');
+        },
+      },
+    );
   };
 
   return (
@@ -132,17 +153,6 @@ const LevelTest = () => {
               Quatre tests de maximum, cinq minutes en tout. Il te faut une barre de traction et deux supports pour les
               dips.
             </p>
-            <label htmlFor="first-name" className="mt-6 block text-body-s font-semibold">
-              Ton prénom <span className="font-normal text-muted">(facultatif, pour le tableau de bord)</span>
-            </label>
-            <input
-              id="first-name"
-              type="text"
-              autoComplete="given-name"
-              value={name}
-              onChange={(event) => setFirstName(event.target.value)}
-              className="mt-1 h-11 w-full rounded-lg border border-border bg-surface px-3 text-body-m focus:border-primary-100 focus:outline-hidden focus:ring-4 focus:ring-primary-20"
-            />
           </section>
         )}
         <ErrorMessage error={saveLevelTest.error ?? updateProfile.error} className="mt-4" />

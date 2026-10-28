@@ -1,10 +1,10 @@
 import { faCircle, faCircleCheck, faFlagCheckered, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-import { EXERCISES, getExercise } from '../../content/exercises';
-import { formatClock, formatSet, formatTarget } from '../../domain/format';
-import type { ISession } from '../../domain/types';
+import { EXERCISES, getExercise } from '@bpagoaga/calisthenics-core/content/exercises';
+import { formatClock, formatSet, formatTarget } from '@bpagoaga/calisthenics-core/domain/format';
+import type { ISession } from '@bpagoaga/calisthenics-core/domain/types';
 import { useNow } from '../../hooks/useNow';
-import { useAddSessionExercise, useLogSet, useRemoveLastSet } from '../../queries/sessions';
+import { useAddSessionExercise, useLogSet, useRemoveLastSet } from '@bpagoaga/calisthenics-api-client';
 import Button from '../Button';
 import ErrorMessage from '../ErrorMessage';
 import Icon from '../Icon';
@@ -47,9 +47,9 @@ const CurrentSessionPanel = ({ session, compact = false }: ICurrentSessionPanel)
     if (!exercise) return;
     logSet.mutate(
       {
-        id: session.id,
+        sessionId: session.id,
         exerciseIndex: active,
-        set: {
+        data: {
           ...(hold ? { seconds: entry.value } : { reps: entry.value }),
           ...(entry.loadKg ? { loadKg: entry.loadKg } : {}),
           ...(entry.rpe ? { rpe: entry.rpe } : {}),
@@ -89,7 +89,9 @@ const CurrentSessionPanel = ({ session, compact = false }: ICurrentSessionPanel)
           pending={logSet.isPending}
           onValidate={validate}
           onUndo={
-            current.sets.length ? () => removeLastSet.mutate({ id: session.id, exerciseIndex: active }) : undefined
+            current.sets.length
+              ? () => removeLastSet.mutate({ sessionId: session.id, exerciseIndex: active })
+              : undefined
           }
           onNext={active < session.exercises.length - 1 ? () => setActive(active + 1) : undefined}
         />
@@ -136,7 +138,7 @@ const CurrentSessionPanel = ({ session, compact = false }: ICurrentSessionPanel)
           event.preventDefault();
           if (!adding) return;
           addExercise.mutate(
-            { id: session.id, exerciseId: adding },
+            { sessionId: session.id, data: { exerciseId: adding } },
             {
               onSuccess: () => {
                 setAdding('');

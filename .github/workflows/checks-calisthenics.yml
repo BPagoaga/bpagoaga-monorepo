@@ -7,6 +7,8 @@ on:
     # The app itself, what it depends on, and the shared tooling.
     paths:
       - apps/calisthenics/**
+      - packages/calisthenics-core/**
+      - packages/calisthenics-api-client/**
       - packages/ui/**
       - package.json
       - pnpm-lock.yaml

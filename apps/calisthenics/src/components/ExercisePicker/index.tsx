@@ -1,6 +1,6 @@
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
-import { EXERCISES } from '../../content/exercises';
+import { EXERCISES } from '@bpagoaga/calisthenics-core/content/exercises';
 import ExerciseRow from '../ExerciseRow';
 import Icon from '../Icon';
 import type { IExercisePicker } from './types';

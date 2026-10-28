@@ -6,8 +6,8 @@ import ErrorMessage from '../../components/ErrorMessage';
 import Icon from '../../components/Icon';
 import Loading from '../../components/Loading';
 import PageLayout from '../../components/PageLayout';
-import type { FeelingEnum, ISession } from '../../domain/types';
-import { useFetchCurrentSession, useFinishSession } from '../../queries/sessions';
+import type { FeelingEnum, ISession } from '@bpagoaga/calisthenics-core/domain/types';
+import { useFetchCurrentSession, useFinishSession } from '@bpagoaga/calisthenics-api-client';
 import Summary from './Summary';
 import type { IFeelingOption } from './types';
 
@@ -56,7 +56,7 @@ const FinishSession = () => {
         onSubmit={(event) => {
           event.preventDefault();
           finish.mutate(
-            { id: current.id, feeling, rpe, notes: notes.trim() || undefined },
+            { sessionId: current.id, data: { feeling, rpe, notes: notes.trim() || undefined } },
             { onSuccess: (session) => setFinished(session) },
           );
         }}

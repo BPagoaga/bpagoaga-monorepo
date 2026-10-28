@@ -1,4 +1,7 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { type Backup, exportData, useImportData } from '@bpagoaga/calisthenics-api-client';
+import { useMutation } from '@tanstack/react-query';
+
+// File handling around the generated backup endpoints: download the export, read the file to import.
 
 const download = (fileName: string, content: string) => {
   const url = URL.createObjectURL(new Blob([content], { type: 'application/json' }));
@@ -7,24 +10,26 @@ const download = (fileName: string, content: string) => {
   URL.revokeObjectURL(url);
 };
 
-export const useExportData = () =>
+export const useExportBackup = () =>
   useMutation({
     mutationFn: async () => {
-      // Loaded on demand: the backup module carries zod, only needed for export / import.
-      const { exportData } = await import('../../db/backup');
       const backup = await exportData();
       download(`calibuddy-${backup.exportedAt.slice(0, 10)}.json`, JSON.stringify(backup, null, 2));
     },
   });
 
-/** Replaces all local data with a backup file's content. */
-export const useImportData = () => {
-  const queryClient = useQueryClient();
+/** Replaces all of the user's data with a backup file's content; the API validates it. */
+export const useImportBackup = () => {
+  const importData = useImportData();
   return useMutation({
     mutationFn: async (file: File) => {
-      const { importData, parseBackup } = await import('../../db/backup');
-      await importData(parseBackup(await file.text()));
+      let backup: Backup;
+      try {
+        backup = JSON.parse(await file.text()) as Backup;
+      } catch {
+        throw new Error('Ce fichier n’est pas un export CaliBuddy (JSON illisible).');
+      }
+      await importData.mutateAsync({ data: backup });
     },
-    onSettled: () => queryClient.invalidateQueries({ refetchType: 'all' }),
   });
 };

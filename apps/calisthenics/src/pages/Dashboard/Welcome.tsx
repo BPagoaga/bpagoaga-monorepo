@@ -10,7 +10,7 @@ import ErrorMessage from '../../components/ErrorMessage';
 import Icon from '../../components/Icon';
 import PageLayout from '../../components/PageLayout';
 import ProgressChart from '../../components/ProgressChart';
-import { useUpdateProfile } from '../../queries/profile';
+import { useUpdateProfile } from '@bpagoaga/calisthenics-api-client';
 
 const STEPS = [
   {
@@ -78,7 +78,7 @@ const Welcome = () => {
         Tu préfères t’entraîner tout de suite ?{' '}
         <button
           type="button"
-          onClick={() => updateProfile.mutate({ onboardedAt: new Date().toISOString() })}
+          onClick={() => updateProfile.mutate({ data: { onboardedAt: new Date().toISOString() } })}
           className="font-medium text-primary-100 underline hover:text-primary-110"
         >
           Passer le test

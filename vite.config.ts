@@ -14,6 +14,10 @@ export default defineConfig({
       'apps/mockups/assets/tailwind.css',
       // Generated from packages/ui/src/theme.css, compared as-is by its `--check` mode.
       'packages/ui-native/src/tokens.ts',
+      // Generated: the API's OpenAPI document, the client Orval writes from it, Drizzle's migration snapshots.
+      'apps/calisthenics-api/openapi.json',
+      'apps/calisthenics-api/drizzle/meta/**',
+      'packages/calisthenics-api-client/src/generated/**',
       // Nunjucks templates: Oxfmt formats them as plain HTML and breaks `{% … %}` / `{{ … }}` tags.
       'apps/mockups/**/*.html',
       'apps/mockups/**/*.njk',

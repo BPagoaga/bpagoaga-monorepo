@@ -7,14 +7,12 @@ import Icon from '../../components/Icon';
 import Loading from '../../components/Loading';
 import PageLayout from '../../components/PageLayout';
 import ProgressionPath from '../../components/ProgressionPath';
-import { EXERCISES, getExercise } from '../../content/exercises';
-import { findStep, getProgression, PROGRESSIONS } from '../../content/progressions';
-import { formatTarget } from '../../domain/format';
-import { currentStepOf, exerciseStatus, stepStatus } from '../../domain/progress';
-import type { ExerciseFamilyEnum } from '../../domain/types';
-import { useFetchProfile } from '../../queries/profile';
-import { useFetchProgress } from '../../queries/progress';
-import { useFetchSessions } from '../../queries/sessions';
+import { EXERCISES, getExercise } from '@bpagoaga/calisthenics-core/content/exercises';
+import { findStep, getProgression, PROGRESSIONS } from '@bpagoaga/calisthenics-core/content/progressions';
+import { formatTarget } from '@bpagoaga/calisthenics-core/domain/format';
+import { currentStepOf, exerciseStatus, stepStatus } from '@bpagoaga/calisthenics-core/domain/progress';
+import type { ExerciseFamilyEnum } from '@bpagoaga/calisthenics-core/domain/types';
+import { useFetchProfile, useFetchProgress, useFetchSessions } from '@bpagoaga/calisthenics-api-client';
 import type { IFamilyTab } from './types';
 
 const TABS: IFamilyTab[] = [

@@ -1,5 +1,5 @@
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import type { IRecord, ISession } from '../../domain/types';
+import type { IRecord, ISession } from '@bpagoaga/calisthenics-core/domain/types';
 
 export interface ISessionCard {
   session: ISession;

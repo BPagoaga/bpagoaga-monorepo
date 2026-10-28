@@ -1,5 +1,5 @@
 import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import type { ExerciseFamilyEnum } from '../../domain/types';
+import type { ExerciseFamilyEnum } from '@bpagoaga/calisthenics-core/domain/types';
 import type { BadgeTone } from '../Badge';
 
 export interface IFamilyMeta {

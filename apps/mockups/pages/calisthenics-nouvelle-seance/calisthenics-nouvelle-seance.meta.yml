@@ -1,0 +1,20 @@
+id: MOCK-204
+title: Démarrer une séance
+status: implemented
+app: calisthenics
+area: Journal
+implemented_in: apps/calisthenics/src/pages
+states:
+  - séance du jour pré-sélectionnée (programme)
+  - autre modèle
+  - refaire une séance récente (mêmes exercices, les séries d'alors servent d'objectifs)
+  - séance libre (exercices choisis dans la bibliothèque)
+  - jour de repos (rien de pré-sélectionné, voir notes)
+  - mobile (variante v2)
+channels: [web, mobile]
+notes: >
+  Ouvert par « Nouvelle séance » (barre latérale, bouton central de la barre d'onglets) et
+  « Démarrer la séance » du tableau de bord. Un jour de repos, aucune carte n'est cochée et
+  le bouton « Démarrer » reste désactivé jusqu'au choix. Les exercices ajoutés ou retirés
+  ici ne modifient que cette séance, jamais le modèle. Démarrer mène à la séance en cours
+  (MOCK-202).

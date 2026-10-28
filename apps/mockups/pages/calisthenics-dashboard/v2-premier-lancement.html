@@ -10,19 +10,19 @@ title: Tableau de bord — premier lancement (état vide)
   <div class="mx-auto max-w-3xl space-y-8 px-4 py-10 md:px-8">
     <header class="text-center">
       <div class="mx-auto grid size-16 place-items-center rounded-2xl bg-accent-100 text-title-l text-neutral-150" aria-hidden="true"><i class="fas fa-person-running"></i></div>
-      <h1 class="mt-5 font-display text-title-xl">Bienvenue sur StreetLab</h1>
-      <p class="mx-auto mt-2 max-w-md text-body-m text-muted">Deux minutes pour évaluer ton niveau, et on te propose une progression adaptée.</p>
+      <h1 class="mt-5 font-display text-title-xl">Bienvenue sur CaliBuddy</h1>
+      <p class="mx-auto mt-2 max-w-md text-body-m text-muted">Cinq minutes pour évaluer ton niveau : on place chaque progression à la bonne étape et tu choisis ta figure.</p>
     </header>
     <ol class="space-y-3">
       {% for step in [
-        { icon: 'clipboard-check', title: 'Test de niveau', text: 'Max de tractions, pompes, dips et gainage.', cta: true },
-        { icon: 'bullseye', title: 'Choisir une figure', text: 'Muscle-up, front lever, handstand…' },
-        { icon: 'calendar-week', title: 'Planifier ta semaine', text: '2 à 4 séances, tu ajusteras plus tard.' }
+        { icon: 'clipboard-check', title: 'Test de niveau', text: 'Max de tractions, pompes, dips et gainage.', cta: true, href: '/pages/calisthenics-test-niveau/' },
+        { icon: 'bullseye', title: 'Choisir une figure', text: 'Muscle-up, front lever, handstand… proposée d’après ton test.' },
+        { icon: 'calendar-week', title: 'Planifier ta semaine', text: 'Assigne un modèle de séance à 2 à 4 jours, modifiable à tout moment.' }
       ] %}
         <li class="flex items-center gap-4 rounded-2xl border bg-surface p-4 {{ 'border-accent-100 ring-4 ring-accent-20' if step.cta else 'border-border' }}">
           <span class="grid size-11 shrink-0 place-items-center rounded-xl {{ 'bg-accent-100 text-neutral-150' if step.cta else 'bg-neutral-20 text-subtle' }}" aria-hidden="true"><i class="fas fa-{{ step.icon }}"></i></span>
           <div class="flex-1"><p class="text-title-s">{{ loop.index }}. {{ step.title }}</p><p class="text-body-s text-muted">{{ step.text }}</p></div>
-          {% if step.cta %}{{ button('Commencer', 'accent', 'md', iconRight='arrow-right') }}{% endif %}
+          {% if step.cta %}{{ button('Commencer', 'accent', 'md', iconRight='arrow-right', href=step.href) }}{% endif %}
         </li>
       {% endfor %}
     </ol>

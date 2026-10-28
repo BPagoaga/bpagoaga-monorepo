@@ -67,7 +67,7 @@ export default {
   ],
   projects: [
     {
-      title: 'StreetLab',
+      title: 'CaliBuddy',
       description: 'Suivi de calisthénie : tutoriels par progression, journal de séances et records.',
       icon: 'person-running',
       tone: 'accent',

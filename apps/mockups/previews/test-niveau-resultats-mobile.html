@@ -1,0 +1,9 @@
+---
+layout: bare-layout.njk
+title: test-niveau-resultats-mobile
+eleventyExcludeFromCollections: true
+---
+{% from "macros/proposals/onboarding-header.njk" import onboardingHeader %}
+{% from "macros/proposals/level-test-results.njk" import levelTestResults %}
+{{ onboardingHeader(2, 3, 'Ta figure') }}
+<main>{{ levelTestResults(calisthenics.levelResults, calisthenics.figures) }}</main>

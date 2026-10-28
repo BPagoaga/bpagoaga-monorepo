@@ -26,11 +26,11 @@ title: Journal de séances
         <h2 id="history-title" class="sr-only">Historique</h2>
         <div>
           <h3 class="mb-3 text-body-s font-semibold uppercase tracking-wide text-subtle">Cette semaine</h3>
-          <div class="space-y-3">{{ sessionCard(c.sessions[0]) }}{{ sessionCard(c.sessions[1], true) }}</div>
+          <div class="space-y-3">{{ sessionCard(c.sessions[0]) }}</div>
         </div>
         <div>
           <h3 class="mb-3 text-body-s font-semibold uppercase tracking-wide text-subtle">Semaine dernière</h3>
-          <div class="space-y-3">{{ sessionCard(c.sessions[2], true) }}</div>
+          <div class="space-y-3">{{ sessionCard(c.sessions[1], true) }}{{ sessionCard(c.sessions[2], true) }}</div>
         </div>
         <div class="text-center">{{ button('Charger les séances précédentes', 'ghost', 'md', 'clock-rotate-left') }}</div>
       </section>
@@ -38,13 +38,14 @@ title: Journal de séances
       {# Séance en cours : colonne collante sur grand écran ; sur mobile, c'est un écran dédié (variante v2). #}
       <aside class="space-y-3 xl:sticky xl:top-20 xl:self-start" aria-label="Séance en cours">
         <div class="flex items-center justify-between">
-          <h2 class="text-title-s">Séance en cours <span class="font-normal text-muted">· Tirage</span></h2>
+          <h2 class="text-title-s">Séance en cours <span class="font-normal text-muted">· Poussée + jambes</span></h2>
           <p class="font-mono text-body-s text-muted">24:18</p>
         </div>
-        {{ setLogger('Tractions strictes', 3, 8, '0', ['12', '10'], '1:24') }}
+        {{ setLogger('Dips', 3, 15, '0', ['18', '15'], '1:24') }}
         <ol class="space-y-1.5 text-body-s" aria-label="Exercices restants">
-          <li class="flex items-center gap-2 rounded-lg bg-surface px-3 py-2 text-subtle"><i class="far fa-circle" aria-hidden="true"></i>Tractions explosives · 3 × 5</li>
-          <li class="flex items-center gap-2 rounded-lg bg-surface px-3 py-2 text-subtle"><i class="far fa-circle" aria-hidden="true"></i>L-sit · 3 × 20 s</li>
+          <li class="flex items-center gap-2 rounded-lg bg-surface px-3 py-2 text-subtle"><i class="far fa-circle" aria-hidden="true"></i>Pike push-up · 3 × 8</li>
+          <li class="flex items-center gap-2 rounded-lg bg-surface px-3 py-2 text-subtle"><i class="far fa-circle" aria-hidden="true"></i>Pistol squat · 3 × 5 / jambe</li>
+          <li class="flex items-center gap-2 rounded-lg bg-surface px-3 py-2 text-subtle"><i class="far fa-circle" aria-hidden="true"></i>Hollow body hold · 3 × 30 s</li>
         </ol>
         {{ button('Terminer la séance', 'ghost', 'md', 'flag-checkered', extraClass='w-full') }}
       </aside>

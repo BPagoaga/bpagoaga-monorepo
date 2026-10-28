@@ -1,0 +1,15 @@
+id: MOCK-028
+title: Week planner
+kind: proposals
+status: validated
+app: calisthenics
+area: Programme
+related_component: null
+implemented_in: null
+states: [bandeau (lecture), plan (édition), jour courant, faite, prévue, manquée, repos]
+channels: [web, mobile]
+notes: >
+  Bandeau : le nom du modèle n'apparaît qu'à partir de md ; en dessous, l'icône de statut
+  porte l'information et un texte masqué la rend lisible sans la couleur. Plan : liste,
+  deux colonnes dès sm, 7 colonnes seulement en 2xl pour que les noms de modèles restent
+  lisibles dans les sélecteurs à côté de la barre latérale. Un seul modèle par jour en v1.

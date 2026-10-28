@@ -1,0 +1,19 @@
+id: MOCK-205
+title: Fiche exercice
+status: implemented
+app: calisthenics
+area: Tutoriels
+implemented_in: apps/calisthenics/src/pages
+states:
+  - en cours (critère de passage, dernières tentatives)
+  - maîtrisé (voir notes)
+  - verrouillé (voir notes)
+  - exercice hors progression (pas de chemin ni d'étapes voisines)
+channels: [web, mobile]
+notes: >
+  Lecture d'abord (consignes, erreurs), puis « où j'en suis » (critère, tentatives,
+  progression). Maîtrisé : le critère passe en vert et l'action devient « Voir l'étape
+  suivante ». Verrouillé : la fiche reste lisible (on peut s'y préparer), l'action
+  principale est remplacée par l'étape à valider avant. La vidéo est un emplacement :
+  contenu et hébergement des démonstrations à décider (tournage maison ou liens externes).
+  Mobile : une colonne, la progression passe sous les erreurs fréquentes.

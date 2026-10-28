@@ -1,7 +1,7 @@
 id: MOCK-020
 title: App nav
 kind: proposals
-status: draft
+status: validated
 app: calisthenics
 area: Navigation
 related_component: null
@@ -14,3 +14,5 @@ channels: [web, mobile]
 notes: >
   Onglet actif en fond foncé (pas seulement en couleur) + aria-current. Sur mobile, le CTA
   central suit la loi de Fitts : action la plus fréquente, la plus grande, sous le pouce.
+  « Programme » a remplacé « Profil » (pas de compte en v1 : données locales). Le CTA
+  « Nouvelle séance » ouvre le choix de la séance (MOCK-204).

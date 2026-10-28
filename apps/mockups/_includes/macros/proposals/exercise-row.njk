@@ -1,0 +1,39 @@
+{#
+  Exercise row — un exercice dans une liste de séance ou de modèle.
+
+  Params (objet `ex`) : name, family, target
+    mode — summary (défaut) : nom + objectif + retirer (récap avant de démarrer) ;
+           pick : bouton bascule Ajouter / Ajouté (aria-pressed) pour piocher dans la
+             bibliothèque ;
+           edit : poignée de réordonnancement + objectif éditable + retirer (édition de modèle).
+    added — bool (mode pick)
+    index — position, pour les id et aria-label (mode edit)
+#}
+{% from "macros/proposals/badge-family.njk" import familyBadge %}
+{% from "macros/proposals/button.njk" import button %}
+{% macro exerciseRow(ex, mode='summary', added=false, index=0) %}
+<li class="flex items-center gap-3 rounded-xl border border-border bg-surface p-2 pl-3 {{ 'flex-wrap sm:flex-nowrap' if mode == 'edit' }}">
+  {% if mode == 'edit' %}
+    {{ button('', 'ghost', 'md', 'grip-vertical', ariaLabel='Déplacer ' + ex.name, extraClass='-ml-2 cursor-grab text-subtle') }}
+  {% endif %}
+  <div class="min-w-0 flex-1">
+    <p class="truncate text-body-s font-semibold">{{ ex.name }}</p>
+    <div class="mt-0.5 flex items-center gap-2">
+      {{ familyBadge(ex.family) }}
+      {% if mode != 'edit' %}<span class="truncate font-mono text-body-xs text-muted">{{ ex.target }}</span>{% endif %}
+    </div>
+  </div>
+  {% if mode == 'edit' %}
+    <label class="sr-only" for="target-{{ index }}">Objectif pour {{ ex.name }}</label>
+    <input id="target-{{ index }}" type="text" value="{{ ex.target }}" class="order-last h-11 w-full rounded-lg border border-border bg-surface px-3 font-mono text-body-s focus:border-primary-100 focus:outline-hidden focus:ring-4 focus:ring-primary-20 sm:order-none sm:w-40" />
+  {% endif %}
+  {% if mode == 'pick' %}
+    <button type="button" data-mockup-chip aria-pressed="{{ 'true' if added else 'false' }}" aria-label="Ajouter {{ ex.name }}" class="group inline-flex h-11 shrink-0 items-center gap-1.5 rounded-lg border border-border px-3 text-body-s font-semibold text-neutral-130 hover:bg-neutral-20 aria-pressed:border-green-100 aria-pressed:bg-green-10 aria-pressed:text-green-130">
+      <i class="fas fa-plus group-aria-pressed:hidden" aria-hidden="true"></i><i class="fas fa-check hidden group-aria-pressed:inline" aria-hidden="true"></i>
+      <span class="group-aria-pressed:hidden">Ajouter</span><span class="hidden group-aria-pressed:inline">Ajouté</span>
+    </button>
+  {% else %}
+    {{ button('', 'ghost', 'md', 'xmark', ariaLabel='Retirer ' + ex.name, extraClass='size-11') }}
+  {% endif %}
+</li>
+{% endmacro %}

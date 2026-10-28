@@ -1,0 +1,23 @@
+---
+layout: layout.njk
+title: Stepper
+---
+{% from "macros/proposals/stepper.njk" import stepper %}
+<div class="mx-auto max-w-5xl space-y-10 px-6 py-8">
+  <header>
+    <h1 class="font-display text-title-xl">Stepper</h1>
+    <p class="mt-1 max-w-3xl text-body-s text-muted">Saisie numérique au pouce : boutons −/+ et valeur éditable au clavier numérique. Utilisé par le set logger et le test de niveau.</p>
+  </header>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Taille md</h2>
+    <div class="flex max-w-md gap-3">
+      {{ stepper('Répétitions', 12, '', 'demo-reps') }}
+      {{ stepper('Lest', 20, 'kg', 'demo-load') }}
+    </div>
+  </section>
+  <section class="space-y-3">
+    <h2 class="text-title-m">Taille lg <span class="text-body-s font-normal text-muted">· écran centré sur une seule saisie</span></h2>
+    <div class="max-w-sm">{{ stepper('Ton maximum', 32, 'reps', 'demo-max', 'lg') }}</div>
+    <div class="max-w-sm">{{ stepper('Temps tenu', 40, 's', 'demo-hold', 'lg') }}</div>
+  </section>
+</div>

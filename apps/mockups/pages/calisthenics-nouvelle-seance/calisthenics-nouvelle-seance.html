@@ -1,0 +1,65 @@
+---
+layout: layout.njk
+title: Démarrer une séance
+---
+{% from "macros/proposals/app-nav.njk" import appNav %}
+{% from "macros/proposals/button.njk" import button %}
+{% from "macros/proposals/session-template-card.njk" import sessionTemplateCard %}
+{% from "macros/proposals/session-template-card-free.njk" import freeSessionCard %}
+{% from "macros/proposals/exercise-row.njk" import exerciseRow %}
+{% set c = calisthenics %}
+{% set planned = c.templates[1] %}
+{# Séances récentes présentées comme des modèles : les séries réalisées deviennent les objectifs. #}
+{% set recent = [] %}
+{% for s in c.sessions %}
+  {% set exs = [] %}
+  {% for ex in s.exercises %}{% set noop = exs.push({ name: ex.name, target: ex.sets | join(' · ') }) %}{% endfor %}
+  {% set noop = recent.push({ name: s.title, duration: s.duration, days: [], exercises: exs, lastDone: s.date }) %}
+{% endfor %}
+{{ appNav('journal') }}
+<div class="pb-28 lg:pb-0 lg:pl-64">
+  <div class="mx-auto max-w-6xl px-4 py-6 md:px-8 md:py-8">
+    <header>
+      <p class="text-body-s text-muted">{{ c.today.label }}</p>
+      <h1 class="font-display text-title-xl">Nouvelle séance</h1>
+    </header>
+
+    <div class="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1fr)_380px]">
+      <form class="space-y-8" aria-label="Choix de la séance">
+        <fieldset class="space-y-3">
+          <legend class="text-title-m">Prévue aujourd'hui</legend>
+          {{ sessionTemplateCard(planned, 'choose', true, 'Programme · ' + c.today.label, 'start') }}
+        </fieldset>
+        <fieldset class="space-y-3">
+          <legend class="text-title-m">Un autre modèle</legend>
+          <div class="grid gap-3 md:grid-cols-2">
+            {{ sessionTemplateCard(c.templates[0], 'choose', group='start') }}
+            {{ sessionTemplateCard(c.templates[2], 'choose', group='start') }}
+          </div>
+        </fieldset>
+        <fieldset class="space-y-3">
+          <legend class="text-title-m">Refaire une séance récente</legend>
+          <div class="grid gap-3 md:grid-cols-2">
+            {% for t in recent %}{{ sessionTemplateCard(t, 'choose', group='start') }}{% endfor %}
+          </div>
+        </fieldset>
+        <fieldset class="space-y-3">
+          <legend class="text-title-m">Séance libre</legend>
+          {{ freeSessionCard() }}
+        </fieldset>
+      </form>
+
+      <aside class="space-y-4 xl:sticky xl:top-20 xl:self-start" aria-labelledby="summary-title">
+        <div class="rounded-2xl border border-border bg-surface p-4 sm:p-5">
+          <h2 id="summary-title" class="text-title-s">Ta séance <span class="font-normal text-muted">· {{ planned.name }}</span></h2>
+          <p class="mt-0.5 text-body-xs text-muted">{{ planned.exercises.length }} exercices · environ {{ planned.duration }} · modifiable sans toucher au modèle</p>
+          <ul class="mt-4 space-y-2">{% for ex in planned.exercises %}{{ exerciseRow(ex) }}{% endfor %}</ul>
+          <div class="mt-3">{{ button('Ajouter un exercice', 'ghost', 'md', 'plus', extraClass='w-full') }}</div>
+        </div>
+        <div class="sticky bottom-24 xl:static">
+          {{ button('Démarrer la séance', 'accent', 'lg', 'play', href='/pages/calisthenics-journal/', extraClass='w-full shadow-elevation-2 xl:shadow-none') }}
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>

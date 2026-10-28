@@ -1,9 +1,9 @@
 id: MOCK-201
 title: Tutoriels
-status: draft
+status: implemented
 app: calisthenics
 area: Tutoriels
-implemented_in: null
+implemented_in: apps/calisthenics/src/pages
 states:
   - progression en cours mise en avant
   - bibliothèque filtrée par famille (onglets cliquables)
@@ -11,4 +11,4 @@ states:
 channels: [web, mobile]
 notes: >
   La recherche est statique dans la maquette. Les onglets famille défilent horizontalement
-  sur mobile plutôt que de passer à la ligne.
+  sur mobile plutôt que de passer à la ligne. Une carte ouvre la fiche exercice (MOCK-205).

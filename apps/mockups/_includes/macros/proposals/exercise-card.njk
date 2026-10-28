@@ -9,32 +9,26 @@
     target — objectif de validation (« 3 × 8 reps », « 3 × 20 s »)
     duration — durée de la vidéo/lecture
     status — locked | todo | in-progress | mastered
+  href — lien vers la fiche exercice (MOCK-205)
 #}
 {% from "macros/proposals/badge.njk" import badge %}
-{% macro exerciseCard(ex) %}
-{% set families = {
-  'push': { label: 'Poussée', tone: 'primary', icon: 'hand' },
-  'pull': { label: 'Tirage', tone: 'blue', icon: 'arrows-down-to-line' },
-  'legs': { label: 'Jambes', tone: 'green', icon: 'person-walking' },
-  'core': { label: 'Gainage', tone: 'orange', icon: 'circle-dot' },
-  'skill': { label: 'Figure', tone: 'accent', icon: 'star' }
-} %}
+{% from "macros/proposals/badge-family.njk" import familyBadge %}
+{% macro exerciseCard(ex, href='#') %}
 {% set statuses = {
   'locked': { label: 'Verrouillé', tone: 'neutral', icon: 'lock' },
   'todo': { label: 'À découvrir', tone: 'neutral', icon: 'circle' },
   'in-progress': { label: 'En cours', tone: 'orange', icon: 'spinner' },
   'mastered': { label: 'Maîtrisé', tone: 'green', icon: 'check' }
 } %}
-{% set f = families[ex.family] %}
 {% set s = statuses[ex.status or 'todo'] %}
 {% set locked = ex.status == 'locked' %}
 <article class="relative flex flex-col rounded-2xl border border-border bg-surface p-4 transition {{ 'opacity-60' if locked else 'hover:border-primary-60 hover:shadow-elevation-2' }}">
   <div class="flex items-start justify-between gap-2">
-    {{ badge(f.label, f.tone, f.icon, 'sm') }}
+    {{ familyBadge(ex.family) }}
     {{ badge(s.label, s.tone, s.icon, 'sm') }}
   </div>
   <h3 class="mt-3 text-title-s">
-    {% if locked %}{{ ex.name }}{% else %}<a href="#" class="after:absolute after:inset-0 after:rounded-2xl">{{ ex.name }}</a>{% endif %}
+    {% if locked %}{{ ex.name }}{% else %}<a href="{{ href }}" class="after:absolute after:inset-0 after:rounded-2xl">{{ ex.name }}</a>{% endif %}
   </h3>
   <p class="mt-1 line-clamp-2 flex-1 text-body-s text-muted">{{ ex.description }}</p>
   <dl class="mt-4 grid grid-cols-3 gap-2 border-t border-border pt-3 text-body-xs">

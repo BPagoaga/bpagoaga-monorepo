@@ -1,8 +1,170 @@
 /**
- * Données de démonstration de l'app Calisthenics (StreetLab). Fictives : seulement de quoi
+ * Données de démonstration de l'app Calisthenics (CaliBuddy). Fictives : seulement de quoi
  * remplir les maquettes avec des volumes réalistes (cas nominal + listes longues).
+ * « Aujourd'hui » = jeudi 23 octobre (semaine 43) : séance Poussée + jambes prévue.
  */
 export default {
+  today: { label: 'Jeudi 23 octobre', week: 'S43' },
+  // Modèles de séance du programme (MOCK-203), réutilisés pour démarrer une séance (MOCK-204).
+  templates: [
+    {
+      id: 'tirage',
+      name: 'Tirage + gainage',
+      family: 'pull',
+      duration: '55 min',
+      days: ['Mar'],
+      exercises: [
+        { name: 'Tractions strictes', family: 'pull', target: '4 × max' },
+        { name: 'Tractions explosives', family: 'pull', target: '3 × 5 reps' },
+        { name: 'Rowing australien', family: 'pull', target: '3 × 12 reps' },
+        { name: 'L-sit', family: 'core', target: '3 × 20 s' },
+      ],
+    },
+    {
+      id: 'poussee',
+      name: 'Poussée + jambes',
+      family: 'push',
+      duration: '1 h',
+      days: ['Jeu'],
+      lastDone: 'dim. 19 oct. · 1 h 05',
+      exercises: [
+        { name: 'Dips', family: 'push', target: '3 × 15 reps' },
+        { name: 'Pike push-up', family: 'push', target: '3 × 8 reps' },
+        { name: 'Pistol squat', family: 'legs', target: '3 × 5 / jambe' },
+        { name: 'Hollow body hold', family: 'core', target: '3 × 30 s' },
+      ],
+    },
+    {
+      id: 'figures',
+      name: 'Figures + tirage lesté',
+      family: 'skill',
+      duration: '45 min',
+      days: ['Sam'],
+      exercises: [
+        { name: 'Tractions lestées', family: 'pull', target: '3 × 5 · +20 kg' },
+        { name: 'Front lever tuck', family: 'skill', target: '3 × 15 s' },
+        { name: 'Handstand contre le mur', family: 'skill', target: '5 × 30 s' },
+      ],
+    },
+  ],
+  // Semaine du programme : un modèle ou repos par jour. status : done | today | planned | rest | missed.
+  week: [
+    { day: 'Lun', date: '20', status: 'rest' },
+    { day: 'Mar', date: '21', template: 'Tirage + gainage', status: 'done' },
+    { day: 'Mer', date: '22', status: 'rest' },
+    { day: 'Jeu', date: '23', template: 'Poussée + jambes', status: 'today' },
+    { day: 'Ven', date: '24', status: 'rest' },
+    { day: 'Sam', date: '25', template: 'Figures + tirage lesté', status: 'planned' },
+    { day: 'Dim', date: '26', status: 'rest' },
+  ],
+  // Fiche exercice (MOCK-205).
+  exerciseDetail: {
+    name: 'Traction explosive',
+    family: 'pull',
+    level: 4,
+    status: 'in-progress',
+    path: 'Vers le muscle-up',
+    step: 4,
+    steps: 6,
+    summary:
+      'Tirer assez fort pour amener la barre au sternum : cette puissance est ce qui fera passer la transition du muscle-up.',
+    muscles: ['Grand dorsal', 'Biceps', 'Trapèzes inférieurs', 'Gainage'],
+    equipment: 'Barre fixe',
+    video: { label: 'Démonstration de profil', duration: '2 min 40' },
+    cues: [
+      'Pars bras tendus, épaules engagées : omoplates basses et serrées.',
+      'Tire le plus vite possible en ramenant les coudes vers les hanches.',
+      'Vise le sternum, pas le menton : la poitrine frôle la barre.',
+      'Redescends en contrôle sur 2 secondes avant la répétition suivante.',
+    ],
+    mistakes: [
+      {
+        title: 'Balancer les jambes (kipping)',
+        text: 'L’élan vole le travail du dos. Jambes serrées, corps gainé du début à la fin.',
+      },
+      {
+        title: 'S’arrêter au menton',
+        text: 'Ça ne prépare pas la transition. Filme-toi de profil pour vérifier la hauteur.',
+      },
+      { title: 'Lâcher la descente', text: 'Tomber en bas charge les coudes. Garde 2 secondes de descente.' },
+    ],
+    criterion: '3 × 5 reps, barre au sternum',
+    attempts: [
+      { date: 'mar. 21 oct.', sets: ['5', '5', '4'], best: true },
+      { date: 'sam. 18 oct.', sets: ['5', '4', '4'] },
+      { date: 'mar. 14 oct.', sets: ['4', '4', '3'] },
+    ],
+    previous: { name: 'Traction stricte', target: '3 × 8 reps' },
+    next: { name: 'Muscle-up assisté', target: '3 × 3 reps avec élastique' },
+  },
+  // Test de niveau du premier lancement (MOCK-206).
+  levelTest: [
+    {
+      name: 'Tractions',
+      icon: 'arrows-down-to-line',
+      unit: 'reps',
+      result: 9,
+      cues: [
+        'Prise pronation, bras tendus en bas.',
+        'Menton au-dessus de la barre en haut.',
+        'Aucun élan : une répétition balancée ne compte pas.',
+      ],
+    },
+    {
+      name: 'Pompes',
+      icon: 'hand',
+      unit: 'reps',
+      result: 32,
+      cues: [
+        'Corps gainé, des talons à la tête.',
+        'Poitrine à un poing du sol en bas.',
+        'Bras tendus en haut, sans pause au sol.',
+      ],
+    },
+    {
+      name: 'Dips',
+      icon: 'grip-lines-vertical',
+      unit: 'reps',
+      result: 14,
+      cues: [
+        'Aux barres parallèles ou entre deux chaises stables.',
+        'Épaules au niveau des coudes en bas.',
+        'Bras tendus en haut.',
+      ],
+    },
+    {
+      name: 'Hollow body hold',
+      icon: 'stopwatch',
+      unit: 's',
+      result: 40,
+      cues: [
+        'Allongé sur le dos, bras et jambes tendus.',
+        'Bas du dos plaqué au sol.',
+        'Arrête le chrono dès que le dos décolle.',
+      ],
+    },
+  ],
+  levelResults: [
+    { family: 'pull', result: '9 tractions', path: 'Tirage', placement: 'Traction stricte', step: '3/6' },
+    { family: 'push', result: '32 pompes · 14 dips', path: 'Poussée', placement: 'Pike push-up', step: '3/6' },
+    { family: 'core', result: '40 s de hollow', path: 'Gainage', placement: 'L-sit groupé', step: '2/5' },
+  ],
+  figures: [
+    {
+      name: 'Muscle-up',
+      detail: 'Tirage + transition au-dessus de la barre',
+      ready: 'Étape 3/6 atteinte',
+      recommended: true,
+    },
+    { name: 'Front lever', detail: 'Corps à l’horizontale sous la barre', ready: 'Étape 2/6 atteinte' },
+    { name: 'Handstand libre', detail: 'Équilibre sur les mains, sans mur', ready: 'Étape 1/5 atteinte' },
+    {
+      name: 'Planche',
+      detail: 'Corps à l’horizontale, en appui sur les mains',
+      ready: 'Prérequis : 20 dips',
+      locked: true,
+    },
+  ],
   stats: [
     {
       label: 'Tractions max',

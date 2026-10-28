@@ -1,0 +1,13 @@
+id: MOCK-032
+title: Level test
+kind: proposals
+status: validated
+app: calisthenics
+area: Premier lancement
+related_component: null
+implemented_in: null
+states: [premier test, test intermédiaire, dernier test (secondes), résultats et choix de la figure, figure verrouillée]
+channels: [web, mobile]
+notes: >
+  Écran entier du test de niveau, en macro pour être rendu à la fois dans la page (MOCK-206)
+  et dans les previews mobiles. Sous sm, les actions sont collées en bas (zone du pouce).

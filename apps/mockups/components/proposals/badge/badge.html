@@ -3,6 +3,7 @@ layout: layout.njk
 title: Badge
 ---
 {% from "macros/proposals/badge.njk" import badge %}
+{% from "macros/proposals/badge-family.njk" import familyBadge %}
 <div class="mx-auto max-w-5xl space-y-10 px-6 py-8">
   <header>
     <h1 class="font-display text-title-xl">Badge</h1>
@@ -19,4 +20,13 @@ title: Badge
       </div>
     </section>
   {% endfor %}
+  <section class="space-y-3">
+    <h2 class="text-title-m">Familles d'exercices <span class="text-body-s font-normal text-muted">· <code>familyBadge</code></span></h2>
+    <div class="flex flex-wrap items-center gap-2">
+      {% for f in ['push', 'pull', 'legs', 'core', 'skill'] %}{{ familyBadge(f) }}{% endfor %}
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      {% for f in ['push', 'pull', 'legs', 'core', 'skill'] %}{{ familyBadge(f, 'md') }}{% endfor %}
+    </div>
+  </section>
 </div>

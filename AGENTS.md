@@ -7,14 +7,14 @@ Personal monorepo (Turborepo + pnpm workspaces), toolchain [Vite+](https://vitep
 | Workspace                  | Stack                                  | Purpose                                                                                                                                                     |
 | -------------------------- | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `apps/portfolio`           | Astro 7, Tailwind CSS 4                | Online résumé / portfolio (static site)                                                                                                                     |
-| `apps/calisthenics`        | React 19, Vite+, Tailwind CSS 4        | Calisthenics / street workout app: tutorials, performance recaps, session logs                                                                              |
+| `apps/calisthenics`        | React 19, Vite+, Tailwind CSS 4        | CaliBuddy, the calisthenics web app (local data in IndexedDB) — see [`apps/calisthenics/README.md`](apps/calisthenics/README.md)                            |
 | `apps/calisthenics-mobile` | Expo SDK 58, React Native, Expo Router | Mobile (iOS / Android) version of the calisthenics app, published with EAS — see [`apps/calisthenics-mobile/README.md`](apps/calisthenics-mobile/README.md) |
 | `apps/mockups`             | Eleventy 3, Nunjucks, Tailwind CSS 4   | In-repo mockups for the other apps, built on the real design tokens — see [`apps/mockups/README.md`](apps/mockups/README.md)                                |
 | `packages/ui`              | Tailwind CSS 4, Storybook 10           | Design system: tokens (`src/theme.css`) and base styles (`src/styles.css`), documented in Storybook                                                         |
 | `packages/ui-native`       | React Native                           | React Native components on the `@bpagoaga/ui` tokens (`src/tokens.ts` generated from `theme.css`)                                                           |
 | `packages/dev-certs`       | Node                                   | Shared localhost HTTPS certificate for every dev server (`devHttps()` Vite plugin, `dev-certs` CLI)                                                         |
 
-`portfolio`, `calisthenics` and `calisthenics-mobile` are still shells. New screens are designed in
+`calisthenics-mobile` is still a shell. New screens are designed in
 `apps/mockups` first (see the `mockup` skill), then implemented in the apps.
 
 ## Task Management
@@ -54,6 +54,7 @@ All commands run from the repo root with **pnpm** (never npm/yarn — there is o
 - **Install:** `pnpm install`
 - **Build:** `pnpm build` (all, via Turborepo), `pnpm turbo run build --filter=@bpagoaga/calisthenics` (one workspace)
 - **Lint:** `pnpm lint` (`vp lint` / Oxlint in every app; React rules in `apps/calisthenics/vite.config.ts`)
+- **Tests:** `pnpm test` (Vitest through `vp test`; only `apps/calisthenics` has tests so far)
 - **Types:** `pnpm check-types` (`tsc -b` for React, `astro check` for Astro, `tsc --noEmit` for Expo)
 - **Mobile:** `pnpm dev:mobile` (Metro / Expo), `pnpm --filter @bpagoaga/calisthenics-mobile doctor` (expo-doctor)
 - **Storybook:** `pnpm storybook` (dev, port 6006), `pnpm build:storybook` (static build in `packages/ui/storybook-static`)
@@ -65,8 +66,8 @@ All commands run from the repo root with **pnpm** (never npm/yarn — there is o
 
 Every pull request runs one check workflow per app (`.github/workflows/checks-<app>.yml`), only when that app, the
 design system (`packages/ui`) or the shared tooling changed. They all call `.github/workflows/app-checks.yml`:
-`pnpm install --frozen-lockfile`, `pnpm audit --audit-level high`, then `turbo run lint` and `turbo run build` filtered
-on the app (build runs even when lint fails, so one push reports both).
+`pnpm install --frozen-lockfile`, `pnpm audit --audit-level high`, then `turbo run lint`, `turbo run test` and
+`turbo run build` filtered on the app (test and build run even when lint fails, so one push reports everything).
 
 Reproduce a check locally before pushing:
 

@@ -1,6 +1,6 @@
 name: App checks
 
-# Reusable job: install, audit, lint and build one app of the monorepo.
+# Reusable job: install, audit, lint, test and build one app of the monorepo.
 # Called by checks-<app>.yml, which decide when it runs (paths) and cancel stale runs.
 
 on:
@@ -13,7 +13,7 @@ on:
 
 jobs:
   checks:
-    name: Lint and build
+    name: Lint, test and build
     runs-on: ubuntu-latest
     env:
       TURBO_TELEMETRY_DISABLED: 1
@@ -42,7 +42,12 @@ jobs:
       - name: Lint
         run: pnpm turbo run lint --filter=${{ inputs.app }}
 
-      # Runs even when lint or audit failed, so a single push reports every problem.
+      # Apps without a `test` script are skipped by Turborepo.
+      - name: Test
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: pnpm turbo run test --filter=${{ inputs.app }}
+
+      # Runs even when lint, audit or tests failed, so a single push reports every problem.
       - name: Build
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: pnpm turbo run build --filter=${{ inputs.app }}

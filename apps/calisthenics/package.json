@@ -8,12 +8,18 @@
     "build": "tsc -b && vp build",
     "lint": "vp lint",
     "check-types": "tsc -b",
-    "preview": "vp preview"
+    "preview": "vp preview",
+    "test": "vp test"
   },
   "dependencies": {
     "@bpagoaga/ui": "workspace:*",
+    "@fortawesome/free-solid-svg-icons": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "idb": "catalog:",
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "react-router": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@bpagoaga/dev-certs": "workspace:*",
@@ -22,6 +28,7 @@
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "catalog:",
+    "fake-indexeddb": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",

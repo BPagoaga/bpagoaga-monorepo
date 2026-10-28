@@ -6,12 +6,21 @@ import Loading from '../../components/Loading';
 import PageLayout from '../../components/PageLayout';
 import SessionTemplateCard from '../../components/SessionTemplateCard';
 import WeekPlanner from '../../components/WeekPlanner';
-import { dominantFamily, itemLines, scheduledDays, templateSubtitle } from '../../domain/templates';
-import { weekDays } from '../../domain/week';
+import {
+  dominantFamily,
+  itemLines,
+  scheduledDays,
+  templateSubtitle,
+} from '@bpagoaga/calisthenics-core/domain/templates';
+import { weekDays } from '@bpagoaga/calisthenics-core/domain/week';
 import { useNow } from '../../hooks/useNow';
-import { useFetchProgramme, useSetProgrammeDay } from '../../queries/programme';
-import { useFetchSessions } from '../../queries/sessions';
-import { useDuplicateTemplate, useFetchTemplates } from '../../queries/templates';
+import {
+  useDuplicateTemplate,
+  useFetchProgramme,
+  useFetchSessions,
+  useFetchTemplates,
+  useSetProgrammeDay,
+} from '@bpagoaga/calisthenics-api-client';
 
 const NEW_TEMPLATE = '/programme/modeles/nouveau';
 
@@ -62,7 +71,7 @@ const Programme = () => {
         <WeekPlanner
           days={weekDays(programme.data, sessions.data ?? [], now)}
           templates={list}
-          onChange={(dayIndex, templateId) => setDay.mutate({ dayIndex, templateId })}
+          onChange={(dayIndex, templateId) => setDay.mutate({ dayIndex, data: { templateId } })}
         />
         <ErrorMessage error={setDay.error} />
         {setDay.isSuccess && (
@@ -87,7 +96,7 @@ const Programme = () => {
                 lines={itemLines(template.items)}
                 family={dominantFamily(template.items)}
                 editTo={`/programme/modeles/${template.id}`}
-                onDuplicate={() => duplicate.mutate(template.id)}
+                onDuplicate={() => duplicate.mutate({ templateId: template.id })}
               />
             ))}
           </div>

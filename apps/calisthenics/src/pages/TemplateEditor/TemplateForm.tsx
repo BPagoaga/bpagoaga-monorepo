@@ -7,11 +7,11 @@ import ExercisePicker from '../../components/ExercisePicker';
 import ExerciseRow from '../../components/ExerciseRow';
 import Icon from '../../components/Icon';
 import TargetFields from '../../components/TargetFields';
-import { getExercise } from '../../content/exercises';
-import { findStep } from '../../content/progressions';
-import { estimatedDuration } from '../../domain/templates';
-import type { ITarget, ITemplateItem } from '../../domain/types';
-import { useDeleteTemplate, useSaveTemplate } from '../../queries/templates';
+import { getExercise } from '@bpagoaga/calisthenics-core/content/exercises';
+import { findStep } from '@bpagoaga/calisthenics-core/content/progressions';
+import { estimatedDuration } from '@bpagoaga/calisthenics-core/domain/templates';
+import type { ITarget, ITemplateItem } from '@bpagoaga/calisthenics-core/domain/types';
+import { useCreateTemplate, useDeleteTemplate, useUpdateTemplate } from '@bpagoaga/calisthenics-api-client';
 import type { ITemplateForm } from './types';
 
 const defaultTarget = (exerciseId: string): ITarget => {
@@ -23,7 +23,8 @@ const defaultTarget = (exerciseId: string): ITarget => {
 /** Template editor (MOCK-203 v2): name, ordered exercises with structured targets, library on the side. */
 const TemplateForm = ({ template, days }: ITemplateForm) => {
   const navigate = useNavigate();
-  const save = useSaveTemplate();
+  const create = useCreateTemplate();
+  const update = useUpdateTemplate();
   const remove = useDeleteTemplate();
   const [name, setName] = useState(template?.name ?? '');
   const [items, setItems] = useState<ITemplateItem[]>(template?.items ?? []);
@@ -58,7 +59,10 @@ const TemplateForm = ({ template, days }: ITemplateForm) => {
           event.preventDefault();
           setSubmitted(true);
           if (nameMissing || !items.length) return;
-          save.mutate({ id: template?.id, name, items }, { onSuccess: () => navigate('/programme') });
+          const data = { name, items };
+          const onSaved = { onSuccess: () => navigate('/programme') };
+          if (template) update.mutate({ templateId: template.id, data }, onSaved);
+          else create.mutate({ data }, onSaved);
         }}
       >
         <header className="mt-2 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -73,7 +77,7 @@ const TemplateForm = ({ template, days }: ITemplateForm) => {
             <Button variant="ghost" to="/programme">
               Annuler
             </Button>
-            <Button type="submit" icon={faCheck} loading={save.isPending}>
+            <Button type="submit" icon={faCheck} loading={create.isPending || update.isPending}>
               Enregistrer
             </Button>
           </div>
@@ -143,7 +147,7 @@ const TemplateForm = ({ template, days }: ITemplateForm) => {
                 </p>
               )}
             </section>
-            <ErrorMessage error={save.error ?? remove.error} />
+            <ErrorMessage error={create.error ?? update.error ?? remove.error} />
             {template && (
               <div className="border-t border-border pt-6">
                 <Button
@@ -157,7 +161,7 @@ const TemplateForm = ({ template, days }: ITemplateForm) => {
                         `Supprimer le modèle « ${template.name} » ? Les jours qui l’utilisent passent en repos.`,
                       )
                     ) {
-                      remove.mutate(template.id, { onSuccess: () => navigate('/programme') });
+                      remove.mutate({ templateId: template.id }, { onSuccess: () => navigate('/programme') });
                     }
                   }}
                 >

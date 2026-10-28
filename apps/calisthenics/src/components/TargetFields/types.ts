@@ -1,4 +1,4 @@
-import type { IExercise, ITarget } from '../../domain/types';
+import type { IExercise, ITarget } from '@bpagoaga/calisthenics-core/domain/types';
 
 export interface ITargetFields {
   idPrefix: string;

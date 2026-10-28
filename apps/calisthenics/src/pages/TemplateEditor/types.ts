@@ -1,4 +1,4 @@
-import type { ISessionTemplate } from '../../domain/types';
+import type { ISessionTemplate } from '@bpagoaga/calisthenics-core/domain/types';
 
 export interface ITemplateForm {
   /** Undefined when creating a template. */

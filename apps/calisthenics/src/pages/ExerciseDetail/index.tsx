@@ -22,14 +22,18 @@ import LevelDots from '../../components/LevelDots';
 import Loading from '../../components/Loading';
 import PageLayout from '../../components/PageLayout';
 import ProgressionPath from '../../components/ProgressionPath';
-import { getExercise } from '../../content/exercises';
-import { findStep } from '../../content/progressions';
-import { formatSet, formatShortDay, formatTarget } from '../../domain/format';
-import { currentStepOf, exerciseStatus, stepStatus } from '../../domain/progress';
-import { meetsCriterion, setMeetsTarget } from '../../domain/sets';
-import { useFetchProgress, useSetProgressStep } from '../../queries/progress';
-import { useFetchSessions } from '../../queries/sessions';
-import { useAddItemToTemplate, useFetchTemplates } from '../../queries/templates';
+import { getExercise } from '@bpagoaga/calisthenics-core/content/exercises';
+import { findStep } from '@bpagoaga/calisthenics-core/content/progressions';
+import { formatSet, formatShortDay, formatTarget } from '@bpagoaga/calisthenics-core/domain/format';
+import { currentStepOf, exerciseStatus, stepStatus } from '@bpagoaga/calisthenics-core/domain/progress';
+import { meetsCriterion, setMeetsTarget } from '@bpagoaga/calisthenics-core/domain/sets';
+import {
+  useAddTemplateItem,
+  useFetchProgress,
+  useFetchSessions,
+  useFetchTemplates,
+  useSetProgressStep,
+} from '@bpagoaga/calisthenics-api-client';
 
 const ATTEMPTS = 3;
 
@@ -40,7 +44,7 @@ const ExerciseDetail = () => {
   const progress = useFetchProgress();
   const sessions = useFetchSessions();
   const templates = useFetchTemplates();
-  const addToTemplate = useAddItemToTemplate();
+  const addToTemplate = useAddTemplateItem();
   const setStep = useSetProgressStep();
   const [choosingTemplate, setChoosingTemplate] = useState(false);
   const [addedTo, setAddedTo] = useState<string>();
@@ -178,12 +182,12 @@ const ExerciseDetail = () => {
                     size="sm"
                     icon={already ? faCheck : undefined}
                     disabled={already}
-                    loading={addToTemplate.isPending && addToTemplate.variables?.id === template.id}
+                    loading={addToTemplate.isPending && addToTemplate.variables?.templateId === template.id}
                     onClick={() =>
                       addToTemplate.mutate(
                         {
-                          id: template.id,
-                          item: {
+                          templateId: template.id,
+                          data: {
                             exerciseId: exercise.id,
                             target:
                               criterion ??
@@ -331,7 +335,10 @@ const ExerciseDetail = () => {
                     type="button"
                     onClick={() => {
                       if (window.confirm(`Valider l’étape « ${exercise.name} » sans tentative enregistrée ?`)) {
-                        setStep.mutate({ progressionId: step.progression.id, step: step.index + 1, source: 'manual' });
+                        setStep.mutate({
+                          progressionId: step.progression.id,
+                          data: { step: step.index + 1, source: 'manual' },
+                        });
                       }
                     }}
                     className="inline-flex min-h-11 items-center gap-2 text-body-s font-medium text-primary-100 hover:underline"

@@ -1,0 +1,20 @@
+{
+  "name": "@bpagoaga/calisthenics-core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "CaliBuddy content (exercises, progressions, level test) and pure domain logic, shared by the web app, the API and the mobile app.",
+  "type": "module",
+  "exports": {
+    "./content/*": "./src/content/*.ts",
+    "./domain/*": "./src/domain/*.ts"
+  },
+  "scripts": {
+    "lint": "vp lint",
+    "check-types": "tsc",
+    "test": "vp test"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

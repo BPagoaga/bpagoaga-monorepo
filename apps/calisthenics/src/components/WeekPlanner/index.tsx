@@ -6,8 +6,8 @@ import {
   faCircleXmark,
   faMugHot,
 } from '@fortawesome/free-solid-svg-icons';
-import { formatWeekday } from '../../domain/format';
-import type { DayStatusEnum } from '../../domain/types';
+import { formatWeekday } from '@bpagoaga/calisthenics-core/domain/format';
+import type { DayStatusEnum } from '@bpagoaga/calisthenics-core/domain/types';
 import Icon from '../Icon';
 import type { IIconLabel, IWeekPlanner } from './types';
 

@@ -4,7 +4,7 @@ import Button from '../../components/Button';
 import CurrentSessionPanel from '../../components/CurrentSessionPanel';
 import Loading from '../../components/Loading';
 import PageLayout from '../../components/PageLayout';
-import { useFetchCurrentSession } from '../../queries/sessions';
+import { useFetchCurrentSession } from '@bpagoaga/calisthenics-api-client';
 
 /** The session in progress, full screen (MOCK-202 v2, the phone's view during a workout). */
 const CurrentSession = () => {

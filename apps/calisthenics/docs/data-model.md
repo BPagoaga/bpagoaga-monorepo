@@ -1,15 +1,16 @@
 # Modèle de données — CaliBuddy (app web)
 
-Proposition pour la v1 de `apps/calisthenics`, à partir des maquettes validées MOCK-200 à 206. Elle couvre le journal,
-le tableau de bord, les tutoriels, le programme et le test de niveau.
+Modèle de `apps/calisthenics`, à partir des maquettes validées MOCK-200 à 206 : journal, tableau de bord, tutoriels,
+programme et test de niveau. La v1 gardait tout dans IndexedDB ; depuis l'API (`apps/calisthenics-api`), les données de
+l'utilisateur sont dans Postgres, par compte. Les formes (types de `@bpagoaga/calisthenics-core`) n'ont pas changé.
 
 ## Principes
 
 1. **Deux sortes de données.**
-   - Le **contenu** (exercices, progressions, test de niveau) est écrit dans le code (`src/content/`), versionné avec
-     l'app et identique pour tout le monde.
-   - Les **données de l'utilisateur** (séances, modèles, programme, résultats) vivent dans IndexedDB, dans son
-     navigateur.
+   - Le **contenu** (exercices, progressions, test de niveau) est écrit dans le code
+     (`packages/calisthenics-core/src/content/`), versionné et identique pour tout le monde.
+   - Les **données de l'utilisateur** (séances, modèles, programme, résultats) vivent dans Postgres, derrière l'API,
+     rattachées à son compte.
 2. **Ce qui se calcule ne se stocke pas.** Records, volume hebdomadaire, régularité, statut d'une étape et progression
    d'un objectif sont dérivés des séances. On ne stocke que ce qui ne peut pas être recalculé : le placement initial du
    test de niveau, et les étapes validées.
@@ -19,9 +20,10 @@ le tableau de bord, les tutoriels, le programme et le test de niveau.
    - Dates : chaînes ISO 8601 (`2026-10-23T18:42:00.000Z`) ; jour du programme : `0` = lundi … `6` = dimanche.
    - Identifiants :
      - contenu : slugs lisibles (`traction-explosive`) ;
-     - données de l'utilisateur : UUID (`crypto.randomUUID()`).
-4. **Les écrans ne parlent pas à IndexedDB.** Ils passent par des hooks React Query qui appellent des fonctions de
-   `src/db/`. Un backend pourra remplacer ces fonctions plus tard sans toucher aux écrans.
+     - données de l'utilisateur : UUID générés par Postgres (`gen_random_uuid()`) ; les comptes ont les identifiants
+       de Better Auth.
+4. **Les écrans ne parlent qu'aux hooks générés.** L'API décrit ses routes en OpenAPI ; Orval en génère les types, les
+   fonctions `fetch` et les hooks React Query (`@bpagoaga/calisthenics-api-client`).
 
 ## Mesure d'une série
 
@@ -96,23 +98,28 @@ Le contenu de départ reprend celui des maquettes : 12 exercices, 4 progressions
 progressions par famille du test (Tirage, Poussée, Gainage) sont des progressions comme les autres. Celle du tirage est
 « Vers le muscle-up ».
 
-## Données de l'utilisateur (IndexedDB)
+## Données de l'utilisateur (Postgres)
 
-Base `calibuddy`, une version de schéma par migration. Les stores :
+Tables Drizzle dans `apps/calisthenics-api/src/db/schema.ts`, migrations SQL dans `apps/calisthenics-api/drizzle/`.
+Chaque table a une colonne `user_id` (suppression en cascade avec le compte) ; l'API filtre toujours par l'utilisateur
+de la session.
 
-| Store        | Clé             | Index                     | Contenu                                                         |
-| ------------ | --------------- | ------------------------- | --------------------------------------------------------------- |
-| `profile`    | `'me'` (unique) | —                         | prénom, figure objectif, date de fin du premier lancement       |
-| `templates`  | `id`            | `name`                    | modèles de séance                                               |
-| `programme`  | `'current'`     | —                         | la semaine : un modèle ou repos par jour                        |
-| `sessions`   | `id`            | `startedAt`, `templateId` | séances, avec leurs exercices et leurs séries (un document)     |
-| `progress`   | `progressionId` | —                         | étape courante de chaque progression et historique des passages |
-| `levelTests` | `id`            | `takenAt`                 | résultats bruts de chaque test de niveau passé                  |
+| Table                                        | Clé                          | Contenu                                                                       |
+| -------------------------------------------- | ---------------------------- | ----------------------------------------------------------------------------- |
+| `user`, `session`, `account`, `verification` | `id`                         | Tables de Better Auth ; `user.name` est le prénom                             |
+| `profiles`                                   | `user_id`                    | figure objectif, date de fin du premier lancement                             |
+| `templates`                                  | `id`                         | modèles de séance ; `items` (exercices et objectifs, dans l'ordre) en `jsonb` |
+| `programme_days`                             | `user_id`, `day_index` (0–6) | un modèle par jour, `null` = repos ; clé étrangère `on delete set null`       |
+| `sessions`                                   | `id`                         | séances ; `exercises` (avec leurs séries) en `jsonb` ; une seule en cours     |
+| `progress`                                   | `user_id`, `progression_id`  | étape courante ; `history` (passages d'étape) en `jsonb`                      |
+| `level_tests`                                | `id`                         | résultats bruts de chaque test de niveau, en `jsonb`                          |
+
+Les formes exposées par l'API sont celles des types de `@bpagoaga/calisthenics-core/domain/types` (rappelées
+ci-dessous) : chaque schéma de réponse de l'API les `satisfies`, donc un écart casse la compilation.
 
 ```ts
 interface Profile {
-  id: 'me';
-  firstName?: string; // « Salut Bernard » ; facultatif
+  firstName?: string; // « Salut Bernard » : le prénom donné à l'inscription
   goalProgressionId?: string; // figure objectif, choisie à la fin du test
   onboardedAt?: string; // absent = premier lancement (MOCK-200 v2)
 }
@@ -126,14 +133,13 @@ interface SessionTemplate {
 }
 
 interface Programme {
-  id: 'current';
   days: [Day, Day, Day, Day, Day, Day, Day]; // lundi → dimanche
 }
 type Day = { templateId: string } | null; // null = repos
 
 interface Session {
   id: string;
-  templateId?: string; // absent : séance libre ou refaite depuis une séance passée
+  templateId?: string; // absent : séance libre, ou modèle supprimé depuis
   title: string; // copié du modèle au démarrage : renommer le modèle ne change pas l'historique
   startedAt: string;
   endedAt?: string; // absent = séance en cours (une seule à la fois)
@@ -162,16 +168,20 @@ interface LevelTestResult {
 
 **Choix à noter**
 
-- **Une séance est un seul document**, séries comprises. Le volume reste petit (une séance pèse quelques Ko), et
-  l'écriture d'une série reste atomique.
+- **Une séance est une ligne**, ses exercices et séries en `jsonb`. Une séance pèse quelques Ko, et l'API écrit chaque
+  série dans une transaction qui verrouille la ligne (deux appuis rapides ne perdent pas de série).
 - **Les modèles sont copiés dans la séance, pas référencés.** Modifier ou supprimer un modèle ne réécrit pas le journal
   (comme l'indique MOCK-203).
 - **Un seul modèle par jour**, et la même semaine se répète. Pas de cycles en v1.
-- **Une seule séance en cours** : celle dont `endedAt` est absent. Fermer l'onglet ne la perd pas.
+- **Une seule séance en cours** : celle dont `endedAt` est absent, garanti par un index unique partiel. Fermer
+  l'onglet ne la perd pas, et elle se retrouve sur un autre appareil.
+- **Un nouveau compte** reçoit son profil, les trois modèles par défaut et une semaine de repos (hook de création
+  d'utilisateur de Better Auth).
 
 ## Données dérivées
 
-Ces valeurs sont calculées à partir des séances, dans des sélecteurs testables (fonctions pures dans `src/domain/`).
+Ces valeurs sont calculées à partir des séances, dans des sélecteurs testables (fonctions pures de
+`@bpagoaga/calisthenics-core/domain`), côté client.
 
 | Affiché sur                           | Calcul                                                                                                                                                           |
 | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -190,49 +200,40 @@ confirmation, parce qu'une répétition peut avoir été saisie mais mal exécut
 ## Accès aux données
 
 ```
-src/
-  content/          exercices, progressions, test de niveau (TypeScript, typé)
-  domain/           calculs purs : libellés de Target, records, volume, semaine, critères (testés unitairement)
-  db/
-    schema.ts       ouverture de la base, version, migrations
-    sessions.ts     getSessions, getSession, startSession, logSet, finishSession…
-    templates.ts    …
-    backup.ts       export / import JSON
-  queries/
-    sessions/       useFetchSessions, useFetchCurrentSession, SessionsQueryKeys, SessionsStaleTimeEnum
-    templates/ …    (un dossier par domaine, conventions de AGENTS.md › React Query)
+packages/calisthenics-core/     contenu et calculs purs, partagés (web, API, mobile)
+apps/calisthenics-api/
+  src/schemas.ts                schémas zod des requêtes et réponses → document OpenAPI
+  src/routes/                   une route OpenAPI + son handler, par domaine
+  openapi.json                  le contrat, versionné
+packages/calisthenics-api-client/
+  src/generated/                modèles, fonctions fetch et hooks React Query (Orval)
+apps/calisthenics/src/queries/  session (Better Auth) et fichier de sauvegarde, hors OpenAPI
 ```
 
-- **React Query** : les données locales ne changent que par nos propres mutations. Les requêtes ont donc
-  `staleTime: Infinity`, et chaque mutation invalide les clés de son domaine.
-- **Sauvegarde** : « Exporter » (MOCK-202) produit un JSON `{ app: 'calibuddy', schemaVersion, exportedAt, data }`.
-  L'import valide le fichier avant d'écrire quoi que ce soit, et remplace les données après confirmation.
-- **Persistance** : au premier lancement, appeler `navigator.storage.persist()` pour que le navigateur n'efface pas la
-  base quand l'espace manque. Rappeler l'export de temps en temps, puisque c'est la seule sauvegarde.
+- **React Query** : les hooks générés portent leurs clés (`getFetchSessionsQueryKey()`), et chaque mutation invalide les
+  requêtes qu'elle modifie (`mutationInvalidates`). Une page qui s'ouvre juste après une mutation et dépend de son
+  résultat met d'abord le cache à jour avec la réponse (`setQueryData`).
+- **Sauvegarde** : « Exporter » (MOCK-202) produit un JSON `{ app: 'calibuddy', schemaVersion, exportedAt, data }`,
+  le même format que la v1 locale : un ancien export s'importe dans un compte. L'import est validé par l'API et remplace
+  toutes les données du compte, avec de nouveaux identifiants.
 
-## Dépendances proposées
+## Dépendances
 
-| Besoin                 | Choix                              | Pourquoi                                                                                         |
-| ---------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------ |
-| IndexedDB              | `idb` 8                            | Enveloppe typée en promesses, ~1 Ko. Six stores n'ont pas besoin du moteur de requêtes de Dexie. |
-| Cache / état serveur   | `@tanstack/react-query` 5          | Convention du repo (AGENTS.md). Fera le lien avec un backend plus tard.                          |
-| Validation de l'import | `zod` 4                            | Un fichier importé est une entrée non fiable.                                                    |
-| Routage                | `react-router` 8 (mode déclaratif) | 7 écrans, des URL partageables (fiche exercice), pas besoin de chargement côté serveur.          |
+| Besoin               | Choix                                    | Pourquoi                                                               |
+| -------------------- | ---------------------------------------- | ---------------------------------------------------------------------- |
+| Serveur              | `hono` + `@hono/zod-openapi`             | Léger, typé ; les schémas zod valident et produisent l'OpenAPI         |
+| Base de données      | Postgres + `drizzle-orm` (`postgres.js`) | Schéma en TypeScript, migrations SQL générées, requêtes typées         |
+| Comptes              | `better-auth`                            | E-mail et mot de passe, sessions en base, adaptateur Drizzle           |
+| Client               | `orval`                                  | Types, fonctions `fetch` et hooks React Query générés depuis l'OpenAPI |
+| Cache / état serveur | `@tanstack/react-query` 5                | Convention du repo (AGENTS.md)                                         |
+| Tests de l'API       | `@electric-sql/pglite`                   | Un vrai Postgres en mémoire : pas de Docker en CI                      |
+| Routage              | `react-router` 8 (mode déclaratif)       | Des URL partageables (fiche exercice), pas de chargement côté serveur  |
 
 ## Questions ouvertes
 
-1. **Seuils du test de niveau.** Proposition, cohérente avec les maquettes (9 tractions → étape 3/6, 32 pompes et
-   14 dips → 3/6, 40 s de hollow → 2/5) :
+1. **Vidéos des tutoriels.** Des liens vers des vidéos externes (le plus simple), ou des vidéos hébergées. Le champ
+   `video.url` couvre les deux cas.
+2. **E-mails.** Sans service d'envoi, pas de vérification d'adresse ni de mot de passe oublié.
 
-   | Progression         | Étape 1 | Étape 2 | Étape 3                | Étape 4    |
-   | ------------------- | ------- | ------- | ---------------------- | ---------- |
-   | Muscle-up (tirage)  | 0       | 1–4     | 5–11 tractions         | 12+        |
-   | Poussée (vers HSPU) | < 5     | 5–19    | 20+ pompes et 10+ dips | 40+ et 20+ |
-   | L-sit (gainage)     | < 20 s  | 20–59 s | 60 s+                  | —          |
-
-2. **Vidéos des tutoriels.** Des liens vers des vidéos externes (le plus simple en v1), ou des vidéos hébergées par toi.
-   Le champ `video.url` couvre les deux cas.
-3. **Saisie des exercices tenus.** Le set logger doit avoir un mode durée (déjà dans TASKS.md). Le modèle le gère déjà
-   avec `seconds`.
-4. **Prénom.** Pas d'écran pour le saisir dans les maquettes. Je propose une question au début du test de niveau ; sinon
-   le tableau de bord dit simplement « Salut 👋 ».
+Tranché depuis : les seuils du test de niveau sont dans `domain/levelTest.ts` (et ses tests) ; le set logger a un mode
+durée ; le prénom est demandé à l'inscription.

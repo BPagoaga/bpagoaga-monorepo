@@ -1,4 +1,4 @@
-import type { StepStatusEnum } from '../../domain/types';
+import type { StepStatusEnum } from '@bpagoaga/calisthenics-core/domain/types';
 
 export interface IPathStep {
   name: string;

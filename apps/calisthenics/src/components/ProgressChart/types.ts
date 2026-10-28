@@ -1,4 +1,4 @@
-import type { IChartPoint } from '../../domain/types';
+import type { IChartPoint } from '@bpagoaga/calisthenics-core/domain/types';
 
 export interface IProgressChart {
   title: string;

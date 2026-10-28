@@ -1,4 +1,4 @@
-import type { IExercise } from '../../domain/types';
+import type { IExercise } from '@bpagoaga/calisthenics-core/domain/types';
 
 export interface ISetEntry {
   value: number;

@@ -9,9 +9,9 @@ import {
   faTrophy,
 } from '@fortawesome/free-solid-svg-icons';
 import { useId, useState } from 'react';
-import { getExercise } from '../../content/exercises';
-import { formatDuration, formatLongDay, formatSet, formatWeekday } from '../../domain/format';
-import type { FeelingEnum } from '../../domain/types';
+import { getExercise } from '@bpagoaga/calisthenics-core/content/exercises';
+import { formatDuration, formatLongDay, formatSet, formatWeekday } from '@bpagoaga/calisthenics-core/domain/format';
+import type { FeelingEnum } from '@bpagoaga/calisthenics-core/domain/types';
 import Icon from '../Icon';
 import type { IIconLabel, ISessionCard } from './types';
 

@@ -4,15 +4,18 @@
 
 Personal monorepo (Turborepo + pnpm workspaces), toolchain [Vite+](https://viteplus.dev) (`vp`).
 
-| Workspace                  | Stack                                  | Purpose                                                                                                                                                     |
-| -------------------------- | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apps/portfolio`           | Astro 7, Tailwind CSS 4                | Online résumé / portfolio (static site)                                                                                                                     |
-| `apps/calisthenics`        | React 19, Vite+, Tailwind CSS 4        | CaliBuddy, the calisthenics web app (local data in IndexedDB) — see [`apps/calisthenics/README.md`](apps/calisthenics/README.md)                            |
-| `apps/calisthenics-mobile` | Expo SDK 58, React Native, Expo Router | Mobile (iOS / Android) version of the calisthenics app, published with EAS — see [`apps/calisthenics-mobile/README.md`](apps/calisthenics-mobile/README.md) |
-| `apps/mockups`             | Eleventy 3, Nunjucks, Tailwind CSS 4   | In-repo mockups for the other apps, built on the real design tokens — see [`apps/mockups/README.md`](apps/mockups/README.md)                                |
-| `packages/ui`              | Tailwind CSS 4, Storybook 10           | Design system: tokens (`src/theme.css`) and base styles (`src/styles.css`), documented in Storybook                                                         |
-| `packages/ui-native`       | React Native                           | React Native components on the `@bpagoaga/ui` tokens (`src/tokens.ts` generated from `theme.css`)                                                           |
-| `packages/dev-certs`       | Node                                   | Shared localhost HTTPS certificate for every dev server (`devHttps()` Vite plugin, `dev-certs` CLI)                                                         |
+| Workspace                          | Stack                                      | Purpose                                                                                                                                                     |
+| ---------------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/portfolio`                   | Astro 7, Tailwind CSS 4                    | Online résumé / portfolio (static site)                                                                                                                     |
+| `apps/calisthenics`                | React 19, Vite+, Tailwind CSS 4            | CaliBuddy, the calisthenics web app (data through the API) — see [`apps/calisthenics/README.md`](apps/calisthenics/README.md)                               |
+| `apps/calisthenics-api`            | Node, Hono, Drizzle, Postgres, Better Auth | CaliBuddy's API (accounts, sessions, programme), documented in OpenAPI — see [`apps/calisthenics-api/README.md`](apps/calisthenics-api/README.md)           |
+| `apps/calisthenics-mobile`         | Expo SDK 58, React Native, Expo Router     | Mobile (iOS / Android) version of the calisthenics app, published with EAS — see [`apps/calisthenics-mobile/README.md`](apps/calisthenics-mobile/README.md) |
+| `apps/mockups`                     | Eleventy 3, Nunjucks, Tailwind CSS 4       | In-repo mockups for the other apps, built on the real design tokens — see [`apps/mockups/README.md`](apps/mockups/README.md)                                |
+| `packages/ui`                      | Tailwind CSS 4, Storybook 10               | Design system: tokens (`src/theme.css`) and base styles (`src/styles.css`), documented in Storybook                                                         |
+| `packages/ui-native`               | React Native                               | React Native components on the `@bpagoaga/ui` tokens (`src/tokens.ts` generated from `theme.css`)                                                           |
+| `packages/dev-certs`               | Node                                       | Shared localhost HTTPS certificate for every dev server (`devHttps()` Vite plugin, `dev-certs` CLI)                                                         |
+| `packages/calisthenics-core`       | TypeScript                                 | CaliBuddy content (exercises, progressions) and pure domain logic, shared by the web app, the API and the mobile app                                        |
+| `packages/calisthenics-api-client` | Orval, React Query                         | Client generated from the API's `openapi.json`: models, fetch functions and React Query hooks                                                               |
 
 `calisthenics-mobile` is still a shell. New screens are designed in
 `apps/mockups` first (see the `mockup` skill), then implemented in the apps.
@@ -61,7 +64,12 @@ All commands run from the repo root with **pnpm** (never npm/yarn — there is o
 - **Install:** `pnpm install`
 - **Build:** `pnpm build` (all, via Turborepo), `pnpm turbo run build --filter=@bpagoaga/calisthenics` (one workspace)
 - **Lint:** `pnpm lint` (`vp lint` / Oxlint in every app; React rules in `apps/calisthenics/vite.config.ts`)
-- **Tests:** `pnpm test` (Vitest through `vp test`; only `apps/calisthenics` has tests so far)
+- **Tests:** `pnpm test` (Vitest through `vp test`: `calisthenics-core` domain tests, `calisthenics-api` tests on an
+  in-memory Postgres via PGlite — no Docker needed)
+- **CaliBuddy API:** `pnpm db:up` (Postgres in Docker), `pnpm dev:api` (port 3000, docs at `/api/docs`), or
+  `pnpm --filter @bpagoaga/calisthenics-api dev:memory` without Docker; `pnpm dev:calisthenics` proxies `/api` to it
+- **API contract:** after changing an API route or schema, `pnpm generate:api` rewrites `openapi.json` and the
+  generated client; after changing a table, `pnpm --filter @bpagoaga/calisthenics-api db:generate` writes a migration
 - **Types:** `pnpm check-types` (`tsc -b` for React, `astro check` for Astro, `tsc --noEmit` for Expo)
 - **Mobile:** `pnpm dev:mobile` (Metro / Expo), `pnpm --filter @bpagoaga/calisthenics-mobile doctor` (expo-doctor)
 - **Storybook:** `pnpm storybook` (dev, port 6006), `pnpm build:storybook` (static build in `packages/ui/storybook-static`)
@@ -75,6 +83,7 @@ Every pull request runs one check workflow per app (`.github/workflows/checks-<a
 design system (`packages/ui`) or the shared tooling changed. They all call `.github/workflows/app-checks.yml`:
 `pnpm install --frozen-lockfile`, `pnpm audit --audit-level high`, then `turbo run lint`, `turbo run test` and
 `turbo run build` filtered on the app (test and build run even when lint fails, so one push reports everything).
+`checks-calisthenics-api.yml` also fails when `openapi.json` or the generated client is out of date.
 
 Reproduce a check locally before pushing:
 
@@ -181,6 +190,11 @@ start by `@bpagoaga/dev-certs` — signed by mkcert's local CA when mkcert is in
 
 ### React Query
 
+- **CaliBuddy's API hooks are generated** (`@bpagoaga/calisthenics-api-client`, Orval): import `useFetchXxx` and the
+  mutation hooks from there, never hand-write a fetch for an API route. Their keys come with them
+  (`getFetchXxxQueryKey()`); which queries a mutation refreshes is declared in `mutationInvalidates`
+  (`packages/calisthenics-api-client/orval.config.ts`). The rules below apply to hand-written hooks (Better Auth's
+  session, anything outside the OpenAPI document).
 - One `queries/` folder per app, split by domain: `useFetchXxx` hooks, a `XxxQueryKeys` enum per domain (values
   prefixed with the domain name), and stale times as a `XxxStaleTimeEnum` mirroring the key names.
 - **`queryKey`** is always `[XxxQueryKeys.SomeKey, ...params]`; when the query takes an options object, pass the whole

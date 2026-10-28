@@ -9,12 +9,12 @@ import Icon from '../../components/Icon';
 import Loading from '../../components/Loading';
 import OnboardingHeader from '../../components/OnboardingHeader';
 import RadioMark from '../../components/RadioMark';
-import { getExercise } from '../../content/exercises';
-import { getProgression, PROGRESSIONS } from '../../content/progressions';
-import { isFigureLocked, placements, recommendedFigure } from '../../domain/levelTest';
-import type { LevelTestResults } from '../../domain/types';
-import { useFetchLevelTests } from '../../queries/levelTests';
-import { useUpdateProfile } from '../../queries/profile';
+import { getExercise } from '@bpagoaga/calisthenics-core/content/exercises';
+import { getProgression, PROGRESSIONS } from '@bpagoaga/calisthenics-core/content/progressions';
+import { isFigureLocked, placements, recommendedFigure } from '@bpagoaga/calisthenics-core/domain/levelTest';
+import type { LevelTestResults } from '@bpagoaga/calisthenics-core/domain/types';
+import { getFetchProfileQueryKey, useFetchLevelTests, useUpdateProfile } from '@bpagoaga/calisthenics-api-client';
+import { useQueryClient } from '@tanstack/react-query';
 
 const PLACED = [
   { progressionId: 'muscle-up', result: (r: LevelTestResults) => `${r.pull} traction${r.pull > 1 ? 's' : ''}` },
@@ -25,6 +25,7 @@ const PLACED = [
 /** End of the level test (MOCK-206 v2): starting step per progression, then the goal figure. */
 const LevelResults = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const levelTests = useFetchLevelTests();
   const updateProfile = useUpdateProfile();
   const [figure, setFigure] = useState<string>();
@@ -37,8 +38,13 @@ const LevelResults = () => {
   const chosen = figure ?? recommendedFigure(latest.results);
   const finish = () =>
     updateProfile.mutate(
-      { goalProgressionId: chosen, onboardedAt: new Date().toISOString() },
-      { onSuccess: () => navigate('/programme') },
+      { data: { goalProgressionId: chosen, onboardedAt: new Date().toISOString() } },
+      {
+        onSuccess: (profile) => {
+          queryClient.setQueryData(getFetchProfileQueryKey(), profile);
+          void navigate('/programme');
+        },
+      },
     );
 
   return (

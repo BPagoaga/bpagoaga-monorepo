@@ -1,5 +1,5 @@
 import { faArrowsDownToLine, faCircleDot, faHand, faPersonWalking, faStar } from '@fortawesome/free-solid-svg-icons';
-import type { ExerciseFamilyEnum } from '../../domain/types';
+import type { ExerciseFamilyEnum } from '@bpagoaga/calisthenics-core/domain/types';
 import type { IFamilyMeta } from './types';
 
 export const FAMILIES: Record<ExerciseFamilyEnum, IFamilyMeta> = {

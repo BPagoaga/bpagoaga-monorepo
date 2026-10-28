@@ -1,5 +1,5 @@
 import { faCheck, faCircle, faLock, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import type { ExerciseStatusEnum } from '../../domain/types';
+import type { ExerciseStatusEnum } from '@bpagoaga/calisthenics-core/domain/types';
 import type { IStatusMeta } from './types';
 
 export const EXERCISE_STATUSES: Record<ExerciseStatusEnum, IStatusMeta> = {

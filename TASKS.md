@@ -22,12 +22,22 @@ Décisions (2026-10-28) : l'app web (`apps/calisthenics`) d'abord, données loca
 Query, sans compte), v1 = journal + tableau de bord + tutoriels + programme simple (un modèle de séance par jour de la
 semaine) + test de niveau au premier lancement. Nom : CaliBuddy (le lien du portfolio reste « Training »).
 
+Décisions (2026-10-28, backend) : API `apps/calisthenics-api` en Node + Hono + Postgres (Drizzle), comptes e-mail et
+mot de passe (Better Auth), données sur le serveur uniquement (plus d'IndexedDB ; les anciens exports s'importent),
+client généré par Orval depuis l'OpenAPI (`packages/calisthenics-api-client`), contenu et calculs partagés dans
+`packages/calisthenics-core`.
+
 - [ ] Promouvoir les composants calisthenics de `apps/mockups` en `reference/` (macros + vitrines), maintenant que les
       écrans sont implémentés
 - [ ] Mettre à jour la maquette du set logger (MOCK-026) : mode durée, déjà implémenté dans l'app
 - [ ] Vidéos de démonstration des exercices (liens externes ou hébergées) : le champ `video` est prêt
-- [ ] Déployer l'app web sur training.bernardpagoaga.net (build statique avec repli SPA sur `index.html`)
-- [ ] App mobile : reprendre le modèle de données (`src/domain`, `src/content`) dans un package partagé
+- [ ] Valider les maquettes Connexion / Inscription (MOCK-207, MOCK-033), implémentées avec l'API
+- [ ] Choisir l'hébergement de l'API et de Postgres, puis déployer : app web sur training.bernardpagoaga.net (build
+      statique, repli SPA sur `index.html`) et `/api` relayé vers l'API sur la même origine (sinon cookies
+      `SameSite=None` + `TRUSTED_ORIGINS`) ; `BETTER_AUTH_SECRET` propre à l'environnement
+- [ ] Envoi d'e-mails (fournisseur à choisir) : vérification d'adresse et mot de passe oublié (Better Auth)
+- [ ] Écran Profil (maquette d'abord) : prénom, déconnexion, suppression du compte, export
+- [ ] App mobile : brancher `@bpagoaga/calisthenics-api-client` et Better Auth (plugin Expo) sur l'API
 - [ ] App mobile : `eas init` (compte Expo), icône et splash screen propres, premiers écrans à partir des maquettes
 - [ ] App mobile : EAS Update (`expo-updates`, canaux) si on veut des mises à jour OTA
 
@@ -47,5 +57,7 @@ semaine) + test de niveau au premier lancement. Nom : CaliBuddy (le lien du port
 - [x] 2026-10-26 — App `calisthenics-mobile` (Expo SDK 58, EAS), package `ui-native` (tokens générés depuis `ui`)
 - [x] 2026-10-28 — Maquettes calisthenics révisées et validées (MOCK-200 à 206), modèle de données (`apps/calisthenics/docs/data-model.md`)
 - [x] 2026-10-28 — App web CaliBuddy : test de niveau, programme, séances, journal, tableau de bord, tutoriels (IndexedDB, 26 tests)
+- [x] 2026-10-28 — API CaliBuddy (Hono, Drizzle, Postgres, Better Auth), client Orval, app web branchée dessus, packages
+      `calisthenics-core` et `calisthenics-api-client`
 - [x] 2026-10-27 — Portfolio : menu (À propos, Portfolio, CV, Training externe via `TRAINING_URL`), retrait Facebook / X / CodePen
 - [x] 2026-10-26 — Serveurs de dev en HTTPS (`@bpagoaga/dev-certs`) et Storybook pour `@bpagoaga/ui` (fondations)
